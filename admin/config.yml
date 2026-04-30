@@ -2,7 +2,7 @@ backend:
   name: github
   repo: Grabsterolo/umana-living
   branch: main
-  base_url: https://sveltia-cms-auth.umana-living.dev
+  base_url: https://sveltia-cms-auth.umana-living.pages.dev
 
 media_folder: "imagenes"
 public_folder: "/imagenes"
