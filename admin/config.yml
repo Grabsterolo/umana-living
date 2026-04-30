@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: Grabsterolo/umana-living
   branch: main
 
 media_folder: "imagenes"
