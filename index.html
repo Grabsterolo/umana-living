@@ -3,11 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- SEO -->
 <title>Umana — Un espacio para habitar lo humano</title>
+<meta name="description" content="Umana es un ecosistema de acompañamiento emocional y terapéutico en Costa Rica. Conectamos personas con guías emocionales certificados desde una mirada cercana, cálida y profundamente humana.">
+<meta name="keywords" content="terapia emocional Costa Rica, bienestar emocional, acompañamiento terapéutico, guías emocionales, salud mental Costa Rica, Umana Living">
+<meta name="author" content="Umana Living">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://umana-living.pages.dev">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://umana-living.pages.dev">
+<meta property="og:title" content="Umana — Un espacio para habitar lo humano">
+<meta property="og:description" content="Ecosistema de acompañamiento emocional y terapéutico en Costa Rica. Conectamos personas con guías emocionales certificados.">
+<meta property="og:image" content="https://umana-living.pages.dev/imagenes/Umana.png">
+<meta property="og:locale" content="es_CR">
+<meta property="og:site_name" content="Umana Living">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Umana — Un espacio para habitar lo humano">
+<meta name="twitter:description" content="Ecosistema de acompañamiento emocional y terapéutico en Costa Rica.">
+<meta name="twitter:image" content="https://umana-living.pages.dev/imagenes/Umana.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<!-- marked.js para renderizar markdown de los artículos -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
 
 <style>
@@ -69,7 +91,6 @@
   .logo-circle::before { content: ''; position: absolute; inset: -15px; border-radius: 50%; border: 1px solid var(--cream-dark); animation: rotateSlow 30s linear infinite; }
   .logo-circle::after { content: ''; position: absolute; inset: -30px; border-radius: 50%; border: 1px dashed rgba(196,168,130,0.3); animation: rotateSlow 50s linear infinite reverse; }
   @keyframes rotateSlow { to{transform:rotate(360deg)} }
-  .logo-svg { width: 200px; height: auto; }
   .que-es-text p { font-size: 1.05rem; line-height: 1.9; color: var(--text-mid); font-weight: 300; margin-bottom: 1.5rem; }
   .que-es-frase { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--brown); border-left: 2px solid var(--brown-light); padding-left: 1.25rem; margin-top: 2rem; line-height: 1.6; }
 
@@ -129,7 +150,7 @@
   .blog-empty p { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--brown-mid); margin-bottom: 0.5rem; }
   .blog-empty span { font-size: 0.85rem; color: var(--text-light); }
 
-  /* Modal leer artículo */
+  /* Modal */
   .modal-overlay { position: fixed; inset: 0; background: rgba(46,31,20,0.65); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
   .modal-overlay.open { opacity: 1; pointer-events: all; }
   .modal { background: var(--white); width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; position: relative; animation: fadeUp 0.3s ease; }
@@ -169,6 +190,12 @@
   .footer-links { display: flex; gap: 2rem; list-style: none; }
   .footer-links a { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(212,184,150,0.5); text-decoration: none; transition: color 0.2s; }
   .footer-links a:hover { color: var(--sand); }
+
+  /* WhatsApp */
+  #wa-btn { position: fixed; bottom: 2rem; right: 2rem; background: #25D366; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); z-index: 9999; transition: transform 0.25s, box-shadow 0.25s; }
+  #wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.55); }
+  #wa-btn::before { content: '¿Hablamos?'; position: absolute; right: 68px; background: var(--brown); color: var(--cream); font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.05em; padding: 0.4rem 0.85rem; border-radius: 2px; white-space: nowrap; opacity: 0; transform: translateX(8px); transition: all 0.25s; pointer-events: none; }
+  #wa-btn:hover::before { opacity: 1; transform: translateX(0); }
 
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -221,7 +248,7 @@
     <div class="que-es-grid">
       <div class="que-es-visual reveal">
         <div class="logo-circle">
-          <img src="/imagenes/Umana.png" alt="Umana Logo" style="width:220px; height:220px; object-fit:contain; border-radius:50%; padding:10px;">
+          <img src="/imagenes/Umana.png" alt="Umana Logo" style="width:220px; height:220px; object-fit:contain; padding:10px;">
         </div>
       </div>
       <div class="que-es-text reveal">
@@ -267,7 +294,6 @@
 <section id="valores">
   <div class="container">
     <div class="reveal" style="text-align:center;max-width:500px;margin:0 auto">
-      <p class="section-label">Propuesta de valor</p>
       <h2 class="section-title">Lo que nos<br><em>hace diferentes</em></h2>
     </div>
     <div class="valores-grid">
@@ -370,54 +396,8 @@
   </svg>
 </a>
 
-<style>
-  #wa-btn {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: #25D366;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 20px rgba(37,211,102,0.4);
-    z-index: 9999;
-    transition: transform 0.25s, box-shadow 0.25s;
-  }
-  #wa-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 28px rgba(37,211,102,0.55);
-  }
-  #wa-btn::before {
-    content: '¿Hablamos?';
-    position: absolute;
-    right: 68px;
-    background: var(--brown);
-    color: var(--cream);
-    font-family: 'Jost', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    padding: 0.4rem 0.85rem;
-    border-radius: 2px;
-    white-space: nowrap;
-    opacity: 0;
-    transform: translateX(8px);
-    transition: all 0.25s;
-    pointer-events: none;
-  }
-  #wa-btn:hover::before {
-    opacity: 1;
-    transform: translateX(0);
-  }
-</style>
-
-<!-- Netlify Identity (para el CMS) -->
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
 <script>
-  // ── Scroll reveal ──
+  // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
       if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); observer.unobserve(e.target); }
@@ -425,75 +405,44 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // ── Netlify Identity redirect ──
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on('init', user => {
-      if (!user) {
-        window.netlifyIdentity.on('login', () => { document.location.href = '/admin/'; });
-      }
-    });
-  }
-
-  // ── Cargar artículos desde GitHub vía API de Netlify/GitHub ──
-  // Lee los archivos .md de la carpeta /articulos del repositorio
+  // Cargar artículos desde GitHub
   async function loadArticles() {
     const grid = document.getElementById('blogGrid');
     try {
-      // Leer índice de archivos en /articulos desde GitHub API
-      // IMPORTANTE: reemplaza USUARIO y REPOSITORIO con los tuyos
       const GITHUB_USER = 'Grabsterolo';
       const GITHUB_REPO = 'umana-living';
       const BRANCH = 'main';
-
-      const res = await fetch(
-        `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/articulos?ref=${BRANCH}`
-      );
-
+      const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/articulos?ref=${BRANCH}`);
       if (!res.ok) throw new Error('No se pudo conectar');
-
       const files = await res.json();
       const mdFiles = files.filter(f => f.name.endsWith('.md'));
-
       if (!mdFiles.length) {
         grid.innerHTML = `<div class="blog-empty"><p>Próximamente</p><span>Los artículos aparecerán aquí una vez publicados.</span></div>`;
         return;
       }
-
-      // Cargar cada archivo
       const articles = await Promise.all(mdFiles.map(async f => {
         const r = await fetch(f.download_url);
         const text = await r.text();
         return parseMd(text, f.name);
       }));
-
-      // Ordenar por fecha descendente
       articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-
       grid.innerHTML = articles.map((a, i) => `
-        <div class="article-card reveal" onclick="openRead(${i})" data-index="${i}">
-          ${a.image
-            ? `<img class="article-cover" src="${a.image}" alt="${a.title}">`
-            : `<div class="article-cover-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M10 38 Q14 28 20 24 Q26 20 24 12 Q30 18 28 26 Q34 20 32 12 Q40 20 36 30 Q40 28 42 32 Q38 40 10 38Z" fill="#C4A882"/></svg></div>`}
+        <div class="article-card reveal" onclick="openRead(${i})">
+          ${a.image ? `<img class="article-cover" src="${a.image}" alt="${a.title}">` : `<div class="article-cover-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M10 38 Q14 28 20 24 Q26 20 24 12 Q30 18 28 26 Q34 20 32 12 Q40 20 36 30 Q40 28 42 32 Q38 40 10 38Z" fill="#C4A882"/></svg></div>`}
           <div class="article-body">
             <p class="article-cat">${a.cat || 'Artículo'}</p>
             <h3 class="article-title">${a.title}</h3>
-            <p class="article-excerpt">${a.excerpt || a.bodyRaw.slice(0, 100).replace(/#/g,'') + '...'}</p>
+            <p class="article-excerpt">${a.excerpt || a.bodyRaw.slice(0,100).replace(/#/g,'') + '...'}</p>
             <p class="article-meta">${a.author ? a.author + ' · ' : ''}${fmtDate(a.date)}</p>
           </div>
-        </div>
-      `).join('');
-
-      // Guardar para modal
+        </div>`).join('');
       window._articles = articles;
       grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
     } catch(err) {
       grid.innerHTML = `<div class="blog-empty"><p>Próximamente</p><span>Los artículos aparecerán aquí una vez publicados.</span></div>`;
-      console.warn('Blog:', err.message);
     }
   }
 
-  // ── Parser de frontmatter Markdown ──
   function parseMd(text, filename) {
     const fm = {};
     let body = text;
@@ -506,12 +455,12 @@
       body = fmMatch[2];
     }
     return {
-      title:   fm.title   || filename.replace('.md',''),
-      cat:     fm.cat     || 'Artículo',
+      title: fm.title || filename.replace('.md',''),
+      cat: fm.cat || 'Artículo',
       excerpt: fm.excerpt || '',
-      author:  fm.author  || '',
-      date:    fm.date    || new Date().toISOString(),
-      image:   fm.image   || '',
+      author: fm.author || '',
+      date: fm.date || new Date().toISOString(),
+      image: fm.image || '',
       bodyRaw: body,
       bodyHtml: typeof marked !== 'undefined' ? marked.parse(body) : body
     };
@@ -522,16 +471,15 @@
     catch { return ''; }
   }
 
-  // ── Modal ──
   function openRead(i) {
     const a = window._articles[i];
     const cover = document.getElementById('modalCover');
     if (a.image) { cover.src = a.image; cover.style.display = 'block'; }
     else { cover.style.display = 'none'; }
-    document.getElementById('modalCat').textContent   = a.cat;
+    document.getElementById('modalCat').textContent = a.cat;
     document.getElementById('modalTitle').textContent = a.title;
-    document.getElementById('modalMeta').textContent  = (a.author ? a.author + ' · ' : '') + fmtDate(a.date);
-    document.getElementById('modalBody').innerHTML    = a.bodyHtml;
+    document.getElementById('modalMeta').textContent = (a.author ? a.author + ' · ' : '') + fmtDate(a.date);
+    document.getElementById('modalBody').innerHTML = a.bodyHtml;
     document.getElementById('readModal').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
