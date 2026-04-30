@@ -13,5 +13,4 @@ Y no siempre sabes qué cambiar, no siempre tienes una respuesta clara. Solo sie
 
 Esta incomodidad no viene a destruirte, viene a mostrarte algo. Tal vez no necesitas entenderlo todo hoy. Tal vez no necesitas tomar una gran decisión ahora. A veces, el primer paso no es hacer "algo" por cambiarlo. El primer paso es dejar de ignorar eso que llevas tiempo sintiendo. Y cuando empiezas a escucharte, aunque sea un poco, algo cambia.
 
-No afuera.
-Adentro.
+No afuera... Adentro.
