@@ -3,7 +3,7 @@ title: A veces no necesitas respuestas
 cat: Reflexión
 author: Juan Pablo Gamboa N.
 date: 2026-04-29T23:21:00.000-06:00
-image: /imagenes/whatsapp-image-2026-04-25-at-7.48.49-pm.jpeg
+image: ""
 ---
 Hay momentos en los que no sabes exactamente qué te pasa.
 Solo sientes que algo pesa más de lo normal.
