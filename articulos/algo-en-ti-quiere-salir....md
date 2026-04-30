@@ -7,7 +7,7 @@ date: 2026-04-30T12:59:00
 image: /imagenes/ChatGPT Image Apr 30, 2026, 12_44_15 PM.png
 ---
 
-A veces no es que quieras rendirte... Es que estás cansado de sostener algo que ya no se siente bien.
+No es que quieras rendirte... Es que estás cansado de sostener algo que ya no se siente bien.
 
 Y no siempre sabes qué cambiar, no siempre tienes una respuesta clara. Solo sientes… que así como estás, ya no encaja. Entonces lo dudas y lo minimizas. Te dices que tal vez es solo un momento, pero esa incomodidad vuelve. Vuelve suave, constante e insistente.
 
