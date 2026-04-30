@@ -1,5 +1,5 @@
 ---
-title: Algo en ti quiere salir...
+title: La incomodidad viene a decirte algo
 cat: Reflexión
 excerpt: ''
 author: Juan Pablo Gamboa N.
@@ -7,10 +7,11 @@ date: 2026-04-30T12:59:00
 image: /imagenes/ChatGPT Image Apr 30, 2026, 12_44_15 PM.png
 ---
 
-Hay días en los que no sabes exactamente qué te pasa, pero sientes que ya no puedes seguir igual. 
+A veces no es que quieras rendirte... Es que estás cansado de sostener algo que ya no se siente bien.
 
-No es algo grande. No es algo que puedas explicar fácil. Es solo esa sensación de que algo en ti está pidiendo espacio. Y aunque no sepas por dónde empezar, aunque no tengas las palabras correctas, aunque sientas que todo está un poco desordenado… eso ya es un inicio. Porque hay una parte de ti que sigue ahí, intentando 
+Y no siempre sabes qué cambiar, no siempre tienes una respuesta clara. Solo sientes… que así como estás, ya no encaja. Entonces lo dudas y lo minimizas. Te dices que tal vez es solo un momento, pero esa incomodidad vuelve. Vuelve suave, constante e insistente.
 
-entender, intentando sentirse mejor, intentando volver a casa. Y eso, aunque no lo parezca, es una forma de avanzar. No tienes que tenerlo todo claro hoy. No tienes que resolverlo todo ahora. A veces, solo necesitas darte el permiso de empezar a escucharte un poco más.
+Esta incomodidad no viene a destruirte, viene a mostrarte algo. Tal vez no necesitas entenderlo todo hoy. Tal vez no necesitas tomar una gran decisión ahora. A veces, el primer paso no es hacer "algo" por cambiarlo. El primer paso es dejar de ignorar eso que llevas tiempo sintiendo. Y cuando empiezas a escucharte, aunque sea un poco, algo cambia.
 
-Y desde ahí, muy poco a poco, todo empieza a sentirse distinto.
+No afuera.
+Adentro.
