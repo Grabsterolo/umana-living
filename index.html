@@ -116,13 +116,27 @@
   .caminos-intro { max-width: 600px; margin-bottom: 4rem; }
   .caminos-intro p { font-size: 1rem; line-height: 1.85; color: var(--text-mid); font-weight: 300; }
   .caminos-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
-  .camino-card { background: var(--white); border: 1px solid rgba(196,168,130,0.25); padding: 2rem 1.75rem; transition: all 0.3s; position: relative; overflow: hidden; }
+  .camino-card { background: var(--white); border: 1px solid rgba(196,168,130,0.25); padding: 0; transition: all 0.3s; position: relative; overflow: hidden; }
   .camino-card::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: var(--brown-light); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; }
   .camino-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(92,61,46,0.08); }
-  .camino-card:hover::before { transform: scaleX(1); }
+  .camino-card:hover::before, .camino-card.open::before { transform: scaleX(1); }
+  .camino-toggle { width: 100%; padding: 2rem 1.75rem; background: transparent; border: 0; text-align: left; cursor: pointer; font-family: inherit; color: inherit; display: block; }
+  .camino-card.open .camino-toggle { padding-bottom: 0.75rem; }
+  .camino-toggle:focus-visible { outline: none; box-shadow: inset 0 0 0 1px rgba(196,168,130,0.75); }
   .camino-tag { display: inline-block; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brown-light); background: var(--cream-dark); padding: 0.3rem 0.8rem; margin-bottom: 1rem; }
+  .camino-title-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   .camino-name { font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; font-weight: 400; color: var(--brown); margin-bottom: 0.6rem; line-height: 1.2; }
+  .camino-icon { width: 28px; height: 28px; border: 1px solid rgba(196,168,130,0.6); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; color: var(--brown-light); transition: all 0.25s ease; position: relative; }
+  .camino-icon::before, .camino-icon::after { content: ''; position: absolute; width: 10px; height: 1px; background: currentColor; }
+  .camino-icon::after { transform: rotate(90deg); transition: transform 0.25s ease; }
+  .camino-card.open .camino-icon { background: var(--brown); border-color: var(--brown); color: var(--cream); }
+  .camino-card.open .camino-icon::after { transform: rotate(0deg); }
   .camino-desc { font-size: 0.88rem; line-height: 1.75; color: var(--text-light); font-weight: 300; }
+  .camino-detail { max-height: 0; overflow: hidden; opacity: 0; padding: 0 1.75rem; transition: max-height 0.35s ease, opacity 0.25s ease, padding-bottom 0.25s ease; }
+  .camino-card.open .camino-detail { max-height: 260px; opacity: 1; padding-bottom: 2rem; }
+  .camino-detail p { font-size: 0.84rem; line-height: 1.8; color: var(--text-mid); font-weight: 300; margin-top: 0.75rem; }
+  .camino-detail ul { margin: 1rem 0 0 1.1rem; color: var(--text-light); font-size: 0.82rem; line-height: 1.7; font-weight: 300; }
+  .camino-detail li { margin-bottom: 0.35rem; }
 
   /* VALORES */
   #valores { padding: 7rem 0; background: var(--cream-dark); }
@@ -290,12 +304,96 @@
       <p>Distintas corrientes y enfoques integrados en un mismo espacio humano.</p>
     </div>
     <div class="caminos-grid">
-      <div class="camino-card reveal"><span class="camino-tag">Individual</span><h3 class="camino-name">Umana Clarity</h3><p class="camino-desc">Comprensión, orden interno y acompañamiento individual.</p></div>
-      <div class="camino-card reveal"><span class="camino-tag">Colectivo</span><h3 class="camino-name">Umana Conscious</h3><p class="camino-desc">Exploración emocional colectiva. Conciencia, presencia y profundidad.</p></div>
-      <div class="camino-card reveal"><span class="camino-tag">Contenido</span><h3 class="camino-name">Umana Voice</h3><p class="camino-desc">El espacio donde las historias humanas encuentran voz.</p></div>
-      <div class="camino-card reveal"><span class="camino-tag">Exploración</span><h3 class="camino-name">Umana Lab</h3><p class="camino-desc">La creatividad como herramienta de sanación.</p></div>
-      <div class="camino-card reveal"><span class="camino-tag">Cuerpo</span><h3 class="camino-name">Umana Body</h3><p class="camino-desc">Regulación emocional y reconexión corporal consciente.</p></div>
-      <div class="camino-card reveal"><span class="camino-tag">Comunidad</span><h3 class="camino-name">Umana Circle</h3><p class="camino-desc">En comunidad, lo humano se fortalece.</p></div>
+      <article class="camino-card reveal">
+        <button class="camino-toggle" type="button" aria-expanded="false" aria-controls="camino-clarity">
+          <span class="camino-tag">Individual</span>
+          <span class="camino-title-row"><span class="camino-name">Umana Clarity</span><span class="camino-icon" aria-hidden="true"></span></span>
+          <span class="camino-desc">Comprensión, orden interno y acompañamiento individual.</span>
+        </button>
+        <div class="camino-detail" id="camino-clarity">
+          <p>Un camino para quienes necesitan hacer pausa, escuchar lo que sienten y ordenar su mundo interno con acompañamiento cercano.</p>
+          <ul>
+            <li>Sesiones individuales online o presenciales.</li>
+            <li>Orientación emocional personalizada.</li>
+            <li>Herramientas para claridad, calma y toma de decisiones.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="camino-card reveal">
+        <button class="camino-toggle" type="button" aria-expanded="false" aria-controls="camino-conscious">
+          <span class="camino-tag">Colectivo</span>
+          <span class="camino-title-row"><span class="camino-name">Umana Conscious</span><span class="camino-icon" aria-hidden="true"></span></span>
+          <span class="camino-desc">Exploración emocional colectiva. Conciencia, presencia y profundidad.</span>
+        </button>
+        <div class="camino-detail" id="camino-conscious">
+          <p>Experiencias grupales para explorar temas humanos desde la presencia, el diálogo y la reflexión compartida.</p>
+          <ul>
+            <li>Círculos, talleres y encuentros guiados.</li>
+            <li>Espacios de conciencia emocional y autoconocimiento.</li>
+            <li>Procesos colectivos con contención y cuidado.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="camino-card reveal">
+        <button class="camino-toggle" type="button" aria-expanded="false" aria-controls="camino-voice">
+          <span class="camino-tag">Contenido</span>
+          <span class="camino-title-row"><span class="camino-name">Umana Voice</span><span class="camino-icon" aria-hidden="true"></span></span>
+          <span class="camino-desc">El espacio donde las historias humanas encuentran voz.</span>
+        </button>
+        <div class="camino-detail" id="camino-voice">
+          <p>Un canal para transformar experiencias, aprendizajes y conversaciones terapéuticas en contenido sensible y útil.</p>
+          <ul>
+            <li>Reflexiones, artículos y recursos emocionales.</li>
+            <li>Historias que acompañan sin juzgar.</li>
+            <li>Lenguaje cercano para temas profundos.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="camino-card reveal">
+        <button class="camino-toggle" type="button" aria-expanded="false" aria-controls="camino-lab">
+          <span class="camino-tag">Exploración</span>
+          <span class="camino-title-row"><span class="camino-name">Umana Lab</span><span class="camino-icon" aria-hidden="true"></span></span>
+          <span class="camino-desc">La creatividad como herramienta de sanación.</span>
+        </button>
+        <div class="camino-detail" id="camino-lab">
+          <p>Un espacio experimental donde el arte, la escritura y la expresión creativa ayudan a procesar emociones.</p>
+          <ul>
+            <li>Dinámicas creativas aplicadas al bienestar.</li>
+            <li>Exploración simbólica y emocional.</li>
+            <li>Procesos para desbloquear expresión y sentido.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="camino-card reveal">
+        <button class="camino-toggle" type="button" aria-expanded="false" aria-controls="camino-body">
+          <span class="camino-tag">Cuerpo</span>
+          <span class="camino-title-row"><span class="camino-name">Umana Body</span><span class="camino-icon" aria-hidden="true"></span></span>
+          <span class="camino-desc">Regulación emocional y reconexión corporal consciente.</span>
+        </button>
+        <div class="camino-detail" id="camino-body">
+          <p>Un camino para volver al cuerpo con respeto, aprender a regular el sistema nervioso y habitarse con más presencia.</p>
+          <ul>
+            <li>Prácticas corporales conscientes.</li>
+            <li>Herramientas de respiración y regulación.</li>
+            <li>Integración entre emoción, cuerpo y cuidado.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="camino-card reveal">
+        <button class="camino-toggle" type="button" aria-expanded="false" aria-controls="camino-circle">
+          <span class="camino-tag">Comunidad</span>
+          <span class="camino-title-row"><span class="camino-name">Umana Circle</span><span class="camino-icon" aria-hidden="true"></span></span>
+          <span class="camino-desc">En comunidad, lo humano se fortalece.</span>
+        </button>
+        <div class="camino-detail" id="camino-circle">
+          <p>Un espacio para crear vínculos auténticos, compartir procesos y recordar que el bienestar también se sostiene en comunidad.</p>
+          <ul>
+            <li>Encuentros de conexión y pertenencia.</li>
+            <li>Redes de apoyo emocional.</li>
+            <li>Experiencias para cultivar presencia compartida.</li>
+          </ul>
+        </div>
+      </article>
     </div>
   </div>
 </section>
@@ -414,6 +512,15 @@
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Caminos desplegables
+  document.querySelectorAll('.camino-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const card = button.closest('.camino-card');
+      const isOpen = card.classList.toggle('open');
+      button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  });
 
   // Cargar artículos desde GitHub
   async function loadArticles() {
