@@ -1,0 +1,10 @@
+{% assign s = site.data.site %}
+<nav>
+  <a class="nav-logo" href="{{ '/' | relative_url }}">{{ s.brand_name }}</a>
+  <ul class="nav-links">
+    {% for item in s.nav %}
+      <li><a href="{{ item.href }}">{{ item.label }}</a></li>
+    {% endfor %}
+  </ul>
+  <a class="nav-cta" href="{{ s.nav_cta_href }}">{{ s.nav_cta_label }}</a>
+</nav>

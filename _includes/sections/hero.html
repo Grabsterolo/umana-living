@@ -1,0 +1,15 @@
+{% assign h = site.data.home.hero %}
+<section id="hero">
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">{{ h.eyebrow }}</p>
+    <h1 class="hero-title">{{ h.title_line1 }}<br><em>{{ h.title_emphasis }}</em></h1>
+    <p class="hero-subtitle">{{ h.subtitle }}</p>
+    <div class="hero-ctas">
+      <a href="{{ h.primary_href }}" class="btn-primary">{{ h.primary_label }}</a>
+      <a href="{{ h.secondary_href }}" class="btn-ghost">{{ h.secondary_label }}</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span>{{ h.scroll_label }}</span></div>
+</section>

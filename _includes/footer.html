@@ -1,0 +1,12 @@
+{% assign s = site.data.site %}
+<footer>
+  <div>
+    <p class="footer-logo">{{ s.site_name }}</p>
+    <p class="footer-tagline">{{ s.footer_tagline }}</p>
+  </div>
+  <ul class="footer-links">
+    {% for item in s.footer_links %}
+      <li><a href="{{ item.href }}">{{ item.label }}</a></li>
+    {% endfor %}
+  </ul>
+</footer>

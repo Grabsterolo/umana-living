@@ -1,0 +1,30 @@
+{% assign intro = site.data.home.caminos_intro %}
+{% assign caminos = site.data.home.caminos %}
+<section id="caminos">
+  <div class="container">
+    <div class="caminos-intro reveal">
+      <p class="section-label">{{ intro.label }}</p>
+      <h2 class="section-title">{{ intro.title_line1 }}<br><em>{{ intro.title_emphasis }}</em></h2>
+      <p>{{ intro.intro }}</p>
+    </div>
+    <div class="caminos-grid">
+      {% for camino in caminos %}
+      <article class="camino-card reveal">
+        <button class="camino-toggle" type="button" aria-expanded="false" aria-controls="{{ camino.id }}">
+          <span class="camino-tag">{{ camino.tag }}</span>
+          <span class="camino-title-row"><span class="camino-name">{{ camino.name }}</span><span class="camino-icon" aria-hidden="true"></span></span>
+          <span class="camino-desc">{{ camino.short_desc }}</span>
+        </button>
+        <div class="camino-detail" id="{{ camino.id }}">
+          <p>{{ camino.detail_intro }}</p>
+          <ul>
+            {% for bullet in camino.bullets %}
+              <li>{{ bullet }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

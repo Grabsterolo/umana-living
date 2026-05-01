@@ -1,0 +1,13 @@
+{% assign v = site.data.home.valores %}
+<section id="valores">
+  <div class="container">
+    <div class="reveal" style="text-align:center;max-width:500px;margin:0 auto">
+      <h2 class="section-title">{{ v.title_line1 }}<br><em>{{ v.title_emphasis }}</em></h2>
+    </div>
+    <div class="valores-grid">
+      {% for item in v.items %}
+      <div class="valor-item reveal"><div class="valor-num">{{ item.num }}</div><h3 class="valor-title">{{ item.title }}</h3><p class="valor-desc">{{ item.desc }}</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

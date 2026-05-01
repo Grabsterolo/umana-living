@@ -1,0 +1,17 @@
+# CloudCannon (Unified Configuration). Refinar colecciones e inputs en el panel del sitio.
+# Docs: https://cloudcannon.com/documentation/guides/jekyll-starter-guide/cloudcannon-configuration-file/
+
+source: "/"
+
+paths:
+  uploads: imagenes
+
+collections_config:
+  articulos:
+    path: _articulos
+
+data_config:
+  site_settings:
+    path: _data/site.yml
+  home_sections:
+    path: _data/home.yml

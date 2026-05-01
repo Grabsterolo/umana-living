@@ -1,0 +1,24 @@
+{% assign q = site.data.home.que_es %}
+<section id="que-es">
+  <div class="container">
+    <div class="que-es-grid">
+      <div class="que-es-visual reveal">
+        <div class="logo-circle">
+          <img src="{{ q.logo_src | relative_url }}" alt="{{ q.logo_alt }}" style="width:220px; height:220px; object-fit:contain; padding:10px;">
+        </div>
+      </div>
+      <div class="que-es-text reveal">
+        <p class="section-label">{{ q.label }}</p>
+        <h2 class="section-title">{{ q.title_line1 }}<br><em>{{ q.title_emphasis }}</em></h2>
+        {% for para in q.paragraphs %}
+          <p>{{ para }}</p>
+        {% endfor %}
+        <blockquote class="que-es-frase">
+          {% for line in q.quote_lines %}
+            {{ line }}{% unless forloop.last %}<br>{% endunless %}
+          {% endfor %}
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,13 @@
+{% assign c = site.data.home.cta %}
+{% assign s = site.data.site %}
+<section id="cta-final">
+  <div class="container reveal">
+    <p class="cta-pretitle">{{ c.pretitle }}</p>
+    <h2 class="cta-title">{{ c.title_line1 }}<br>{{ c.title_line2 }}</h2>
+    <p class="cta-sub">{{ c.subtitle }}</p>
+    <div class="hero-ctas">
+      <a href="https://wa.me/{{ s.whatsapp_phone }}" target="_blank" rel="noopener noreferrer" class="btn-primary">{{ c.primary_label }}</a>
+      <a href="{{ c.secondary_href }}" class="btn-ghost">{{ c.secondary_label }}</a>
+    </div>
+  </div>
+</section>

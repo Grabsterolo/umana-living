@@ -1,7 +1,6 @@
 ---
 title: A veces no necesitas respuestas
 cat: Reflexión
-excerpt: ''
 author: Juan Pablo Gamboa N.
 date: 2026-04-29T23:21:00.000-06:00
 image: /imagenes/smooth-stones-stacked-in-balance-on-calm-water-concept-of-tranquility-and-harmony-in-nature-photo.jpg

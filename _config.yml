@@ -1,0 +1,27 @@
+title: Umana Living
+description: Ecosistema de acompañamiento emocional y terapéutico en Costa Rica.
+url: "https://umana-living.pages.dev"
+baseurl: ""
+lang: es
+
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - cloudcannon.config.yml
+
+collections:
+  articulos:
+    output: true
+    permalink: /articulos/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: articulos
+    values:
+      layout: article

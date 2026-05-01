@@ -1,0 +1,14 @@
+{% assign p = site.data.home.proceso %}
+<section id="proceso">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">{{ p.label }}</p>
+      <h2 class="section-title">{{ p.title_line1 }}<br><em>{{ p.title_emphasis }}</em></h2>
+    </div>
+    <div class="proceso-steps">
+      {% for step in p.steps %}
+      <div class="proceso-step reveal"><div class="step-num">{{ step.num }}</div><div><h3 class="step-title">{{ step.title }}</h3><p class="step-desc">{{ step.desc }}</p></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
