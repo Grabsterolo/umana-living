@@ -7,7 +7,19 @@ source: "/"
 paths:
   uploads: imagenes
 
+# Colección de páginas en la raíz (p. ej. index.md). Sin esto, CloudCannon puede ocultar el Visual Editor.
 collections_config:
+  pages:
+    path: ""
+    name: Inicio
+    icon: wysiwyg
+    glob:
+      - index.md
+    _enabled_editors:
+      - visual
+      - content
+      - data
+      - source
   articulos:
     path: _articulos
     name: Artículos
@@ -26,6 +38,12 @@ collections_config:
       image:
         type: image
         label: Imagen destacada
+
+collection_groups:
+  - heading: Sitio
+    collections:
+      - pages
+      - articulos
 
 data_config:
   site_settings:
