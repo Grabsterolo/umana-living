@@ -1,0 +1,4 @@
+# Solo en .github/workflows/pages.yml (merge con _config.yml).
+# https://aristizabal95.github.io/umana-living/
+url: "https://aristizabal95.github.io"
+baseurl: "/umana-living"

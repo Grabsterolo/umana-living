@@ -1,0 +1,10 @@
+{% assign s = site.data.site %}
+<nav>
+  <a class="nav-logo" href="{{ '/' | relative_url }}" data-editable="text" data-type="span" data-prop="@data[site].brand_name">{{ s.brand_name }}</a>
+  <ul class="nav-links" data-editable="array" data-prop="@data[site].nav">
+    {% for item in s.nav %}
+      <li data-editable="array-item"><a href="{{ item.href }}"><span data-editable="text" data-type="span" data-prop="@data[site].nav[{{ forloop.index0 }}].label">{{ item.label }}</span></a></li>
+    {% endfor %}
+  </ul>
+  <a class="nav-cta" href="{{ s.nav_cta_href }}" data-editable="text" data-type="span" data-prop="@data[site].nav_cta_label">{{ s.nav_cta_label }}</a>
+</nav>

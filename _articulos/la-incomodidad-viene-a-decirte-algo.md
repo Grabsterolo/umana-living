@@ -1,7 +1,6 @@
 ---
 title: La incomodidad viene a decirte algo
 cat: Reflexión
-excerpt: ''
 author: Juan Pablo Gamboa N.
 date: 2026-04-30T12:59:00
 image: /imagenes/ChatGPT Image Apr 30, 2026, 12_44_15 PM.png

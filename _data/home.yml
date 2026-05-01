@@ -1,0 +1,152 @@
+# Contenido de la página de inicio
+
+hero:
+  eyebrow: Umana Living · Ecosistema Terapéutico
+  title_line1: Un espacio para
+  title_emphasis: habitar lo humano
+  subtitle: Conectamos personas con guías emocionales certificados desde una mirada cercana, cálida y profundamente humana.
+  primary_label: Encontrar mi camino
+  primary_href: "#caminos"
+  secondary_label: Conocer Umana
+  secondary_href: "#que-es"
+  scroll_label: Descubrir
+
+que_es:
+  logo_src: /imagenes/Umana.png
+  logo_alt: Umana Logo
+  label: ¿Qué es Umana?
+  title_line1: Más que terapia,
+  title_emphasis: un ecosistema de vida
+  paragraphs:
+    - Umana es un ecosistema de acompañamiento emocional y terapéutico que conecta personas con terapeutas certificados — guías emocionales — desde una mirada humana, cercana, cálida y contemporánea.
+    - Integramos distintos caminos de bienestar dentro de una experiencia cuidada, donde el proceso personal puede vivirse con confianza, conexión y sentido.
+  quote_lines:
+    - Sanar no es solo cambiar,
+    - es aprender a vivir con mayor sentido.
+
+insight:
+  label: Insight humano
+  quote_html: |
+    Lo que las personas buscan no es solo terapia.<br>Buscan <em>conexión, comprensión</em> y un espacio<br>donde puedan sentirse realmente escuchadas.
+  sub: Y eso es exactamente lo que Umana ofrece.
+
+caminos_intro:
+  label: Los Caminos Umana
+  title_line1: Cada persona,
+  title_emphasis: su propio camino
+  intro: Distintas corrientes y enfoques integrados en un mismo espacio humano.
+
+caminos:
+  - id: camino-clarity
+    tag: Individual
+    name: Umana Clarity
+    short_desc: Comprensión, orden interno y acompañamiento individual.
+    detail_intro: Un camino para quienes necesitan hacer pausa, escuchar lo que sienten y ordenar su mundo interno con acompañamiento cercano.
+    bullets:
+      - Sesiones individuales online o presenciales.
+      - Orientación emocional personalizada.
+      - Herramientas para claridad, calma y toma de decisiones.
+  - id: camino-conscious
+    tag: Colectivo
+    name: Umana Conscious
+    short_desc: Exploración emocional colectiva. Conciencia, presencia y profundidad.
+    detail_intro: Experiencias grupales para explorar temas humanos desde la presencia, el diálogo y la reflexión compartida.
+    bullets:
+      - Círculos, talleres y encuentros guiados.
+      - Espacios de conciencia emocional y autoconocimiento.
+      - Procesos colectivos con contención y cuidado.
+  - id: camino-voice
+    tag: Contenido
+    name: Umana Voice
+    short_desc: El espacio donde las historias humanas encuentran voz.
+    detail_intro: Un canal para transformar experiencias, aprendizajes y conversaciones terapéuticas en contenido sensible y útil.
+    bullets:
+      - Reflexiones, artículos y recursos emocionales.
+      - Historias que acompañan sin juzgar.
+      - Lenguaje cercano para temas profundos.
+  - id: camino-lab
+    tag: Exploración
+    name: Umana Lab
+    short_desc: La creatividad como herramienta de sanación.
+    detail_intro: Un espacio experimental donde el arte, la escritura y la expresión creativa ayudan a procesar emociones.
+    bullets:
+      - Dinámicas creativas aplicadas al bienestar.
+      - Exploración simbólica y emocional.
+      - Procesos para desbloquear expresión y sentido.
+  - id: camino-body
+    tag: Cuerpo
+    name: Umana Body
+    short_desc: Regulación emocional y reconexión corporal consciente.
+    detail_intro: Un camino para volver al cuerpo con respeto, aprender a regular el sistema nervioso y habitarse con más presencia.
+    bullets:
+      - Prácticas corporales conscientes.
+      - Herramientas de respiración y regulación.
+      - Integración entre emoción, cuerpo y cuidado.
+  - id: camino-circle
+    tag: Comunidad
+    name: Umana Circle
+    short_desc: En comunidad, lo humano se fortalece.
+    detail_intro: Un espacio para crear vínculos auténticos, compartir procesos y recordar que el bienestar también se sostiene en comunidad.
+    bullets:
+      - Encuentros de conexión y pertenencia.
+      - Redes de apoyo emocional.
+      - Experiencias para cultivar presencia compartida.
+
+valores:
+  title_line1: Lo que nos
+  title_emphasis: hace diferentes
+  items:
+    - num: "01"
+      title: Puente humano
+      desc: Conectamos personas con guías emocionales dentro de un ecosistema terapéutico seguro.
+    - num: "02"
+      title: Experiencia cálida
+      desc: Acompañamiento cercano durante todo el proceso emocional.
+    - num: "03"
+      title: Diversidad terapéutica
+      desc: Distintas corrientes y enfoques integrados en un mismo espacio.
+    - num: "04"
+      title: Conexión real
+      desc: Vínculos auténticos con uno mismo, con otros y con el entorno.
+
+proceso:
+  label: La experiencia Umana
+  title_line1: Tu proceso,
+  title_emphasis: paso a paso
+  steps:
+    - num: "01"
+      title: Descubrimiento
+      desc: Encuentras Umana a través de contenido que genera identificación emocional.
+    - num: "02"
+      title: Primer contacto
+      desc: Escribes a Umana y recibes una respuesta humana, cálida y cercana.
+    - num: "03"
+      title: Orientación y camino
+      desc: Se comprende tu momento emocional y se te orienta hacia el camino más adecuado.
+    - num: "04"
+      title: Asignación de guía emocional
+      desc: Se selecciona un guía alineado con tu personalidad y necesidades.
+    - num: "05"
+      title: Acompañamiento continuo
+      desc: Sesiones online o presenciales con seguimiento emocional y herramientas prácticas.
+
+blog_section:
+  label: Reflexiones & Artículos
+  title_line1: El espacio
+  title_emphasis: de la palabra
+  empty_title: Próximamente
+  empty_subtitle: Los artículos aparecerán aquí una vez publicados.
+
+vision:
+  label: Nuestra visión
+  quote: Un lugar donde cuidar la mente sea tan natural como habitar un hogar.
+  tagline: Umana no es terapia. Es presencia.
+
+cta:
+  pretitle: ¿Listo para comenzar?
+  title_line1: Tu camino empieza
+  title_line2: con una conversación
+  subtitle: Escríbenos. Recibirás una respuesta humana, cálida y sin prisa.
+  primary_label: Escribirnos por WhatsApp
+  secondary_label: Ver los caminos
+  secondary_href: "#caminos"

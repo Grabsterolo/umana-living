@@ -1,0 +1,18 @@
+---
+layout: default
+---
+{% assign s = site.data.site %}
+<article class="article-page">
+  {% if page.image %}
+  <div class="article-page-cover-wrap">
+    <img class="article-page-cover" data-editable="image" data-prop-src="image" data-prop-alt="title" src="{{ page.image | relative_url }}" alt="{{ page.title | escape }}">
+  </div>
+  {% endif %}
+  <div class="article-page-inner">
+    <a class="article-back" href="{{ '/' | relative_url }}#blog">← Volver al blog</a>
+    <p class="read-cat" data-editable="text" data-type="span" data-prop="cat">{{ page.cat | default: 'Artículo' }}</p>
+    <h1 class="read-title" data-editable="text" data-type="span" data-prop="title">{{ page.title }}</h1>
+    <p class="read-meta">{% if page.author %}<span data-editable="text" data-type="span" data-prop="author">{{ page.author }}</span> · {% endif %}{{ page.date | date: "%d/%m/%Y" }}</p>
+    <div class="post-content" data-editable="text" data-prop="@content" data-type="block">{{ content }}</div>
+  </div>
+</article>

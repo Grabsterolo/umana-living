@@ -1,0 +1,8 @@
+{% assign i = site.data.home.insight %}
+<section id="insight">
+  <div class="container reveal">
+    <p class="section-label" style="color:var(--sand)" data-editable="text" data-type="span" data-prop="@data[home].insight.label">{{ i.label }}</p>
+    <div class="insight-quote" data-editable="text" data-type="block" data-prop="@data[home].insight.quote_html">{{ i.quote_html }}</div>
+    <p class="insight-sub" data-editable="text" data-type="block" data-prop="@data[home].insight.sub">{{ i.sub }}</p>
+  </div>
+</section>

@@ -1,0 +1,13 @@
+{% assign c = site.data.home.cta %}
+{% assign s = site.data.site %}
+<section id="cta-final">
+  <div class="container reveal">
+    <p class="cta-pretitle" data-editable="text" data-type="span" data-prop="@data[home].cta.pretitle">{{ c.pretitle }}</p>
+    <h2 class="cta-title"><span data-editable="text" data-type="span" data-prop="@data[home].cta.title_line1">{{ c.title_line1 }}</span><br><span data-editable="text" data-type="span" data-prop="@data[home].cta.title_line2">{{ c.title_line2 }}</span></h2>
+    <p class="cta-sub" data-editable="text" data-type="block" data-prop="@data[home].cta.subtitle">{{ c.subtitle }}</p>
+    <div class="hero-ctas">
+      <a href="https://wa.me/{{ s.whatsapp_phone }}" target="_blank" rel="noopener noreferrer" class="btn-primary" data-editable="text" data-type="span" data-prop="@data[home].cta.primary_label">{{ c.primary_label }}</a>
+      <a href="{{ c.secondary_href }}" class="btn-ghost" data-editable="text" data-type="span" data-prop="@data[home].cta.secondary_label">{{ c.secondary_label }}</a>
+    </div>
+  </div>
+</section>

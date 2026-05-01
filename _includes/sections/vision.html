@@ -1,0 +1,8 @@
+{% assign v = site.data.home.vision %}
+<section id="vision">
+  <div class="container reveal">
+    <p class="section-label" data-editable="text" data-type="span" data-prop="@data[home].vision.label">{{ v.label }}</p>
+    <p class="vision-quote" data-editable="text" data-type="block" data-prop="@data[home].vision.quote">{{ v.quote }}</p>
+    <p class="vision-tagline" data-editable="text" data-type="span" data-prop="@data[home].vision.tagline">{{ v.tagline }}</p>
+  </div>
+</section>

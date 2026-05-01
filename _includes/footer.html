@@ -1,0 +1,12 @@
+{% assign s = site.data.site %}
+<footer>
+  <div>
+    <p class="footer-logo" data-editable="text" data-type="span" data-prop="@data[site].site_name">{{ s.site_name }}</p>
+    <p class="footer-tagline" data-editable="text" data-type="span" data-prop="@data[site].footer_tagline">{{ s.footer_tagline }}</p>
+  </div>
+  <ul class="footer-links" data-editable="array" data-prop="@data[site].footer_links">
+    {% for item in s.footer_links %}
+      <li data-editable="array-item"><a href="{{ item.href }}"><span data-editable="text" data-type="span" data-prop="@data[site].footer_links[{{ forloop.index0 }}].label">{{ item.label }}</span></a></li>
+    {% endfor %}
+  </ul>
+</footer>

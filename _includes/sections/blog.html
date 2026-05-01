@@ -1,0 +1,32 @@
+{% assign b = site.data.home.blog_section %}
+{% assign sorted_articulos = site.articulos | sort: 'date' | reverse %}
+<section id="blog">
+  <div class="container">
+    <div class="blog-header reveal">
+      <p class="section-label" data-editable="text" data-type="span" data-prop="@data[home].blog_section.label">{{ b.label }}</p>
+      <h2 class="section-title"><span data-editable="text" data-type="span" data-prop="@data[home].blog_section.title_line1">{{ b.title_line1 }}</span><br><em data-editable="text" data-type="span" data-prop="@data[home].blog_section.title_emphasis">{{ b.title_emphasis }}</em></h2>
+    </div>
+    <div class="blog-grid">
+      {% if sorted_articulos.size == 0 %}
+        <div class="blog-empty"><p data-editable="text" data-type="span" data-prop="@data[home].blog_section.empty_title">{{ b.empty_title }}</p><span data-editable="text" data-type="span" data-prop="@data[home].blog_section.empty_subtitle">{{ b.empty_subtitle }}</span></div>
+      {% else %}
+        {% for post in sorted_articulos %}
+          {% assign ex = post.excerpt | strip_html | truncate: 160 %}
+          <a class="article-card reveal" href="{{ post.url | relative_url }}">
+            {% if post.image %}
+              <img class="article-cover" src="{{ post.image | relative_url }}" alt="{{ post.title | escape }}">
+            {% else %}
+              <div class="article-cover-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M10 38 Q14 28 20 24 Q26 20 24 12 Q30 18 28 26 Q34 20 32 12 Q40 20 36 30 Q40 28 42 32 Q38 40 10 38Z" fill="#C4A882"/></svg></div>
+            {% endif %}
+            <div class="article-body">
+              <p class="article-cat">{{ post.cat | default: 'Artículo' }}</p>
+              <h3 class="article-title">{{ post.title }}</h3>
+              <p class="article-excerpt">{{ ex }}</p>
+              <p class="article-meta">{% if post.author %}{{ post.author }} · {% endif %}{{ post.date | date: "%d/%m/%Y" }}</p>
+            </div>
+          </a>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>

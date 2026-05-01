@@ -1,0 +1,56 @@
+# Identidad y SEO (editar aquí o en CloudCannon Data Editor)
+brand_name: Umana
+site_name: Umana Living
+seo_title: "Umana — Un espacio para habitar lo humano"
+meta_description: "Umana es un ecosistema de acompañamiento emocional y terapéutico en Costa Rica. Conectamos personas con guías emocionales certificados desde una mirada cercana, cálida y profundamente humana."
+meta_keywords: "terapia emocional Costa Rica, bienestar emocional, acompañamiento terapéutico, guías emocionales, salud mental Costa Rica, Umana Living"
+meta_author: Umana Living
+robots: "index, follow"
+theme_color: "#F9F5EF"
+
+# Rutas de medios (relativas al sitio; se combinan con url/baseurl en plantillas)
+favicon_path: /imagenes/favicon.png
+og_image_path: /imagenes/og-umana.jpg
+og_image_type: image/jpeg
+og_image_width: "1200"
+og_image_height: "630"
+og_locale: es_CR
+
+og_description: "Ecosistema de acompañamiento emocional y terapéutico en Costa Rica. Conectamos personas con guías emocionales certificados."
+twitter_description: "Ecosistema de acompañamiento emocional y terapéutico en Costa Rica."
+
+# Marca de agua decorativa en la sección visión (texto en MAYÚSCULAS recomendado)
+vision_watermark: UMANA
+
+# WhatsApp (solo número, sin +)
+whatsapp_phone: "50661130913"
+whatsapp_tooltip: "¿Hablamos?"
+
+nav:
+  - label: ¿Qué es?
+    href: "#que-es"
+  - label: Caminos
+    href: "#caminos"
+  - label: Proceso
+    href: "#proceso"
+  - label: Blog
+    href: "#blog"
+  - label: Visión
+    href: "#vision"
+
+nav_cta_label: Comenzar
+nav_cta_href: "#cta-final"
+
+footer_tagline: Ecosistema terapéutico · Bienestar emocional
+
+footer_links:
+  - label: ¿Qué es Umana?
+    href: "#que-es"
+  - label: Caminos
+    href: "#caminos"
+  - label: Proceso
+    href: "#proceso"
+  - label: Blog
+    href: "#blog"
+  - label: Contacto
+    href: "#cta-final"

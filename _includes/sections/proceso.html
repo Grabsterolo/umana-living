@@ -1,0 +1,20 @@
+{% assign p = site.data.home.proceso %}
+<section id="proceso">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label" data-editable="text" data-type="span" data-prop="@data[home].proceso.label">{{ p.label }}</p>
+      <h2 class="section-title"><span data-editable="text" data-type="span" data-prop="@data[home].proceso.title_line1">{{ p.title_line1 }}</span><br><em data-editable="text" data-type="span" data-prop="@data[home].proceso.title_emphasis">{{ p.title_emphasis }}</em></h2>
+    </div>
+    <div class="proceso-steps" data-editable="array" data-prop="@data[home].proceso.steps">
+      {% for step in p.steps %}
+      <div class="proceso-step reveal" data-editable="array-item">
+        <div class="step-num" data-editable="text" data-type="span" data-prop="@data[home].proceso.steps[{{ forloop.index0 }}].num">{{ step.num }}</div>
+        <div>
+          <h3 class="step-title" data-editable="text" data-type="span" data-prop="@data[home].proceso.steps[{{ forloop.index0 }}].title">{{ step.title }}</h3>
+          <p class="step-desc" data-editable="text" data-type="block" data-prop="@data[home].proceso.steps[{{ forloop.index0 }}].desc">{{ step.desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
