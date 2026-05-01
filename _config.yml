@@ -1,8 +1,8 @@
 title: Umana Living
 description: Ecosistema de acompañamiento emocional y terapéutico en Costa Rica.
-# Vista previa local y CloudCannon: sin subpath. GitHub Pages usa _config_github_pages.yml en CI.
-url: ""
-baseurl: ""
+# GitHub Pages (proyecto): https://aristizabal95.github.io/umana-living/
+url: "https://aristizabal95.github.io"
+baseurl: "/umana-living"
 lang: es
 
 markdown: kramdown
@@ -14,7 +14,6 @@ exclude:
   - Gemfile.lock
   - README.md
   - cloudcannon.config.yml
-  - _config_github_pages.yml
 
 collections:
   articulos:

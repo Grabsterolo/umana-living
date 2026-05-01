@@ -1,4 +1,0 @@
-# Solo se aplica en .github/workflows/pages.yml (merge: _config.yml + este archivo).
-# Sitio publicado: https://aristizabal95.github.io/umana-living/
-url: "https://aristizabal95.github.io"
-baseurl: "/umana-living"
