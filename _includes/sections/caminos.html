@@ -3,23 +3,23 @@
 <section id="caminos">
   <div class="container">
     <div class="caminos-intro reveal">
-      <p class="section-label">{{ intro.label }}</p>
-      <h2 class="section-title">{{ intro.title_line1 }}<br><em>{{ intro.title_emphasis }}</em></h2>
-      <p>{{ intro.intro }}</p>
+      <p class="section-label" data-editable="text" data-type="span" data-prop="@data[home].caminos_intro.label">{{ intro.label }}</p>
+      <h2 class="section-title"><span data-editable="text" data-type="span" data-prop="@data[home].caminos_intro.title_line1">{{ intro.title_line1 }}</span><br><em data-editable="text" data-type="span" data-prop="@data[home].caminos_intro.title_emphasis">{{ intro.title_emphasis }}</em></h2>
+      <p data-editable="text" data-type="block" data-prop="@data[home].caminos_intro.intro">{{ intro.intro }}</p>
     </div>
-    <div class="caminos-grid">
+    <div class="caminos-grid" data-editable="array" data-prop="@data[home].caminos">
       {% for camino in caminos %}
-      <article class="camino-card reveal">
+      <article class="camino-card reveal" data-editable="array-item">
         <button class="camino-toggle" type="button" aria-expanded="false" aria-controls="{{ camino.id }}">
-          <span class="camino-tag">{{ camino.tag }}</span>
-          <span class="camino-title-row"><span class="camino-name">{{ camino.name }}</span><span class="camino-icon" aria-hidden="true"></span></span>
-          <span class="camino-desc">{{ camino.short_desc }}</span>
+          <span class="camino-tag" data-editable="text" data-type="span" data-prop="@data[home].caminos[{{ forloop.index0 }}].tag">{{ camino.tag }}</span>
+          <span class="camino-title-row"><span class="camino-name" data-editable="text" data-type="span" data-prop="@data[home].caminos[{{ forloop.index0 }}].name">{{ camino.name }}</span><span class="camino-icon" aria-hidden="true"></span></span>
+          <span class="camino-desc" data-editable="text" data-type="span" data-prop="@data[home].caminos[{{ forloop.index0 }}].short_desc">{{ camino.short_desc }}</span>
         </button>
         <div class="camino-detail" id="{{ camino.id }}">
-          <p>{{ camino.detail_intro }}</p>
-          <ul>
+          <p data-editable="text" data-type="block" data-prop="@data[home].caminos[{{ forloop.index0 }}].detail_intro">{{ camino.detail_intro }}</p>
+          <ul data-editable="array" data-prop="@data[home].caminos[{{ forloop.index0 }}].bullets">
             {% for bullet in camino.bullets %}
-              <li>{{ bullet }}</li>
+              <li data-editable="array-item"><span data-editable="text" data-type="span" data-prop="@data[home].caminos[{{ forloop.parentloop.index0 }}].bullets[{{ forloop.index0 }}]">{{ bullet }}</span></li>
             {% endfor %}
           </ul>
         </div>

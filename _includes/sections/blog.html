@@ -3,12 +3,12 @@
 <section id="blog">
   <div class="container">
     <div class="blog-header reveal">
-      <p class="section-label">{{ b.label }}</p>
-      <h2 class="section-title">{{ b.title_line1 }}<br><em>{{ b.title_emphasis }}</em></h2>
+      <p class="section-label" data-editable="text" data-type="span" data-prop="@data[home].blog_section.label">{{ b.label }}</p>
+      <h2 class="section-title"><span data-editable="text" data-type="span" data-prop="@data[home].blog_section.title_line1">{{ b.title_line1 }}</span><br><em data-editable="text" data-type="span" data-prop="@data[home].blog_section.title_emphasis">{{ b.title_emphasis }}</em></h2>
     </div>
     <div class="blog-grid">
       {% if sorted_articulos.size == 0 %}
-        <div class="blog-empty"><p>{{ b.empty_title }}</p><span>{{ b.empty_subtitle }}</span></div>
+        <div class="blog-empty"><p data-editable="text" data-type="span" data-prop="@data[home].blog_section.empty_title">{{ b.empty_title }}</p><span data-editable="text" data-type="span" data-prop="@data[home].blog_section.empty_subtitle">{{ b.empty_subtitle }}</span></div>
       {% else %}
         {% for post in sorted_articulos %}
           {% assign ex = post.excerpt | strip_html | truncate: 160 %}

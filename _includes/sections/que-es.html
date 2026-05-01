@@ -4,18 +4,18 @@
     <div class="que-es-grid">
       <div class="que-es-visual reveal">
         <div class="logo-circle">
-          <img src="{{ q.logo_src | relative_url }}" alt="{{ q.logo_alt }}" style="width:220px; height:220px; object-fit:contain; padding:10px;">
+          <img data-editable="image" data-prop-src="@data[home].que_es.logo_src" data-prop-alt="@data[home].que_es.logo_alt" src="{{ q.logo_src | relative_url }}" alt="{{ q.logo_alt }}" style="width:220px; height:220px; object-fit:contain; padding:10px;">
         </div>
       </div>
       <div class="que-es-text reveal">
-        <p class="section-label">{{ q.label }}</p>
-        <h2 class="section-title">{{ q.title_line1 }}<br><em>{{ q.title_emphasis }}</em></h2>
+        <p class="section-label" data-editable="text" data-type="span" data-prop="@data[home].que_es.label">{{ q.label }}</p>
+        <h2 class="section-title"><span data-editable="text" data-type="span" data-prop="@data[home].que_es.title_line1">{{ q.title_line1 }}</span><br><em data-editable="text" data-type="span" data-prop="@data[home].que_es.title_emphasis">{{ q.title_emphasis }}</em></h2>
         {% for para in q.paragraphs %}
-          <p>{{ para }}</p>
+          <p data-editable="text" data-type="block" data-prop="@data[home].que_es.paragraphs[{{ forloop.index0 }}]">{{ para }}</p>
         {% endfor %}
         <blockquote class="que-es-frase">
           {% for line in q.quote_lines %}
-            {{ line }}{% unless forloop.last %}<br>{% endunless %}
+            {% if forloop.first %}<span data-editable="text" data-type="span" data-prop="@data[home].que_es.quote_lines[{{ forloop.index0 }}]">{{ line }}</span>{% else %}<br><span data-editable="text" data-type="span" data-prop="@data[home].que_es.quote_lines[{{ forloop.index0 }}]">{{ line }}</span>{% endif %}
           {% endfor %}
         </blockquote>
       </div>

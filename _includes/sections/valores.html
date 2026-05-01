@@ -2,11 +2,15 @@
 <section id="valores">
   <div class="container">
     <div class="reveal" style="text-align:center;max-width:500px;margin:0 auto">
-      <h2 class="section-title">{{ v.title_line1 }}<br><em>{{ v.title_emphasis }}</em></h2>
+      <h2 class="section-title"><span data-editable="text" data-type="span" data-prop="@data[home].valores.title_line1">{{ v.title_line1 }}</span><br><em data-editable="text" data-type="span" data-prop="@data[home].valores.title_emphasis">{{ v.title_emphasis }}</em></h2>
     </div>
-    <div class="valores-grid">
+    <div class="valores-grid" data-editable="array" data-prop="@data[home].valores.items">
       {% for item in v.items %}
-      <div class="valor-item reveal"><div class="valor-num">{{ item.num }}</div><h3 class="valor-title">{{ item.title }}</h3><p class="valor-desc">{{ item.desc }}</p></div>
+      <div class="valor-item reveal" data-editable="array-item">
+        <div class="valor-num" data-editable="text" data-type="span" data-prop="@data[home].valores.items[{{ forloop.index0 }}].num">{{ item.num }}</div>
+        <h3 class="valor-title" data-editable="text" data-type="span" data-prop="@data[home].valores.items[{{ forloop.index0 }}].title">{{ item.title }}</h3>
+        <p class="valor-desc" data-editable="text" data-type="block" data-prop="@data[home].valores.items[{{ forloop.index0 }}].desc">{{ item.desc }}</p>
+      </div>
       {% endfor %}
     </div>
   </div>

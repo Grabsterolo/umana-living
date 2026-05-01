@@ -1,4 +1,5 @@
-# CloudCannon (Unified Configuration). Refinar colecciones e inputs en el panel del sitio.
+# CloudCannon Unified Configuration
+# Editable Regions en plantillas (data-editable + data-prop); inputs mejoran panel lateral y Enter en textos largos.
 # Docs: https://cloudcannon.com/documentation/guides/jekyll-starter-guide/cloudcannon-configuration-file/
 
 source: "/"
@@ -9,9 +10,64 @@ paths:
 collections_config:
   articulos:
     path: _articulos
+    name: Artículos
+    _inputs:
+      title:
+        type: text
+        label: Título
+      cat:
+        type: text
+        label: Categoría
+      author:
+        type: text
+        label: Autor
+      date:
+        type: datetime
+      image:
+        type: image
+        label: Imagen destacada
 
 data_config:
   site_settings:
     path: _data/site.yml
   home_sections:
     path: _data/home.yml
+
+# Tipos explícitos: textos largos usan textarea/html para mejor comportamiento al pulsar Enter en paneles de datos.
+_inputs:
+  subtitle:
+    type: textarea
+    comment: Párrafos largos; Enter inserta saltos en el panel de edición.
+    options:
+      rows: 5
+  intro:
+    type: textarea
+    options:
+      rows: 4
+  detail_intro:
+    type: textarea
+    options:
+      rows: 5
+  short_desc:
+    type: textarea
+    options:
+      rows: 3
+  quote_html:
+    type: textarea
+    options:
+      rows: 5
+    comment: Puedes usar HTML simple (p. ej. br, em) para el bloque de cita.
+  quote:
+    type: textarea
+    options:
+      rows: 4
+  desc:
+    type: textarea
+    options:
+      rows: 4
+
+_enabled_editors:
+  - visual
+  - content
+  - data
+  - source

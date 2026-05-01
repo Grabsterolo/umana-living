@@ -3,13 +3,13 @@
   <div class="hero-orb orb-1"></div>
   <div class="hero-orb orb-2"></div>
   <div class="hero-inner">
-    <p class="hero-eyebrow">{{ h.eyebrow }}</p>
-    <h1 class="hero-title">{{ h.title_line1 }}<br><em>{{ h.title_emphasis }}</em></h1>
-    <p class="hero-subtitle">{{ h.subtitle }}</p>
+    <p class="hero-eyebrow" data-editable="text" data-type="span" data-prop="@data[home].hero.eyebrow">{{ h.eyebrow }}</p>
+    <h1 class="hero-title"><span data-editable="text" data-type="span" data-prop="@data[home].hero.title_line1">{{ h.title_line1 }}</span><br><em data-editable="text" data-type="span" data-prop="@data[home].hero.title_emphasis">{{ h.title_emphasis }}</em></h1>
+    <p class="hero-subtitle" data-editable="text" data-type="block" data-prop="@data[home].hero.subtitle">{{ h.subtitle }}</p>
     <div class="hero-ctas">
-      <a href="{{ h.primary_href }}" class="btn-primary">{{ h.primary_label }}</a>
-      <a href="{{ h.secondary_href }}" class="btn-ghost">{{ h.secondary_label }}</a>
+      <a href="{{ h.primary_href }}" class="btn-primary" data-editable="text" data-type="span" data-prop="@data[home].hero.primary_label">{{ h.primary_label }}</a>
+      <a href="{{ h.secondary_href }}" class="btn-ghost" data-editable="text" data-type="span" data-prop="@data[home].hero.secondary_label">{{ h.secondary_label }}</a>
     </div>
   </div>
-  <div class="hero-scroll"><div class="scroll-line"></div><span>{{ h.scroll_label }}</span></div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span data-editable="text" data-type="span" data-prop="@data[home].hero.scroll_label">{{ h.scroll_label }}</span></div>
 </section>
