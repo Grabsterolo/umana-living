@@ -10,11 +10,11 @@
     <div class="caminos-grid" data-editable="array" data-prop="@data[home].caminos">
       {% for camino in caminos %}
       <article class="camino-card reveal" data-editable="array-item">
-        <button class="camino-toggle" type="button" aria-expanded="false" aria-controls="{{ camino.id }}">
+        <div class="camino-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="{{ camino.id }}">
           <span class="camino-tag" data-editable="text" data-type="span" data-prop="@data[home].caminos[{{ forloop.index0 }}].tag">{{ camino.tag }}</span>
           <span class="camino-title-row"><span class="camino-name" data-editable="text" data-type="span" data-prop="@data[home].caminos[{{ forloop.index0 }}].name">{{ camino.name }}</span><span class="camino-icon" aria-hidden="true"></span></span>
           <span class="camino-desc" data-editable="text" data-type="span" data-prop="@data[home].caminos[{{ forloop.index0 }}].short_desc">{{ camino.short_desc }}</span>
-        </button>
+        </div>
         <div class="camino-detail" id="{{ camino.id }}">
           <p data-editable="text" data-type="block" data-prop="@data[home].caminos[{{ forloop.index0 }}].detail_intro">{{ camino.detail_intro }}</p>
           <ul data-editable="array" data-prop="@data[home].caminos[{{ forloop.index0 }}].bullets">

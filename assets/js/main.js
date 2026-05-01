@@ -13,11 +13,22 @@
 
   document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
-  document.querySelectorAll('.camino-toggle').forEach((button) => {
-    button.addEventListener('click', () => {
-      const card = button.closest('.camino-card');
-      const isOpen = card.classList.toggle('open');
-      button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  function toggleCaminoCard(toggle) {
+    const card = toggle.closest('.camino-card');
+    const isOpen = card.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
+  document.querySelectorAll('.camino-toggle').forEach((toggle) => {
+    toggle.addEventListener('click', (e) => {
+      if (e.target.closest('[data-editable]')) return;
+      toggleCaminoCard(toggle);
+    });
+    toggle.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      if (e.target.closest('[data-editable]')) return;
+      e.preventDefault();
+      toggleCaminoCard(toggle);
     });
   });
 })();
