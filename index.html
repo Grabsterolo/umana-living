@@ -69,10 +69,14 @@
 
   /* HERO */
   #hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 4rem; overflow: hidden; z-index: 1; }
-  .hero-video {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-    z-index: 0; pointer-events: none;
+  .hero-video-stack {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
   }
+  .hero-video-stack .hero-video {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0; transition: opacity 1.15s ease-in-out;
+  }
+  .hero-video-stack .hero-video.hero-video--visible { opacity: 1; }
   .hero-video-overlay {
     position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background: linear-gradient(to bottom,
@@ -81,14 +85,19 @@
       rgba(249,245,239,0.88) 100%);
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero-video { display: none; }
+    .hero-video-stack { display: none; }
     .hero-video-overlay { background: var(--cream); opacity: 0.95; }
   }
-  .hero-orb { position: absolute; border-radius: 50%; opacity: 0.35; animation: floatOrb 8s ease-in-out infinite; z-index: 2; }
+  .hero-orb { position: absolute; border-radius: 50%; opacity: 0.16; animation: floatOrb 8s ease-in-out infinite; z-index: 2; }
   .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, var(--sand) 0%, transparent 70%); top: -100px; left: -100px; }
   .orb-2 { width: 350px; height: 350px; background: radial-gradient(circle, var(--brown-light) 0%, transparent 70%); bottom: -80px; right: -80px; animation-delay: -4s; }
   @keyframes floatOrb { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-25px) scale(1.05)} }
   .hero-inner { max-width: 860px; position: relative; z-index: 3; animation: fadeUp 1s ease both; }
+  .hero-inner .hero-eyebrow,
+  .hero-inner .hero-title,
+  .hero-inner .hero-subtitle {
+    text-shadow: 0 1px 2px rgba(249, 245, 239, 0.95), 0 0 28px rgba(249, 245, 239, 0.75), 0 0 48px rgba(249, 245, 239, 0.35);
+  }
   @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
   .hero-eyebrow { font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--brown-light); margin-bottom: 1.5rem; }
   .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem,7vw,6rem); font-weight: 300; line-height: 1.1; color: var(--brown); margin-bottom: 1.75rem; }
@@ -283,10 +292,16 @@
 
 <!-- HERO -->
 <section id="hero">
-  <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" disableRemotePlayback>
-    <source src="/imagenes/hero-bg.mp4" type="video/mp4">
-    <source src="/imagenes/hero-bg.webm" type="video/webm">
-  </video>
+  <div class="hero-video-stack" aria-hidden="true">
+    <video class="hero-video hero-video--visible" autoplay muted playsinline preload="auto" disableRemotePlayback>
+      <source src="/imagenes/hero-bg.mp4" type="video/mp4">
+      <source src="/imagenes/hero-bg.webm" type="video/webm">
+    </video>
+    <video class="hero-video" muted playsinline preload="auto" disableRemotePlayback>
+      <source src="/imagenes/hero-bg.mp4" type="video/mp4">
+      <source src="/imagenes/hero-bg.webm" type="video/webm">
+    </video>
+  </div>
   <div class="hero-video-overlay" aria-hidden="true"></div>
   <div class="hero-orb orb-1"></div>
   <div class="hero-orb orb-2"></div>
@@ -552,12 +567,50 @@
 
 <script>
   (function () {
-    const v = document.querySelector('#hero .hero-video');
-    if (!v) return;
-    v.defaultMuted = true;
-    v.muted = true;
-    v.volume = 0;
-    v.addEventListener('loadedmetadata', function () { v.muted = true; v.volume = 0; });
+    const videos = document.querySelectorAll('#hero .hero-video-stack .hero-video');
+    if (!videos.length) return;
+    const CROSSFADE_SEC = 1.15;
+    let active = 0;
+    let fading = false;
+
+    videos.forEach(function (el) {
+      el.defaultMuted = true;
+      el.muted = true;
+      el.volume = 0;
+      el.addEventListener('loadedmetadata', function () {
+        el.muted = true;
+        el.volume = 0;
+      });
+    });
+
+    function swapTo(next) {
+      const a = videos[active];
+      const b = videos[next];
+      fading = true;
+      b.currentTime = 0;
+      b.muted = true;
+      b.volume = 0;
+      b.play().catch(function () {});
+      a.classList.remove('hero-video--visible');
+      b.classList.add('hero-video--visible');
+      window.setTimeout(function () {
+        a.pause();
+        try { a.currentTime = 0; } catch (e) {}
+        active = next;
+        fading = false;
+      }, CROSSFADE_SEC * 1000 + 80);
+    }
+
+    function onTimeUpdate() {
+      if (fading) return;
+      const el = videos[active];
+      const d = el.duration;
+      if (!d || !isFinite(d)) return;
+      if (el.currentTime >= d - CROSSFADE_SEC) swapTo(active === 0 ? 1 : 0);
+    }
+
+    videos[0].addEventListener('timeupdate', onTimeUpdate);
+    videos[1].addEventListener('timeupdate', onTimeUpdate);
   })();
 
   // Scroll reveal
