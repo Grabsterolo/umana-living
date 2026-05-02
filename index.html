@@ -69,26 +69,11 @@
 
   /* HERO */
   #hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 4rem; overflow: hidden; z-index: 1; }
-  .hero-video {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-    z-index: 0; pointer-events: none;
-  }
-  .hero-video-overlay {
-    position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background: linear-gradient(to bottom,
-      rgba(249,245,239,0.82) 0%,
-      rgba(249,245,239,0.65) 45%,
-      rgba(249,245,239,0.88) 100%);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-video { display: none; }
-    .hero-video-overlay { background: var(--cream); opacity: 0.95; }
-  }
-  .hero-orb { position: absolute; border-radius: 50%; opacity: 0.35; animation: floatOrb 8s ease-in-out infinite; z-index: 2; }
+  .hero-orb { position: absolute; border-radius: 50%; opacity: 0.35; animation: floatOrb 8s ease-in-out infinite; }
   .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, var(--sand) 0%, transparent 70%); top: -100px; left: -100px; }
   .orb-2 { width: 350px; height: 350px; background: radial-gradient(circle, var(--brown-light) 0%, transparent 70%); bottom: -80px; right: -80px; animation-delay: -4s; }
   @keyframes floatOrb { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-25px) scale(1.05)} }
-  .hero-inner { max-width: 860px; position: relative; z-index: 3; animation: fadeUp 1s ease both; }
+  .hero-inner { max-width: 860px; position: relative; z-index: 2; animation: fadeUp 1s ease both; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
   .hero-eyebrow { font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--brown-light); margin-bottom: 1.5rem; }
   .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem,7vw,6rem); font-weight: 300; line-height: 1.1; color: var(--brown); margin-bottom: 1.75rem; }
@@ -99,7 +84,7 @@
   .btn-primary:hover { background: var(--text-dark); }
   .btn-ghost { display: inline-block; color: var(--brown); border: 1px solid var(--brown-light); padding: 0.9rem 2.4rem; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: all 0.25s; background: none; cursor: pointer; font-family: 'Jost', sans-serif; }
   .btn-ghost:hover { background: var(--cream-dark); }
-  .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--brown-light); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; z-index: 3; animation: pulse 2.5s ease-in-out infinite; }
+  .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--brown-light); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; z-index: 2; animation: pulse 2.5s ease-in-out infinite; }
   .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--brown-light), transparent); }
   @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
 
@@ -283,11 +268,6 @@
 
 <!-- HERO -->
 <section id="hero">
-  <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" disableRemotePlayback>
-    <source src="/imagenes/hero-bg.mp4" type="video/mp4">
-    <source src="/imagenes/hero-bg.webm" type="video/webm">
-  </video>
-  <div class="hero-video-overlay" aria-hidden="true"></div>
   <div class="hero-orb orb-1"></div>
   <div class="hero-orb orb-2"></div>
   <div class="hero-inner">
@@ -551,15 +531,6 @@
 </a>
 
 <script>
-  (function () {
-    const v = document.querySelector('#hero .hero-video');
-    if (!v) return;
-    v.defaultMuted = true;
-    v.muted = true;
-    v.volume = 0;
-    v.addEventListener('loadedmetadata', function () { v.muted = true; v.volume = 0; });
-  })();
-
   // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
