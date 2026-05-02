@@ -237,21 +237,6 @@
   #wa-btn::before { content: '¿Hablamos?'; position: absolute; right: 68px; background: var(--brown); color: var(--cream); font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.05em; padding: 0.4rem 0.85rem; border-radius: 2px; white-space: nowrap; opacity: 0; transform: translateX(8px); transition: all 0.25s; pointer-events: none; }
   #wa-btn:hover::before { opacity: 1; transform: translateX(0); }
 
-  /* Instagram (encima del botón de WhatsApp) */
-  #ig-btn {
-    position: fixed; bottom: calc(2rem + 56px + 14px); right: 2rem; width: 56px; height: 56px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; z-index: 9999;
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-    box-shadow: 0 4px 20px rgba(225, 48, 108, 0.35); transition: transform 0.25s, box-shadow 0.25s;
-  }
-  #ig-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(225, 48, 108, 0.5); }
-  #ig-btn::before {
-    content: 'Síguenos en Instagram'; position: absolute; right: 68px; background: var(--brown); color: var(--cream);
-    font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.05em; padding: 0.4rem 0.85rem; border-radius: 2px;
-    white-space: nowrap; opacity: 0; transform: translateX(8px); transition: all 0.25s; pointer-events: none;
-  }
-  #ig-btn:hover::before { opacity: 1; transform: translateX(0); }
-
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -530,21 +515,11 @@
     <li><a href="#proceso">Proceso</a></li>
     <li><a href="#blog">Blog</a></li>
     <li><a href="#cta-final">Contacto</a></li>
-    <li><a href="https://www.instagram.com/umana.living/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
   </ul>
 </footer>
 
-<!-- Botón flotante Instagram -->
-<a href="https://www.instagram.com/umana.living/" target="_blank" rel="noopener noreferrer" id="ig-btn" title="Síguenos en @umana.living">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <rect x="3" y="3" width="18" height="18" rx="5"/>
-    <circle cx="12" cy="12" r="3.5"/>
-    <circle cx="17.5" cy="6.5" r="1.15" fill="white" stroke="none"/>
-  </svg>
-</a>
-
 <!-- Botón flotante WhatsApp -->
-<a href="https://wa.me/50661130913" target="_blank" rel="noopener noreferrer" id="wa-btn" title="Escríbenos por WhatsApp">
+<a href="https://wa.me/50661130913" target="_blank" id="wa-btn" title="Escríbenos por WhatsApp">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="28" height="28" fill="white">
     <path d="M24 4C13 4 4 13 4 24c0 3.6 1 7 2.7 9.9L4 44l10.4-2.7C17.2 43 20.5 44 24 44c11 0 20-9 20-20S35 4 24 4zm0 36c-3.1 0-6.1-.8-8.7-2.4l-.6-.4-6.2 1.6 1.7-6-.4-.6C8.8 30.1 8 27.1 8 24 8 15.2 15.2 8 24 8s16 7.2 16 16-7.2 16-16 16zm8.9-11.9c-.5-.2-2.8-1.4-3.2-1.5-.4-.2-.7-.2-1 .2-.3.5-1.1 1.5-1.4 1.8-.3.3-.5.4-1 .1-.5-.2-2-.7-3.8-2.3-1.4-1.2-2.3-2.8-2.6-3.2-.3-.5 0-.7.2-1 .2-.2.5-.5.7-.8.2-.3.3-.5.4-.8.1-.3 0-.6-.1-.8-.1-.2-1-2.5-1.4-3.4-.4-.9-.7-.8-1-.8h-.9c-.3 0-.8.1-1.2.6-.4.5-1.6 1.6-1.6 3.8 0 2.2 1.7 4.4 1.9 4.7.2.3 3.3 5.1 8.1 7.1 1.1.5 2 .8 2.7 1 1.1.3 2.2.3 3 .2.9-.1 2.8-1.1 3.2-2.2.4-1.1.4-2 .3-2.2-.2-.3-.5-.4-1-.6z"/>
   </svg>
