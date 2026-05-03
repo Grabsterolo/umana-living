@@ -150,6 +150,7 @@
     box-shadow: 0 10px 36px rgba(92, 61, 46, 0.15);
   }
   .btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px rgba(92, 61, 46, 0.45); }
+  button.btn-primary { font-family: 'Jost', sans-serif; }
   .btn-ghost {
     display: inline-block; color: var(--brown); border: 1px solid rgba(92, 61, 46, 0.28); padding: 0.88rem 1.95rem; font-size: 0.76rem; font-weight: 400;
     letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; border-radius: 999px;
@@ -307,7 +308,7 @@
   #wa-btn { position: fixed; bottom: 2rem; right: 2rem; background: #25D366; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); z-index: 9999; transition: transform 0.25s, box-shadow 0.25s; }
   #wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.55); }
   #wa-btn::before {
-    content: '¿Hablamos?'; position: absolute; right: 68px; background: var(--brown); color: var(--cream);
+    content: '¿Tienes dudas?'; position: absolute; right: 68px; background: var(--brown); color: var(--cream);
     font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.06em; padding: 0.45rem 1rem;
     border-radius: 999px; white-space: nowrap; opacity: 0; transform: translateX(8px); transition: opacity 0.25s, transform 0.25s;
     pointer-events: none; box-shadow: 0 6px 20px rgba(92, 61, 46, 0.2);
@@ -360,7 +361,7 @@
     <li><a href="#blog">Blog</a></li>
     <li><a href="#vision">Visión</a></li>
   </ul>
-  <a class="nav-cta" href="#cta-final">Comenzar</a>
+  <a class="nav-cta btn-agendar-cal" href="https://cal.com/umana-living-7k2goz/umana-consulta" id="nav-btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar</a>
 </nav>
 
 <!-- HERO -->
@@ -587,9 +588,9 @@
   <div class="container reveal">
     <p class="cta-pretitle">¿Listo para comenzar?</p>
     <h2 class="cta-title">Tu camino empieza<br>con una conversación</h2>
-    <p class="cta-sub">Escríbenos por WhatsApp o explora los caminos. Recibirás una respuesta humana, cálida y sin prisa.</p>
+    <p class="cta-sub">Agenda tu espacio o explora los caminos. Recibirás una respuesta humana, cálida y sin prisa.</p>
     <div class="hero-ctas">
-      <a href="https://wa.me/50661130913" target="_blank" rel="noopener noreferrer" class="btn-primary">Escribirnos por WhatsApp</a>
+      <button type="button" class="btn-primary btn-agendar-cal" id="cta-btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar espacio</button>
       <a href="#caminos" class="btn-ghost">Ver los caminos</a>
     </div>
   </div>
@@ -606,8 +607,7 @@
     <li><a href="#caminos">Caminos</a></li>
     <li><a href="#proceso">Proceso</a></li>
     <li><a href="#blog">Blog</a></li>
-    <li><a href="#cta-final">Contacto</a></li>
-    <li><a href="https://www.instagram.com/umana.living/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+    <li><a href="https://wa.me/50661130913" target="_blank" rel="noopener noreferrer">Contacto</a></li>
   </ul>
 </footer>
 
@@ -712,33 +712,25 @@
     });
   });
 
-  // Cal.com — modal oficial al hacer clic en «Agendar espacio» (sin salir del sitio)
+  // Cal.com — modal oficial al hacer clic en botones «Agendar» / «Agendar espacio» (sin salir del sitio)
   (function initCalAgendar() {
     const CAL_LINK = 'umana-living-7k2goz/umana-consulta';
     const OPEN_DELAY_MS = 220;
-    function findAgendarButton() {
-      const byId = document.getElementById('btn-agendar-cal');
-      if (byId) return byId;
-      const nodes = document.querySelectorAll('a, button, [role="button"]');
-      for (let i = 0; i < nodes.length; i++) {
-        const el = nodes[i];
-        if (el.textContent.replace(/\s+/g, ' ').trim() === 'Agendar espacio') return el;
-      }
-      return null;
-    }
-    const btn = findAgendarButton();
-    if (!btn) return;
-    btn.addEventListener('click', function (e) {
-      if (btn.tagName === 'A') e.preventDefault();
-      // Opcional — mobile: redirigir a https://cal.com/umana-living-7k2goz/umana-consulta si convierte mejor
-      // if (window.matchMedia('(max-width: 480px)').matches) { window.location.href = 'https://cal.com/umana-living-7k2goz/umana-consulta'; return; }
-      btn.classList.add('is-cal-priming');
-      btn.setAttribute('aria-busy', 'true');
-      window.setTimeout(function () {
-        btn.classList.remove('is-cal-priming');
-        btn.removeAttribute('aria-busy');
-        if (typeof Cal === 'function') Cal('modal', { calLink: CAL_LINK });
-      }, OPEN_DELAY_MS);
+    document.querySelectorAll('.btn-agendar-cal').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        if (btn.tagName === 'A') e.preventDefault();
+        btn.classList.add('is-cal-priming');
+        btn.setAttribute('aria-busy', 'true');
+        window.setTimeout(function () {
+          btn.classList.remove('is-cal-priming');
+          btn.removeAttribute('aria-busy');
+          if (typeof Cal === 'function') {
+            Cal('modal', { calLink: CAL_LINK });
+          } else if (btn.tagName === 'A' && btn.getAttribute('href')) {
+            window.location.href = btn.getAttribute('href');
+          }
+        }, OPEN_DELAY_MS);
+      });
     });
   })();
 
