@@ -376,7 +376,7 @@
     <h1 class="hero-sr-title">Umana — Un espacio para habitar lo humano</h1>
     <p class="hero-eyebrow">Umana Living · Ecosistema terapéutico</p>
     <div class="hero-phrase-wrap">
-      <p class="hero-phrase" id="heroPhrase" aria-live="off">Un espacio para detenerte y escuchar lo que sientes.</p>
+      <p class="hero-phrase" id="heroPhrase" aria-live="off">Un espacio para detenerte<br><em>y escuchar lo que sientes.</em></p>
     </div>
     <p class="hero-subtitle">Conectamos personas con guías emocionales certificadas desde una mirada cercana, cálida y profundamente humana.</p>
     <button type="button" id="btn-agendar-cal" class="hero-cta-book btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar espacio</button>
@@ -668,12 +668,12 @@
 <script>
   (function () {
     var phrases = [
-      'Un espacio para detenerte y escuchar lo que sientes.',
-      'No es necesario tener todo claro para comenzar.',
-      'Algunas cosas se comprenden con el tiempo.',
-      'Aquí puedes tomarte ese tiempo con calma.',
-      'Acompañamiento humano, sin presión.',
-      'Puedes empezar cuando te sientas bien.'
+      'Un espacio para detenerte<br><em>y escuchar lo que sientes.</em>',
+      'No es necesario tener todo claro<br><em>para comenzar.</em>',
+      'Algunas cosas se comprenden<br><em>con el tiempo.</em>',
+      'Aquí puedes tomarte ese tiempo<br><em>con calma.</em>',
+      'Acompañamiento humano,<br><em>sin presión.</em>',
+      'Puedes empezar<br><em>cuando te sientas bien.</em>'
     ];
     var el = document.getElementById('heroPhrase');
     if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
