@@ -128,7 +128,9 @@
     background: rgba(254, 252, 249, 0.55); backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     transition: transform 0.4s ease, background 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+    appearance: none; -webkit-appearance: none;
   }
+  button.hero-cta-book { text-align: center; }
   .hero-cta-book:hover {
     transform: scale(1.04); background: var(--brown); color: var(--cream); border-color: var(--brown);
     box-shadow: 0 10px 36px rgba(92, 61, 46, 0.15);
@@ -148,6 +150,7 @@
     box-shadow: 0 10px 36px rgba(92, 61, 46, 0.15);
   }
   .btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px rgba(92, 61, 46, 0.45); }
+  button.btn-primary { font-family: 'Jost', sans-serif; }
   .btn-ghost {
     display: inline-block; color: var(--brown); border: 1px solid rgba(92, 61, 46, 0.28); padding: 0.88rem 1.95rem; font-size: 0.76rem; font-weight: 400;
     letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; border-radius: 999px;
@@ -289,9 +292,16 @@
   .cta-pretitle { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brown-light); margin-bottom: 1rem; }
   .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4.5vw,3.5rem); font-weight: 300; color: var(--brown); margin-bottom: 1.5rem; line-height: 1.2; }
   .cta-sub { font-size: 0.95rem; color: var(--text-mid); max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.8; font-weight: 300; }
+  .btn-agendar-cal { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease, box-shadow 0.45s ease; }
+  .btn-agendar-cal.is-cal-priming { transform: scale(0.985); opacity: 0.88; box-shadow: 0 0 0 1px rgba(92, 61, 46, 0.1); }
+  .btn-agendar-cal:focus-visible { outline: 2px solid var(--brown-light); outline-offset: 3px; }
 
-  /* FOOTER */
-  footer { padding: 2.5rem; background: var(--text-dark); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  /* FOOTER — padding extra a la derecha para no solaparse con FABs fijos (56px + separación + hover ~1.1) */
+  footer {
+    padding: 2.5rem;
+    padding-inline-end: calc(2.5rem + 56px + 1.25rem + max(0px, env(safe-area-inset-right, 0px)));
+    background: var(--text-dark); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
   .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sand); font-weight: 400; }
   .footer-tagline { font-size: 0.75rem; color: rgba(212,184,150,0.5); letter-spacing: 0.08em; }
   .footer-links { display: flex; gap: 2rem; list-style: none; }
@@ -302,7 +312,7 @@
   #wa-btn { position: fixed; bottom: 2rem; right: 2rem; background: #25D366; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); z-index: 9999; transition: transform 0.25s, box-shadow 0.25s; }
   #wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.55); }
   #wa-btn::before {
-    content: '¿Hablamos?'; position: absolute; right: 68px; background: var(--brown); color: var(--cream);
+    content: '¿Tienes dudas?'; position: absolute; right: 68px; background: var(--brown); color: var(--cream);
     font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.06em; padding: 0.45rem 1rem;
     border-radius: 999px; white-space: nowrap; opacity: 0; transform: translateX(8px); transition: opacity 0.25s, transform 0.25s;
     pointer-events: none; box-shadow: 0 6px 20px rgba(92, 61, 46, 0.2);
@@ -355,7 +365,7 @@
     <li><a href="#blog">Blog</a></li>
     <li><a href="#vision">Visión</a></li>
   </ul>
-  <a class="nav-cta" href="#cta-final">Comenzar</a>
+  <a class="nav-cta btn-agendar-cal" href="https://cal.com/umana-living-7k2goz/umana-consulta" id="nav-btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar</a>
 </nav>
 
 <!-- HERO -->
@@ -369,7 +379,7 @@
       <p class="hero-phrase" id="heroPhrase" aria-live="off">Un espacio para detenerte y escuchar lo que sientes.</p>
     </div>
     <p class="hero-subtitle">Conectamos personas con guías emocionales certificadas desde una mirada cercana, cálida y profundamente humana.</p>
-    <a href="#cta-final" class="hero-cta-book">Agendar espacio</a>
+    <button type="button" id="btn-agendar-cal" class="hero-cta-book btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar espacio</button>
   </div>
   <a href="#que-es" class="hero-scroll"><div class="scroll-line"></div><span>Descubrir</span></a>
 </section>
@@ -582,9 +592,9 @@
   <div class="container reveal">
     <p class="cta-pretitle">¿Listo para comenzar?</p>
     <h2 class="cta-title">Tu camino empieza<br>con una conversación</h2>
-    <p class="cta-sub">Escríbenos. Recibirás una respuesta humana, cálida y sin prisa.</p>
+    <p class="cta-sub">Agenda tu espacio o explora los caminos. Recibirás una respuesta humana, cálida y sin prisa.</p>
     <div class="hero-ctas">
-      <a href="https://wa.me/50661130913" target="_blank" class="btn-primary">Escribirnos por WhatsApp</a>
+      <button type="button" class="btn-primary btn-agendar-cal" id="cta-btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar espacio</button>
       <a href="#caminos" class="btn-ghost">Ver los caminos</a>
     </div>
   </div>
@@ -601,8 +611,7 @@
     <li><a href="#caminos">Caminos</a></li>
     <li><a href="#proceso">Proceso</a></li>
     <li><a href="#blog">Blog</a></li>
-    <li><a href="#cta-final">Contacto</a></li>
-    <li><a href="https://www.instagram.com/umana.living/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+    <li><a href="https://wa.me/50661130913" target="_blank" rel="noopener noreferrer">Contacto</a></li>
   </ul>
 </footer>
 
@@ -621,6 +630,40 @@
     <path d="M24 4C13 4 4 13 4 24c0 3.6 1 7 2.7 9.9L4 44l10.4-2.7C17.2 43 20.5 44 24 44c11 0 20-9 20-20S35 4 24 4zm0 36c-3.1 0-6.1-.8-8.7-2.4l-.6-.4-6.2 1.6 1.7-6-.4-.6C8.8 30.1 8 27.1 8 24 8 15.2 15.2 8 24 8s16 7.2 16 16-7.2 16-16 16zm8.9-11.9c-.5-.2-2.8-1.4-3.2-1.5-.4-.2-.7-.2-1 .2-.3.5-1.1 1.5-1.4 1.8-.3.3-.5.4-1 .1-.5-.2-2-.7-3.8-2.3-1.4-1.2-2.3-2.8-2.6-3.2-.3-.5 0-.7.2-1 .2-.2.5-.5.7-.8.2-.3.3-.5.4-.8.1-.3 0-.6-.1-.8-.1-.2-1-2.5-1.4-3.4-.4-.9-.7-.8-1-.8h-.9c-.3 0-.8.1-1.2.6-.4.5-1.6 1.6-1.6 3.8 0 2.2 1.7 4.4 1.9 4.7.2.3 3.3 5.1 8.1 7.1 1.1.5 2 .8 2.7 1 1.1.3 2.2.3 3 .2.9-.1 2.8-1.1 3.2-2.2.4-1.1.4-2 .3-2.2-.2-.3-.5-.4-1-.6z"/>
   </svg>
 </a>
+
+<!-- Cal.com: cargador oficial + instrucciones (cola hasta que embed.js termina de cargar) -->
+<script>
+(function (C, A, L) {
+  const p = function (a, ar) { a.q.push(ar); };
+  const d = C.document;
+  C.Cal = C.Cal || function () {
+    const cal = C.Cal;
+    const ar = arguments;
+    if (!cal.loaded) {
+      cal.ns = {};
+      cal.q = cal.q || [];
+      d.head.appendChild(d.createElement('script')).src = A;
+      cal.loaded = true;
+    }
+    if (ar[0] === L) {
+      const api = function () { p(api, arguments); };
+      const namespace = ar[1];
+      api.q = api.q || [];
+      if (typeof namespace === 'string') {
+        cal.ns[namespace] = cal.ns[namespace] || api;
+        p(cal.ns[namespace], ar);
+        p(cal, ['initNamespace', namespace]);
+      } else p(cal, ar);
+      return;
+    }
+    p(cal, ar);
+  };
+})(window, 'https://app.cal.com/embed/embed.js', 'init');
+</script>
+<script>
+  Cal('init', { calOrigin: 'https://app.cal.com' });
+  Cal('preload', { calLink: 'umana-living-7k2goz/umana-consulta' });
+</script>
 
 <script>
   (function () {
@@ -672,6 +715,28 @@
       button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
   });
+
+  // Cal.com — modal oficial al hacer clic en botones «Agendar» / «Agendar espacio» (sin salir del sitio)
+  (function initCalAgendar() {
+    const CAL_LINK = 'umana-living-7k2goz/umana-consulta';
+    const OPEN_DELAY_MS = 220;
+    document.querySelectorAll('.btn-agendar-cal').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        if (btn.tagName === 'A') e.preventDefault();
+        btn.classList.add('is-cal-priming');
+        btn.setAttribute('aria-busy', 'true');
+        window.setTimeout(function () {
+          btn.classList.remove('is-cal-priming');
+          btn.removeAttribute('aria-busy');
+          if (typeof Cal === 'function') {
+            Cal('modal', { calLink: CAL_LINK });
+          } else if (btn.tagName === 'A' && btn.getAttribute('href')) {
+            window.location.href = btn.getAttribute('href');
+          }
+        }, OPEN_DELAY_MS);
+      });
+    });
+  })();
 
   // Cargar artículos desde GitHub
   async function loadArticles() {
