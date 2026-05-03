@@ -52,10 +52,13 @@
   }
   html { scroll-behavior: smooth; }
   body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--text-dark); overflow-x: hidden; }
+  /* Halos: anclados a esquinas para evitar doble brillo en el centro superior */
   body::before {
     content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background-image: radial-gradient(ellipse 80% 60% at 10% 20%, rgba(196,168,130,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 90% 80%, rgba(92,61,46,0.07) 0%, transparent 55%);
+    background-image:
+      radial-gradient(ellipse 90% 70% at 0% 0%, rgba(196, 168, 130, 0.13) 0%, rgba(196, 168, 130, 0.04) 45%, transparent 58%),
+      radial-gradient(ellipse 90% 70% at 100% 0%, rgba(196, 168, 130, 0.13) 0%, rgba(196, 168, 130, 0.04) 45%, transparent 58%),
+      radial-gradient(ellipse 70% 65% at 100% 100%, rgba(92, 61, 46, 0.065) 0%, transparent 52%);
   }
 
   /* NAV */
@@ -64,29 +67,111 @@
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
   .nav-links a { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mid); text-decoration: none; transition: color 0.2s; }
   .nav-links a:hover { color: var(--brown); }
-  .nav-cta { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brown); border: 1px solid var(--brown-light); padding: 0.55rem 1.4rem; text-decoration: none; transition: all 0.25s; }
-  .nav-cta:hover { background: var(--brown); color: var(--cream); }
+  .nav-cta {
+    font-size: 0.78rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brown);
+    border: 1px solid rgba(92, 61, 46, 0.28); border-radius: 999px; padding: 0.55rem 1.35rem; text-decoration: none;
+    background: rgba(254, 252, 249, 0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.4s ease, background 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+  }
+  .nav-cta:hover {
+    transform: scale(1.03); background: var(--brown); color: var(--cream); border-color: var(--brown);
+    box-shadow: 0 8px 28px rgba(92, 61, 46, 0.12);
+  }
+  .nav-cta:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px rgba(92, 61, 46, 0.4); }
 
-  /* HERO */
-  #hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 4rem; overflow: hidden; z-index: 1; }
-  .hero-orb { position: absolute; border-radius: 50%; opacity: 0.35; animation: floatOrb 8s ease-in-out infinite; }
+  /* HERO — mismo fondo que la versión estática (crema + degradados globales en body::before) */
+  #hero {
+    position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 8rem 2rem 4rem; overflow: hidden; z-index: 1;
+  }
+  .hero-orb { position: absolute; border-radius: 50%; opacity: 0.35; animation: floatOrb 8s ease-in-out infinite; z-index: 0; pointer-events: none; }
   .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, var(--sand) 0%, transparent 70%); top: -100px; left: -100px; }
   .orb-2 { width: 350px; height: 350px; background: radial-gradient(circle, var(--brown-light) 0%, transparent 70%); bottom: -80px; right: -80px; animation-delay: -4s; }
   @keyframes floatOrb { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-25px) scale(1.05)} }
-  .hero-inner { max-width: 860px; position: relative; z-index: 2; animation: fadeUp 1s ease both; }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-  .hero-eyebrow { font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--brown-light); margin-bottom: 1.5rem; }
-  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem,7vw,6rem); font-weight: 300; line-height: 1.1; color: var(--brown); margin-bottom: 1.75rem; }
-  .hero-title em { font-style: italic; color: var(--brown-mid); }
-  .hero-subtitle { font-size: 1rem; line-height: 1.85; color: var(--text-mid); max-width: 560px; margin: 0 auto 3rem; font-weight: 300; }
+  .hero-inner { max-width: 860px; width: 100%; position: relative; z-index: 2; animation: fadeUp 1.1s ease both; }
+  .hero-inner--calm { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .hero-sr-title {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  .hero-eyebrow {
+    font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--brown-light); margin-bottom: 1.5rem; font-weight: 400;
+  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .hero-phrase-wrap {
+    display: flex; align-items: center; justify-content: center;
+    min-height: clamp(14rem, 38vw, 22rem); width: 100%;
+  }
+  .hero-phrase {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(2.35rem, 7vw, 5.75rem); font-weight: 300;
+    line-height: 1.12; letter-spacing: 0.02em; color: var(--brown); margin: 0;
+    max-width: 100%;
+    transition: opacity 0.6s ease-in-out;
+    text-wrap: balance;
+    text-shadow: 0 1px 0 rgba(255, 252, 249, 0.65), 0 2px 24px rgba(249, 245, 239, 0.75), 0 0 48px rgba(249, 245, 239, 0.45);
+  }
+  .hero-phrase em {
+    font-style: italic; font-weight: 400; color: var(--brown-mid);
+    letter-spacing: 0.01em;
+  }
+  .hero-phrase.hero-phrase--hidden { opacity: 0; }
+  .hero-subtitle {
+    font-family: 'Jost', sans-serif; font-size: 1rem; line-height: 1.85; color: var(--text-mid);
+    max-width: 560px; margin: 2rem auto 0; font-weight: 300;
+  }
+  .hero-cta-book {
+    display: inline-block; margin-top: 2.25rem; padding: 0.88rem 1.95rem;
+    font-family: 'Jost', sans-serif; font-size: 0.76rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--brown); text-decoration: none; cursor: pointer;
+    border: 1px solid rgba(92, 61, 46, 0.28); border-radius: 999px;
+    background: rgba(254, 252, 249, 0.55); backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.4s ease, background 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+    appearance: none; -webkit-appearance: none;
+  }
+  button.hero-cta-book { text-align: center; }
+  .hero-cta-book:hover {
+    transform: scale(1.04); background: var(--brown); color: var(--cream); border-color: var(--brown);
+    box-shadow: 0 10px 36px rgba(92, 61, 46, 0.15);
+  }
+  .hero-cta-book:focus-visible {
+    outline: none; box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px rgba(92, 61, 46, 0.45);
+  }
   .hero-ctas { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; }
-  .btn-primary { display: inline-block; background: var(--brown); color: var(--cream); padding: 0.9rem 2.4rem; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: all 0.25s; border: none; cursor: pointer; font-family: 'Jost', sans-serif; }
-  .btn-primary:hover { background: var(--text-dark); }
-  .btn-ghost { display: inline-block; color: var(--brown); border: 1px solid var(--brown-light); padding: 0.9rem 2.4rem; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: all 0.25s; background: none; cursor: pointer; font-family: 'Jost', sans-serif; }
-  .btn-ghost:hover { background: var(--cream-dark); }
-  .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--brown-light); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; z-index: 2; animation: pulse 2.5s ease-in-out infinite; }
-  .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--brown-light), transparent); }
-  @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+  .btn-primary {
+    display: inline-block; background: var(--brown); color: var(--cream); padding: 0.88rem 1.95rem; font-size: 0.76rem; font-weight: 400;
+    letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--brown); border-radius: 999px;
+    cursor: pointer; font-family: 'Jost', sans-serif;
+    transition: transform 0.4s ease, background 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+  }
+  .btn-primary:hover {
+    transform: scale(1.04); background: var(--text-dark); border-color: var(--text-dark);
+    box-shadow: 0 10px 36px rgba(92, 61, 46, 0.15);
+  }
+  .btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px rgba(92, 61, 46, 0.45); }
+  button.btn-primary { font-family: 'Jost', sans-serif; }
+  .btn-ghost {
+    display: inline-block; color: var(--brown); border: 1px solid rgba(92, 61, 46, 0.28); padding: 0.88rem 1.95rem; font-size: 0.76rem; font-weight: 400;
+    letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; border-radius: 999px;
+    background: rgba(254, 252, 249, 0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    cursor: pointer; font-family: 'Jost', sans-serif;
+    transition: transform 0.4s ease, background 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+  }
+  .btn-ghost:hover {
+    transform: scale(1.04); background: var(--brown); color: var(--cream); border-color: var(--brown);
+    box-shadow: 0 10px 36px rgba(92, 61, 46, 0.15);
+  }
+  .btn-ghost:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px rgba(92, 61, 46, 0.45); }
+  .hero-scroll {
+    position: absolute; bottom: 1.75rem; left: 50%; transform: translateX(-50%); z-index: 3;
+    display: flex; flex-direction: column; align-items: center; gap: 0.45rem;
+    color: var(--brown-mid); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+    animation: pulse 2.8s ease-in-out infinite;
+    text-shadow: 0 0 12px rgba(249, 245, 239, 0.9);
+  }
+  .scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, rgba(139, 99, 71, 0.55), transparent); }
+  @keyframes pulse { 0%,100%{opacity:0.45} 50%{opacity:0.95} }
 
   section { position: relative; z-index: 1; }
   .container { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem; }
@@ -207,9 +292,16 @@
   .cta-pretitle { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brown-light); margin-bottom: 1rem; }
   .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4.5vw,3.5rem); font-weight: 300; color: var(--brown); margin-bottom: 1.5rem; line-height: 1.2; }
   .cta-sub { font-size: 0.95rem; color: var(--text-mid); max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.8; font-weight: 300; }
+  .btn-agendar-cal { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease, box-shadow 0.45s ease; }
+  .btn-agendar-cal.is-cal-priming { transform: scale(0.985); opacity: 0.88; box-shadow: 0 0 0 1px rgba(92, 61, 46, 0.1); }
+  .btn-agendar-cal:focus-visible { outline: 2px solid var(--brown-light); outline-offset: 3px; }
 
-  /* FOOTER */
-  footer { padding: 2.5rem; background: var(--text-dark); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  /* FOOTER — padding extra a la derecha para no solaparse con FABs fijos (56px + separación + hover ~1.1) */
+  footer {
+    padding: 2.5rem;
+    padding-inline-end: calc(2.5rem + 56px + 1.25rem + max(0px, env(safe-area-inset-right, 0px)));
+    background: var(--text-dark); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
   .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sand); font-weight: 400; }
   .footer-tagline { font-size: 0.75rem; color: rgba(212,184,150,0.5); letter-spacing: 0.08em; }
   .footer-links { display: flex; gap: 2rem; list-style: none; }
@@ -219,7 +311,12 @@
   /* WhatsApp */
   #wa-btn { position: fixed; bottom: 2rem; right: 2rem; background: #25D366; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); z-index: 9999; transition: transform 0.25s, box-shadow 0.25s; }
   #wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.55); }
-  #wa-btn::before { content: '¿Hablamos?'; position: absolute; right: 68px; background: var(--brown); color: var(--cream); font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.05em; padding: 0.4rem 0.85rem; border-radius: 2px; white-space: nowrap; opacity: 0; transform: translateX(8px); transition: all 0.25s; pointer-events: none; }
+  #wa-btn::before {
+    content: '¿Tienes dudas?'; position: absolute; right: 68px; background: var(--brown); color: var(--cream);
+    font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.06em; padding: 0.45rem 1rem;
+    border-radius: 999px; white-space: nowrap; opacity: 0; transform: translateX(8px); transition: opacity 0.25s, transform 0.25s;
+    pointer-events: none; box-shadow: 0 6px 20px rgba(92, 61, 46, 0.2);
+  }
   #wa-btn:hover::before { opacity: 1; transform: translateX(0); }
 
   /* Instagram (encima del botón de WhatsApp) */
@@ -232,8 +329,9 @@
   #ig-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(225, 48, 108, 0.5); }
   #ig-btn::before {
     content: 'Síguenos en Instagram'; position: absolute; right: 68px; background: var(--brown); color: var(--cream);
-    font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.05em; padding: 0.4rem 0.85rem; border-radius: 2px;
-    white-space: nowrap; opacity: 0; transform: translateX(8px); transition: all 0.25s; pointer-events: none;
+    font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.06em; padding: 0.45rem 1rem; border-radius: 999px;
+    white-space: nowrap; opacity: 0; transform: translateX(8px); transition: opacity 0.25s, transform 0.25s; pointer-events: none;
+    box-shadow: 0 6px 20px rgba(92, 61, 46, 0.2);
   }
   #ig-btn:hover::before { opacity: 1; transform: translateX(0); }
 
@@ -242,6 +340,10 @@
 
   @media (max-width: 768px) {
     nav { padding: 1rem 1.5rem; } .nav-links { display: none; }
+    #hero { padding: 6.5rem 1.25rem 4rem; }
+    .hero-phrase-wrap { min-height: clamp(13rem, 56vw, 20rem); }
+    .hero-phrase { font-size: clamp(2rem, 9vw, 4.25rem); line-height: 1.14; }
+    .hero-subtitle { font-size: 0.95rem; padding: 0 0.25rem; }
     .que-es-grid { grid-template-columns: 1fr; gap: 3rem; }
     .caminos-grid, .blog-grid { grid-template-columns: 1fr; }
     .valores-grid { grid-template-columns: repeat(2,1fr); }
@@ -263,23 +365,23 @@
     <li><a href="#blog">Blog</a></li>
     <li><a href="#vision">Visión</a></li>
   </ul>
-  <a class="nav-cta" href="#cta-final">Comenzar</a>
+  <a class="nav-cta btn-agendar-cal" href="https://cal.com/umana-living-7k2goz/umana-consulta" id="nav-btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar</a>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
   <div class="hero-orb orb-1"></div>
   <div class="hero-orb orb-2"></div>
-  <div class="hero-inner">
-    <p class="hero-eyebrow">Umana Living · Ecosistema Terapéutico</p>
-    <h1 class="hero-title">Un espacio para<br><em>habitar lo humano</em></h1>
-    <p class="hero-subtitle">Conectamos personas con guías emocionales certificados desde una mirada cercana, cálida y profundamente humana.</p>
-    <div class="hero-ctas">
-      <a href="#caminos" class="btn-primary">Encontrar mi camino</a>
-      <a href="#que-es" class="btn-ghost">Conocer Umana</a>
+  <div class="hero-inner hero-inner--calm">
+    <h1 class="hero-sr-title">Umana — Un espacio para habitar lo humano</h1>
+    <p class="hero-eyebrow">Umana Living · Ecosistema terapéutico</p>
+    <div class="hero-phrase-wrap">
+      <p class="hero-phrase" id="heroPhrase" aria-live="off">A veces no necesitas respuestas…<br><em>necesitas hablar.</em></p>
     </div>
+    <p class="hero-subtitle">Conectamos personas con guías emocionales certificados desde una mirada cercana, cálida y profundamente humana.</p>
+    <button type="button" id="btn-agendar-cal" class="hero-cta-book btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar espacio</button>
   </div>
-  <div class="hero-scroll"><div class="scroll-line"></div><span>Descubrir</span></div>
+  <a href="#que-es" class="hero-scroll"><div class="scroll-line"></div><span>Descubrir</span></a>
 </section>
 
 <!-- QUÉ ES -->
@@ -490,9 +592,9 @@
   <div class="container reveal">
     <p class="cta-pretitle">¿Listo para comenzar?</p>
     <h2 class="cta-title">Tu camino empieza<br>con una conversación</h2>
-    <p class="cta-sub">Escríbenos. Recibirás una respuesta humana, cálida y sin prisa.</p>
+    <p class="cta-sub">Agenda tu espacio o explora los caminos. Recibirás una respuesta humana, cálida y sin prisa.</p>
     <div class="hero-ctas">
-      <a href="https://wa.me/50661130913" target="_blank" class="btn-primary">Escribirnos por WhatsApp</a>
+      <button type="button" class="btn-primary btn-agendar-cal" id="cta-btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar espacio</button>
       <a href="#caminos" class="btn-ghost">Ver los caminos</a>
     </div>
   </div>
@@ -509,8 +611,7 @@
     <li><a href="#caminos">Caminos</a></li>
     <li><a href="#proceso">Proceso</a></li>
     <li><a href="#blog">Blog</a></li>
-    <li><a href="#cta-final">Contacto</a></li>
-    <li><a href="https://www.instagram.com/umana.living/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+    <li><a href="https://wa.me/50661130913" target="_blank" rel="noopener noreferrer">Contacto</a></li>
   </ul>
 </footer>
 
@@ -530,7 +631,74 @@
   </svg>
 </a>
 
+<!-- Cal.com: cargador oficial + instrucciones (cola hasta que embed.js termina de cargar) -->
 <script>
+(function (C, A, L) {
+  const p = function (a, ar) { a.q.push(ar); };
+  const d = C.document;
+  C.Cal = C.Cal || function () {
+    const cal = C.Cal;
+    const ar = arguments;
+    if (!cal.loaded) {
+      cal.ns = {};
+      cal.q = cal.q || [];
+      d.head.appendChild(d.createElement('script')).src = A;
+      cal.loaded = true;
+    }
+    if (ar[0] === L) {
+      const api = function () { p(api, arguments); };
+      const namespace = ar[1];
+      api.q = api.q || [];
+      if (typeof namespace === 'string') {
+        cal.ns[namespace] = cal.ns[namespace] || api;
+        p(cal.ns[namespace], ar);
+        p(cal, ['initNamespace', namespace]);
+      } else p(cal, ar);
+      return;
+    }
+    p(cal, ar);
+  };
+})(window, 'https://app.cal.com/embed/embed.js', 'init');
+</script>
+<script>
+  Cal('init', { calOrigin: 'https://app.cal.com' });
+  Cal('preload', { calLink: 'umana-living-7k2goz/umana-consulta' });
+</script>
+
+<script>
+  (function () {
+    var phrases = [
+      'A veces no necesitas respuestas…<br><em>necesitas hablar.</em>',
+      'No estás mal.<br>Solo estás cargando mucho <em>solo</em>.',
+      'Hay cosas que no sabes cómo explicar…<br><em>pero sí cómo se sienten.</em>',
+      'Aquí puedes hablar<br><em>sin tener que explicarlo perfecto.</em>',
+      'Un espacio para<br><em>entender lo que estás viviendo.</em>',
+      'No tienes que hacerlo<br><em>solo.</em>'
+    ];
+    var el = document.getElementById('heroPhrase');
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var HOLD_MS = 6000;
+    var FADE_MS = 600;
+    var idx = 0;
+
+    function sleep(ms) {
+      return new Promise(function (resolve) { setTimeout(resolve, ms); });
+    }
+
+    async function loop() {
+      while (true) {
+        await sleep(HOLD_MS);
+        el.classList.add('hero-phrase--hidden');
+        await sleep(FADE_MS);
+        idx = (idx + 1) % phrases.length;
+        el.innerHTML = phrases[idx];
+        el.classList.remove('hero-phrase--hidden');
+        await sleep(FADE_MS);
+      }
+    }
+    loop();
+  })();
+
   // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
@@ -547,6 +715,28 @@
       button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
   });
+
+  // Cal.com — modal oficial al hacer clic en botones «Agendar» / «Agendar espacio» (sin salir del sitio)
+  (function initCalAgendar() {
+    const CAL_LINK = 'umana-living-7k2goz/umana-consulta';
+    const OPEN_DELAY_MS = 220;
+    document.querySelectorAll('.btn-agendar-cal').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        if (btn.tagName === 'A') e.preventDefault();
+        btn.classList.add('is-cal-priming');
+        btn.setAttribute('aria-busy', 'true');
+        window.setTimeout(function () {
+          btn.classList.remove('is-cal-priming');
+          btn.removeAttribute('aria-busy');
+          if (typeof Cal === 'function') {
+            Cal('modal', { calLink: CAL_LINK });
+          } else if (btn.tagName === 'A' && btn.getAttribute('href')) {
+            window.location.href = btn.getAttribute('href');
+          }
+        }, OPEN_DELAY_MS);
+      });
+    });
+  })();
 
   // Cargar artículos desde GitHub
   async function loadArticles() {
