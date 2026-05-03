@@ -207,6 +207,9 @@
   .cta-pretitle { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brown-light); margin-bottom: 1rem; }
   .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4.5vw,3.5rem); font-weight: 300; color: var(--brown); margin-bottom: 1.5rem; line-height: 1.2; }
   .cta-sub { font-size: 0.95rem; color: var(--text-mid); max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.8; font-weight: 300; }
+  .btn-agendar-cal { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease, box-shadow 0.45s ease; }
+  .btn-agendar-cal.is-cal-priming { transform: scale(0.985); opacity: 0.88; box-shadow: 0 0 0 1px rgba(92, 61, 46, 0.1); }
+  .btn-agendar-cal:focus-visible { outline: 2px solid var(--brown-light); outline-offset: 3px; }
 
   /* FOOTER */
   footer { padding: 2.5rem; background: var(--text-dark); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
@@ -490,9 +493,10 @@
   <div class="container reveal">
     <p class="cta-pretitle">¿Listo para comenzar?</p>
     <h2 class="cta-title">Tu camino empieza<br>con una conversación</h2>
-    <p class="cta-sub">Escríbenos. Recibirás una respuesta humana, cálida y sin prisa.</p>
+    <p class="cta-sub">Agenda tu consulta en un entorno cálido, o escríbenos por WhatsApp. Recibirás una respuesta humana, cálida y sin prisa.</p>
     <div class="hero-ctas">
-      <a href="https://wa.me/50661130913" target="_blank" class="btn-primary">Escribirnos por WhatsApp</a>
+      <button type="button" id="btn-agendar-cal" class="btn-primary btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar espacio</button>
+      <a href="https://wa.me/50661130913" target="_blank" rel="noopener noreferrer" class="btn-ghost">Escribirnos por WhatsApp</a>
       <a href="#caminos" class="btn-ghost">Ver los caminos</a>
     </div>
   </div>
@@ -530,6 +534,43 @@
   </svg>
 </a>
 
+<!-- Cal.com: cargador oficial + instrucciones (cola hasta que embed.js termina de cargar) -->
+<script>
+(function (C, A, L) {
+  const p = function (a, ar) { a.q.push(ar); };
+  const d = C.document;
+  C.Cal = C.Cal || function () {
+    const cal = C.Cal;
+    const ar = arguments;
+    if (!cal.loaded) {
+      cal.ns = {};
+      cal.q = cal.q || [];
+      d.head.appendChild(d.createElement('script')).src = A;
+      cal.loaded = true;
+    }
+    if (ar[0] === L) {
+      const api = function () { p(api, arguments); };
+      const namespace = ar[1];
+      api.q = api.q || [];
+      if (typeof namespace === 'string') {
+        cal.ns[namespace] = cal.ns[namespace] || api;
+        p(cal.ns[namespace], ar);
+        p(cal, ['initNamespace', namespace]);
+      } else p(cal, ar);
+      return;
+    }
+    p(cal, ar);
+  };
+})(window, 'https://app.cal.com/embed/embed.js', 'init');
+</script>
+<script>
+  Cal('init', { calOrigin: 'https://app.cal.com' });
+  try {
+    Cal('ui', { styles: { body: { background: 'rgb(249, 245, 239)' } } });
+  } catch (err) { /* compatibilidad si la instrucción ui no aplica en esta versión */ }
+  Cal('preload', { calLink: 'umana-living-7k2goz/umana-consulta' });
+</script>
+
 <script>
   // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
@@ -547,6 +588,36 @@
       button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
   });
+
+  // Cal.com — modal oficial al hacer clic en «Agendar espacio» (sin salir del sitio)
+  (function initCalAgendar() {
+    const CAL_LINK = 'umana-living-7k2goz/umana-consulta';
+    const OPEN_DELAY_MS = 220;
+    function findAgendarButton() {
+      const byId = document.getElementById('btn-agendar-cal');
+      if (byId) return byId;
+      const nodes = document.querySelectorAll('a, button, [role="button"]');
+      for (let i = 0; i < nodes.length; i++) {
+        const el = nodes[i];
+        if (el.textContent.replace(/\s+/g, ' ').trim() === 'Agendar espacio') return el;
+      }
+      return null;
+    }
+    const btn = findAgendarButton();
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
+      if (btn.tagName === 'A') e.preventDefault();
+      // Opcional — mobile: redirigir a https://cal.com/umana-living-7k2goz/umana-consulta si convierte mejor
+      // if (window.matchMedia('(max-width: 480px)').matches) { window.location.href = 'https://cal.com/umana-living-7k2goz/umana-consulta'; return; }
+      btn.classList.add('is-cal-priming');
+      btn.setAttribute('aria-busy', 'true');
+      window.setTimeout(function () {
+        btn.classList.remove('is-cal-priming');
+        btn.removeAttribute('aria-busy');
+        if (typeof Cal === 'function') Cal('modal', { calLink: CAL_LINK });
+      }, OPEN_DELAY_MS);
+    });
+  })();
 
   // Cargar artículos desde GitHub
   async function loadArticles() {
