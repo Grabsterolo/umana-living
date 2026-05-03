@@ -128,7 +128,9 @@
     background: rgba(254, 252, 249, 0.55); backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     transition: transform 0.4s ease, background 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+    appearance: none; -webkit-appearance: none;
   }
+  button.hero-cta-book { text-align: center; }
   .hero-cta-book:hover {
     transform: scale(1.04); background: var(--brown); color: var(--cream); border-color: var(--brown);
     box-shadow: 0 10px 36px rgba(92, 61, 46, 0.15);
@@ -372,7 +374,7 @@
       <p class="hero-phrase" id="heroPhrase" aria-live="off">A veces no necesitas respuestas…<br><em>necesitas hablar.</em></p>
     </div>
     <p class="hero-subtitle">Conectamos personas con guías emocionales certificados desde una mirada cercana, cálida y profundamente humana.</p>
-    <a href="#cta-final" class="hero-cta-book">Agendar espacio</a>
+    <button type="button" id="btn-agendar-cal" class="hero-cta-book btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar espacio</button>
   </div>
   <a href="#que-es" class="hero-scroll"><div class="scroll-line"></div><span>Descubrir</span></a>
 </section>
@@ -585,10 +587,9 @@
   <div class="container reveal">
     <p class="cta-pretitle">¿Listo para comenzar?</p>
     <h2 class="cta-title">Tu camino empieza<br>con una conversación</h2>
-    <p class="cta-sub">Agenda tu consulta en un entorno cálido, o escríbenos por WhatsApp. Recibirás una respuesta humana, cálida y sin prisa.</p>
+    <p class="cta-sub">Escríbenos por WhatsApp o explora los caminos. Recibirás una respuesta humana, cálida y sin prisa.</p>
     <div class="hero-ctas">
-      <button type="button" id="btn-agendar-cal" class="btn-primary btn-agendar-cal" aria-haspopup="dialog" aria-label="Abrir calendario para agendar una consulta">Agendar espacio</button>
-      <a href="https://wa.me/50661130913" target="_blank" rel="noopener noreferrer" class="btn-ghost">Escribirnos por WhatsApp</a>
+      <a href="https://wa.me/50661130913" target="_blank" rel="noopener noreferrer" class="btn-primary">Escribirnos por WhatsApp</a>
       <a href="#caminos" class="btn-ghost">Ver los caminos</a>
     </div>
   </div>
