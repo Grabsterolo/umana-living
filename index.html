@@ -296,8 +296,12 @@
   .btn-agendar-cal.is-cal-priming { transform: scale(0.985); opacity: 0.88; box-shadow: 0 0 0 1px rgba(92, 61, 46, 0.1); }
   .btn-agendar-cal:focus-visible { outline: 2px solid var(--brown-light); outline-offset: 3px; }
 
-  /* FOOTER */
-  footer { padding: 2.5rem; background: var(--text-dark); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  /* FOOTER — padding extra a la derecha para no solaparse con FABs fijos (56px + separación + hover ~1.1) */
+  footer {
+    padding: 2.5rem;
+    padding-inline-end: calc(2.5rem + 56px + 1.25rem + max(0px, env(safe-area-inset-right, 0px)));
+    background: var(--text-dark); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
   .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sand); font-weight: 400; }
   .footer-tagline { font-size: 0.75rem; color: rgba(212,184,150,0.5); letter-spacing: 0.08em; }
   .footer-links { display: flex; gap: 2rem; list-style: none; }
