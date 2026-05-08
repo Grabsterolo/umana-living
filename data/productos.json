@@ -1,44 +1,14 @@
 {
   "productos": [
     {
-      "name": "Prueba",
-      "category": "Prueba",
-      "description": "Prueba",
+      "name": "Prueba1",
+      "category": "Prueba1",
+      "description": "Prueba1",
       "price": 10000,
-      "sku": "001",
-      "image": "/imagenes/smooth-stones-stacked-in-balance-on-calm-water-concept-of-tranquility-and-harmony-in-nature-photo.jpg",
+      "sku": "Prueba1",
+      "image": "",
       "order": 1,
-      "active": true
-    },
-    {
-      "name": "Prueba 2",
-      "category": "Prueba 2",
-      "description": "Prueba 2",
-      "price": 5000,
-      "sku": "002",
-      "image": "https://picsum.photos/id/216/1920/1280.webp",
-      "order": 2,
-      "active": true
-    },
-    {
-      "name": "Prueba 3",
-      "category": "Prueba 3",
-      "description": "Prueba 3",
-      "price": 4000,
-      "sku": "003",
-      "image": "https://picsum.photos/id/177/1920/1280.webp",
-      "order": 1,
-      "active": true
-    },
-    {
-      "name": "Prueba 4",
-      "category": "Prueba 4",
-      "description": "Prueba 4",
-      "price": 8000,
-      "sku": "004",
-      "image": "https://picsum.photos/id/918/1920/1280.webp",
-      "order": 8,
-      "active": true
+      "active": false
     }
   ]
 }
