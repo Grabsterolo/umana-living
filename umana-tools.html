@@ -381,6 +381,25 @@
   </a>
 
 <script>
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function safeImageUrl(value) {
+    const url = String(value || '').trim();
+    if (!url) return '';
+    try {
+      const parsed = new URL(url, window.location.href);
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') return parsed.href;
+    } catch {}
+    return '';
+  }
+
   const fallbackProducts = [
     {
       name: 'Cuaderno de Autorreflexión',
@@ -447,7 +466,7 @@
   let cart = [];
 
   function formatPrice(value) {
-    return value.toLocaleString('es-CR', {
+    return Number(value || 0).toLocaleString('es-CR', {
       style: 'currency',
       currency: 'CRC',
       maximumFractionDigits: 0
@@ -468,7 +487,7 @@
     categoryFilters.innerHTML = allCategories
       .map((category) => `
         <button class="chip ${category === activeCategory ? 'active' : ''}" type="button" data-category="${category}">
-          ${category}
+          ${escapeHtml(category)}
         </button>
       `)
       .join('');
@@ -499,16 +518,16 @@
     catalogGrid.innerHTML = visibleProducts
       .map((product) => `
         <article class="product-card">
-          <div class="product-image">${product.image ? `<img src="${product.image}" alt="${product.name}">` : 'Umana Tools'}</div>
+          <div class="product-image">${product.image ? `<img src="${safeImageUrl(product.image)}" alt="${escapeHtml(product.name)}">` : 'Umana Tools'}</div>
           <div class="product-body">
-            <p class="product-category">${product.category}</p>
-            <h2 class="product-title">${product.name}</h2>
-            <p class="product-desc">${product.description}</p>
+            <p class="product-category">${escapeHtml(product.category)}</p>
+            <h2 class="product-title">${escapeHtml(product.name)}</h2>
+            <p class="product-desc">${escapeHtml(product.description)}</p>
             <div class="product-footer">
               <p class="price">${formatPrice(product.price)}</p>
-              <p class="sku">${product.sku}</p>
+              <p class="sku">${escapeHtml(product.sku)}</p>
             </div>
-            <button class="add-cart-btn" type="button" data-add-sku="${product.sku}">Agregar al carrito</button>
+            <button class="add-cart-btn" type="button" data-add-sku="${escapeHtml(product.sku)}">Agregar al carrito</button>
           </div>
         </article>
       `)
@@ -627,18 +646,18 @@
       <article class="cart-item">
         <div class="cart-item-top">
           <div>
-            <p class="cart-item-name">${item.name}</p>
-            <p class="cart-item-price">${item.sku}</p>
+            <p class="cart-item-name">${escapeHtml(item.name)}</p>
+            <p class="cart-item-price">${escapeHtml(item.sku)}</p>
           </div>
           <strong class="cart-item-price">${formatPrice(item.price * item.qty)}</strong>
         </div>
         <div class="cart-item-controls">
           <div class="qty-wrap">
-            <button class="qty-btn" type="button" data-qty-sku="${item.sku}" data-delta="-1">-</button>
+            <button class="qty-btn" type="button" data-qty-sku="${escapeHtml(item.sku)}" data-delta="-1">-</button>
             <span class="qty-text">${item.qty}</span>
-            <button class="qty-btn" type="button" data-qty-sku="${item.sku}" data-delta="1">+</button>
+            <button class="qty-btn" type="button" data-qty-sku="${escapeHtml(item.sku)}" data-delta="1">+</button>
           </div>
-          <button class="remove-item" type="button" data-remove-sku="${item.sku}">Quitar</button>
+          <button class="remove-item" type="button" data-remove-sku="${escapeHtml(item.sku)}">Quitar</button>
         </div>
       </article>
     `).join('');

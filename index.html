@@ -801,6 +801,111 @@
     loop();
   })();
 
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function safeImageUrl(value) {
+    const url = String(value || '').trim();
+    if (!url) return '';
+    try {
+      const parsed = new URL(url, window.location.href);
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') return parsed.href;
+    } catch {}
+    return '';
+  }
+
+  function sanitizeHtml(dirtyHtml) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(String(dirtyHtml || ''), 'text/html');
+    const blockedTags = new Set(['script', 'style', 'object', 'embed', 'link', 'meta', 'base', 'form', 'input', 'button']);
+    const allowedIframeHosts = new Set([
+      'www.youtube.com',
+      'youtube.com',
+      'youtu.be',
+      'www.youtube-nocookie.com',
+      'youtube-nocookie.com',
+      'player.vimeo.com'
+    ]);
+    doc.querySelectorAll('*').forEach((el) => {
+      const tagName = el.tagName.toLowerCase();
+      if (blockedTags.has(tagName)) {
+        el.remove();
+        return;
+      }
+
+      if (tagName === 'iframe') {
+        const src = (el.getAttribute('src') || '').trim();
+        let isTrusted = false;
+        try {
+          const parsed = new URL(src, window.location.href);
+          isTrusted = parsed.protocol === 'https:' && allowedIframeHosts.has(parsed.hostname.toLowerCase());
+          if (!isTrusted) {
+            el.remove();
+            return;
+          }
+          el.setAttribute('src', parsed.href);
+          el.setAttribute('loading', 'lazy');
+          el.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+          el.setAttribute('allowfullscreen', '');
+          if (!el.getAttribute('title')) {
+            el.setAttribute('title', 'Contenido embebido');
+          }
+        } catch {
+          el.remove();
+          return;
+        }
+      }
+
+      Array.from(el.attributes).forEach((attr) => {
+        const name = attr.name.toLowerCase();
+        const value = attr.value || '';
+        if (name.startsWith('on')) {
+          el.removeAttribute(attr.name);
+          return;
+        }
+        if ((name === 'href' || name === 'src' || name === 'xlink:href') && /^\s*javascript:/i.test(value)) {
+          el.removeAttribute(attr.name);
+        }
+      });
+
+      if (tagName === 'a') {
+        const href = (el.getAttribute('href') || '').trim();
+        if (!href) return;
+        try {
+          const parsed = new URL(href, window.location.href);
+          if (!['http:', 'https:', 'mailto:', 'tel:'].includes(parsed.protocol)) {
+            el.removeAttribute('href');
+            return;
+          }
+          if (parsed.origin !== window.location.origin) {
+            el.setAttribute('target', '_blank');
+            el.setAttribute('rel', 'noopener noreferrer nofollow');
+          }
+        } catch {
+          el.removeAttribute('href');
+        }
+      }
+
+      if (tagName === 'img') {
+        const src = safeImageUrl(el.getAttribute('src') || '');
+        if (!src) {
+          el.remove();
+          return;
+        }
+        el.setAttribute('src', src);
+        el.setAttribute('loading', 'lazy');
+        el.setAttribute('decoding', 'async');
+      }
+    });
+    return doc.body.innerHTML;
+  }
+
   // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
@@ -863,12 +968,12 @@
       articles.sort((a, b) => new Date(b.date) - new Date(a.date));
       grid.innerHTML = articles.map((a, i) => `
         <div class="article-card reveal" onclick="openRead(${i})">
-          ${a.image ? `<img class="article-cover" src="${a.image}" alt="${a.title}">` : `<div class="article-cover-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M10 38 Q14 28 20 24 Q26 20 24 12 Q30 18 28 26 Q34 20 32 12 Q40 20 36 30 Q40 28 42 32 Q38 40 10 38Z" fill="#C4A882"/></svg></div>`}
+          ${a.image ? `<img class="article-cover" src="${safeImageUrl(a.image)}" alt="${escapeHtml(a.title)}">` : `<div class="article-cover-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M10 38 Q14 28 20 24 Q26 20 24 12 Q30 18 28 26 Q34 20 32 12 Q40 20 36 30 Q40 28 42 32 Q38 40 10 38Z" fill="#C4A882"/></svg></div>`}
           <div class="article-body">
-            <p class="article-cat">${a.cat || 'Artículo'}</p>
-            <h3 class="article-title">${a.title}</h3>
-            <p class="article-excerpt">${a.excerpt || a.bodyRaw.slice(0,100).replace(/#/g,'') + '...'}</p>
-            <p class="article-meta">${a.author ? a.author + ' · ' : ''}${fmtDate(a.date)}</p>
+            <p class="article-cat">${escapeHtml(a.cat || 'Artículo')}</p>
+            <h3 class="article-title">${escapeHtml(a.title)}</h3>
+            <p class="article-excerpt">${escapeHtml(a.excerpt || a.bodyRaw.slice(0,100).replace(/#/g,'') + '...')}</p>
+            <p class="article-meta">${escapeHtml(a.author ? a.author + ' · ' : '')}${escapeHtml(fmtDate(a.date))}</p>
           </div>
         </div>`).join('');
       window._articles = articles;
@@ -895,9 +1000,9 @@
       excerpt: fm.excerpt || '',
       author: fm.author || '',
       date: fm.date || new Date().toISOString(),
-      image: fm.image || '',
+      image: safeImageUrl(fm.image || ''),
       bodyRaw: body,
-      bodyHtml: typeof marked !== 'undefined' ? marked.parse(body) : body
+      bodyHtml: sanitizeHtml(typeof marked !== 'undefined' ? marked.parse(body) : body)
     };
   }
 
@@ -963,10 +1068,10 @@
     toolsPreviewList.innerHTML = pagedProducts.map((product) => `
       <article class="tools-mini-card">
         <div>
-          <p class="tools-mini-tag">${product.category || 'Umana Tools'}</p>
-          <h3 class="tools-mini-name">${product.name || 'Producto Umana Tools'}</h3>
+          <p class="tools-mini-tag">${escapeHtml(product.category || 'Umana Tools')}</p>
+          <h3 class="tools-mini-name">${escapeHtml(product.name || 'Producto Umana Tools')}</h3>
         </div>
-        <span class="tools-mini-price">${fmtCatalogPrice(product.price || 0)}</span>
+        <span class="tools-mini-price">${fmtCatalogPrice(Number(product.price) || 0)}</span>
       </article>
     `).join('');
 
