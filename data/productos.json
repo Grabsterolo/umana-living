@@ -1,0 +1,24 @@
+{
+  "productos": [
+    {
+      "name": "Prueba",
+      "category": "Reflexion",
+      "description": "Este producto surve para querer hacer las cosas bien",
+      "price": 12000,
+      "sku": "001",
+      "image": "https://picsum.photos/id/847/1920/1280.webp",
+      "order": 1,
+      "active": true
+    },
+    {
+      "name": "Prueba 2",
+      "category": "Conocimiento",
+      "description": "Este producto surve para querer hacer las cosas bien 2",
+      "price": 10000,
+      "sku": "002",
+      "image": "https://picsum.photos/id/786/1920/1280.webp",
+      "order": 2,
+      "active": true
+    }
+  ]
+}
