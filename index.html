@@ -230,7 +230,7 @@
   .tools-preview-copy p { font-size: 1rem; line-height: 1.85; color: var(--text-mid); font-weight: 300; margin-bottom: 1.2rem; }
   .tools-preview-cards { display: grid; gap: 1rem; }
   .tools-preview-list { display: grid; gap: 1rem; }
-  .tools-preview-controls { display: flex; justify-content: center; margin-top: 0.85rem; }
+  .tools-preview-controls { display: flex; justify-content: center; gap: 0.65rem; margin-top: 0.85rem; }
   .tools-preview-next {
     width: 42px;
     height: 42px;
@@ -251,6 +251,13 @@
     border-color: var(--brown);
   }
   .tools-preview-next[hidden] { display: none; }
+  .tools-preview-prev:hover { transform: translateY(-2px); }
+  .tools-preview-list.is-switching { opacity: 0; transform: translateY(8px); }
+  .tools-preview-list {
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    opacity: 1;
+    transform: translateY(0);
+  }
   .tools-mini-card {
     background: var(--cream); border: 1px solid rgba(196,168,130,0.3); padding: 1.1rem 1.25rem;
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
@@ -620,6 +627,12 @@
           </article>
         </div>
         <div class="tools-preview-controls">
+          <button id="toolsPreviewPrev" class="tools-preview-next tools-preview-prev" type="button" aria-label="Ver productos anteriores" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 19V5"/>
+              <path d="M6 11l6-6 6 6"/>
+            </svg>
+          </button>
           <button id="toolsPreviewNext" class="tools-preview-next" type="button" aria-label="Ver siguientes productos" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M12 5v14"/>
@@ -920,13 +933,15 @@
   }
 
   const TOOLS_PREVIEW_BATCH = 3;
+  const TOOLS_PREVIEW_TRANSITION_MS = 220;
   let toolsPreviewProducts = [];
   let toolsPreviewOffset = 0;
 
   function renderToolsPreview(products, offset) {
     const toolsPreviewList = document.getElementById('toolsPreviewList');
     const toolsPreviewNext = document.getElementById('toolsPreviewNext');
-    if (!toolsPreviewList || !toolsPreviewNext) return;
+    const toolsPreviewPrev = document.getElementById('toolsPreviewPrev');
+    if (!toolsPreviewList || !toolsPreviewNext || !toolsPreviewPrev) return;
 
     if (!products.length) {
       toolsPreviewList.innerHTML = `
@@ -936,6 +951,7 @@
         </article>
       `;
       toolsPreviewNext.hidden = true;
+      toolsPreviewPrev.hidden = true;
       return;
     }
 
@@ -950,7 +966,25 @@
       </article>
     `).join('');
 
-    toolsPreviewNext.hidden = products.length <= TOOLS_PREVIEW_BATCH;
+    const hasMultiplePages = products.length > TOOLS_PREVIEW_BATCH;
+    toolsPreviewNext.hidden = !hasMultiplePages;
+    toolsPreviewPrev.hidden = !hasMultiplePages;
+  }
+
+  function animateToolsPreview(offset) {
+    const toolsPreviewList = document.getElementById('toolsPreviewList');
+    if (!toolsPreviewList) {
+      renderToolsPreview(toolsPreviewProducts, offset);
+      return;
+    }
+
+    toolsPreviewList.classList.add('is-switching');
+    window.setTimeout(() => {
+      renderToolsPreview(toolsPreviewProducts, offset);
+      requestAnimationFrame(() => {
+        toolsPreviewList.classList.remove('is-switching');
+      });
+    }, TOOLS_PREVIEW_TRANSITION_MS);
   }
 
   async function loadToolsPreview() {
@@ -983,7 +1017,19 @@
     if (!toolsPreviewProducts.length) return;
     const nextOffset = toolsPreviewOffset + TOOLS_PREVIEW_BATCH;
     toolsPreviewOffset = nextOffset >= toolsPreviewProducts.length ? 0 : nextOffset;
-    renderToolsPreview(toolsPreviewProducts, toolsPreviewOffset);
+    animateToolsPreview(toolsPreviewOffset);
+  });
+
+  document.getElementById('toolsPreviewPrev')?.addEventListener('click', () => {
+    if (!toolsPreviewProducts.length) return;
+    const prevOffset = toolsPreviewOffset - TOOLS_PREVIEW_BATCH;
+    if (prevOffset >= 0) {
+      toolsPreviewOffset = prevOffset;
+    } else {
+      const lastPageStart = Math.floor((toolsPreviewProducts.length - 1) / TOOLS_PREVIEW_BATCH) * TOOLS_PREVIEW_BATCH;
+      toolsPreviewOffset = lastPageStart;
+    }
+    animateToolsPreview(toolsPreviewOffset);
   });
 
   loadToolsPreview();
