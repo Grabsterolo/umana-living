@@ -19,7 +19,15 @@
     --brown-light: #C4A882; --sand: #D4B896; --text-dark: #2E1F14;
     --text-mid: #6B4C35; --text-light: #9E7D62; --white: #FEFCF9;
   }
-  body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--text-dark); }
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  main { flex: 1; }
   nav {
     position: sticky; top: 0; z-index: 50; padding: 1.25rem 3rem; display: flex; align-items: center; justify-content: space-between;
     background: rgba(249,245,239,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(196,168,130,0.2);
@@ -60,6 +68,20 @@
   .catalog-count { font-size: 0.83rem; color: var(--text-light); }
 
   .catalog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; padding-bottom: 4rem; }
+  .tools-preview-empty {
+    grid-column: 1 / -1;
+    background: var(--cream);
+    border: 1px dashed rgba(196,168,130,0.5);
+    padding: 1.4rem 1.25rem;
+    text-align: center;
+  }
+  .tools-preview-empty p {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--brown);
+    font-size: 1.35rem;
+    margin-bottom: 0.4rem;
+  }
+  .tools-preview-empty span { font-size: 0.83rem; color: var(--text-light); }
   .product-card {
     border: 1px solid rgba(196,168,130,0.28); background: var(--white); display: flex; flex-direction: column; min-height: 320px;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -155,7 +177,7 @@
     </section>
 
     <section class="container">
-      <div class="toolbar">
+      <div class="toolbar" id="catalogToolbar">
         <div class="chip-group" id="categoryFilters"></div>
         <p class="catalog-count" id="catalogCount">0 productos</p>
       </div>
@@ -240,6 +262,7 @@
   ];
 
   const catalogGrid = document.getElementById('catalogGrid');
+  const catalogToolbar = document.getElementById('catalogToolbar');
   const categoryFilters = document.getElementById('categoryFilters');
   const catalogCount = document.getElementById('catalogCount');
 
@@ -287,6 +310,16 @@
     const visibleProducts = getVisibleProducts();
     catalogCount.textContent = `${visibleProducts.length} producto${visibleProducts.length !== 1 ? 's' : ''}`;
 
+    if (!visibleProducts.length) {
+      catalogGrid.innerHTML = `
+        <article class="tools-preview-empty">
+          <p>Proximamente</p>
+          <span>El catalogo esta vacio por ahora. Pronto publicaremos nuevos productos.</span>
+        </article>
+      `;
+      return;
+    }
+
     catalogGrid.innerHTML = visibleProducts
       .map((product) => `
         <article class="product-card">
@@ -311,7 +344,6 @@
       if (!response.ok) throw new Error('No se pudo cargar data/productos.json');
       const data = await response.json();
       products = Array.isArray(data.productos) ? data.productos : [];
-      if (!products.length) throw new Error('Catalogo sin productos');
     } catch (error) {
       console.warn('Usando catalogo local de respaldo:', error);
       products = [...fallbackProducts];
@@ -327,6 +359,13 @@
       .filter((product) => product.active)
       .sort((a, b) => a.order - b.order || String(a.name).localeCompare(String(b.name), 'es'));
 
+    if (!products.length) {
+      catalogToolbar.style.display = 'none';
+      renderCatalog();
+      return;
+    }
+
+    catalogToolbar.style.display = '';
     refreshCategories();
     activeCategory = 'Todos';
     renderFilters();
