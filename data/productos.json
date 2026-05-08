@@ -3,12 +3,12 @@
     {
       "name": "Libro",
       "category": "Lecturas",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis consectetur ligula, blandit eleifend sem eleifend sodales. Nam porta augue ut ligula blandit, non interdum dolor interdum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec ex arcu, porttitor a auctor et, bibendum quis quam. Integer pretium ut lectus at hendrerit. Quisque semper tellus id fermentum finibus. Nulla sit amet rutrum risus. Praesent id leo sit amet dui pretium porttitor et nec augue. Phasellus tristique varius sem, quis ultricies felis pretium quis. Integer vitae dapibus velit, at pretium ipsum. Praesent tempus aliquam dapibus.",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis consectetur ligula, blandit eleifend sem eleifend sodales. Nam porta augue ut ligula blandit, non interdum dolor interdum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec ex arcu, porttitor a auctor et, bibendum quis",
       "price": 15000,
       "sku": "001",
       "image": "https://picsum.photos/id/2/1920/1280.webp",
       "order": 1,
-      "active": false
+      "active": true
     }
   ]
 }
