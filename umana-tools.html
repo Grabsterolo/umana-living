@@ -117,8 +117,8 @@
 
   .cart-fab {
     position: fixed;
-    left: 2rem;
-    bottom: 2rem;
+    right: 2rem;
+    bottom: calc(2rem + (56px + 14px) * 2);
     z-index: 9998;
     width: 56px;
     height: 56px;
@@ -132,6 +132,7 @@
     box-shadow: 0 4px 20px rgba(92,61,46,0.18);
     cursor: pointer;
   }
+  .cart-fab[hidden] { display: none; }
   .cart-badge {
     position: absolute;
     top: -4px;
@@ -294,7 +295,7 @@
     .product-title { font-size: 1.5rem; line-height: 1.25; }
     .product-desc { font-size: 0.9rem; line-height: 1.85; }
     .product-footer { align-items: flex-end; }
-    .cart-fab { left: 1rem; bottom: 1.2rem; }
+    .cart-fab { right: 1rem; bottom: calc(2rem + (56px + 14px) * 2); }
     .cart-drawer { width: 100%; }
     footer { flex-direction: column; text-align: center; }
     .footer-links { flex-wrap: wrap; justify-content: center; }
@@ -329,7 +330,7 @@
     </section>
   </main>
 
-  <button id="cartFab" class="cart-fab" type="button" aria-label="Abrir carrito">
+  <button id="cartFab" class="cart-fab" type="button" aria-label="Abrir carrito" hidden>
     <span class="cart-badge" id="cartBadge">0</span>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/><path d="M3 4h2l2.2 10.2a1 1 0 0 0 1 .8h8.7a1 1 0 0 0 1-.8L20 7H7.2"/>
@@ -635,10 +636,12 @@
     const units = cartUnits();
     cartBadge.textContent = String(units);
     cartTotal.textContent = formatPrice(cartAmount());
+    cartFab.hidden = units <= 0;
 
     if (!cart.length) {
       cartItems.innerHTML = `<p class="cart-empty">Tu carrito está vacío.</p>`;
       cartWhatsApp.disabled = true;
+      closeCart();
       return;
     }
 
