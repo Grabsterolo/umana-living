@@ -235,6 +235,20 @@
   }
   .tools-mini-name { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--brown); }
   .tools-mini-tag { font-size: 0.67rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brown-light); }
+  .tools-mini-price { font-size: 0.8rem; letter-spacing: 0.08em; color: var(--text-mid); text-transform: uppercase; }
+  .tools-preview-empty {
+    background: var(--cream);
+    border: 1px dashed rgba(196,168,130,0.5);
+    padding: 1.4rem 1.25rem;
+    text-align: center;
+  }
+  .tools-preview-empty p {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--brown);
+    font-size: 1.35rem;
+    margin-bottom: 0.4rem;
+  }
+  .tools-preview-empty span { font-size: 0.83rem; color: var(--text-light); }
 
   /* VALORES */
   #valores { padding: 7rem 0; background: var(--cream-dark); }
@@ -573,27 +587,13 @@
         <p>Explora el catálogo completo con precios y encuentra lo que más se adapte a tu camino actual.</p>
         <a href="umana-tools.html" class="btn-primary">Ver catálogo Umana Tools</a>
       </div>
-      <div class="tools-preview-cards reveal" aria-label="Ejemplos de productos terapéuticos">
+      <div class="tools-preview-cards reveal" id="toolsPreviewCards" aria-label="Previsualizacion de productos terapeuticos">
         <article class="tools-mini-card">
           <div>
-            <p class="tools-mini-tag">Escritura terapéutica</p>
-            <h3 class="tools-mini-name">Cuaderno de Autorreflexión</h3>
+            <p class="tools-mini-tag">Catalogo Umana Tools</p>
+            <h3 class="tools-mini-name">Cargando productos...</h3>
           </div>
-          <span class="camino-tag">Nuevo</span>
-        </article>
-        <article class="tools-mini-card">
-          <div>
-            <p class="tools-mini-tag">Regulación emocional</p>
-            <h3 class="tools-mini-name">Tarjetas de Calma</h3>
-          </div>
-          <span class="camino-tag">Top</span>
-        </article>
-        <article class="tools-mini-card">
-          <div>
-            <p class="tools-mini-tag">Bienestar integral</p>
-            <h3 class="tools-mini-name">Kit de Presencia</h3>
-          </div>
-          <span class="camino-tag">Pack</span>
+          <span class="tools-mini-price">Espera</span>
         </article>
       </div>
     </div>
@@ -879,6 +879,62 @@
     if (e.target === this) closeRead();
   });
 
+  function fmtCatalogPrice(value) {
+    return Number(value).toLocaleString('es-CR', {
+      style: 'currency',
+      currency: 'CRC',
+      maximumFractionDigits: 0
+    });
+  }
+
+  function renderToolsPreview(products) {
+    const toolsPreviewCards = document.getElementById('toolsPreviewCards');
+    if (!toolsPreviewCards) return;
+
+    if (!products.length) {
+      toolsPreviewCards.innerHTML = `
+        <article class="tools-preview-empty">
+          <p>Proximamente</p>
+          <span>El catalogo esta vacio por ahora. Pronto publicaremos nuevos productos.</span>
+        </article>
+      `;
+      return;
+    }
+
+    toolsPreviewCards.innerHTML = products.map((product) => `
+      <article class="tools-mini-card">
+        <div>
+          <p class="tools-mini-tag">${product.category || 'Umana Tools'}</p>
+          <h3 class="tools-mini-name">${product.name || 'Producto Umana Tools'}</h3>
+        </div>
+        <span class="tools-mini-price">${fmtCatalogPrice(product.price || 0)}</span>
+      </article>
+    `).join('');
+  }
+
+  async function loadToolsPreview() {
+    try {
+      const response = await fetch('data/productos.json', { cache: 'no-store' });
+      if (!response.ok) throw new Error('No se pudo cargar el catalogo');
+
+      const data = await response.json();
+      const products = Array.isArray(data.productos) ? data.productos : [];
+      const activeProducts = products
+        .map((product, index) => ({
+          ...product,
+          active: product.active !== false,
+          order: Number.isFinite(Number(product.order)) ? Number(product.order) : index + 1
+        }))
+        .filter((product) => product.active)
+        .sort((a, b) => a.order - b.order || String(a.name).localeCompare(String(b.name), 'es'));
+
+      renderToolsPreview(activeProducts);
+    } catch (error) {
+      renderToolsPreview([]);
+    }
+  }
+
+  loadToolsPreview();
   loadArticles();
 </script>
 </body>
