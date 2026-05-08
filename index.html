@@ -230,7 +230,9 @@
   .tools-preview-copy p { font-size: 1rem; line-height: 1.85; color: var(--text-mid); font-weight: 300; margin-bottom: 1.2rem; }
   .tools-preview-cards { display: grid; gap: 1rem; }
   .tools-preview-list { display: grid; gap: 1rem; }
-  .tools-preview-controls { display: flex; justify-content: center; gap: 0.65rem; margin-top: 0.85rem; }
+  .tools-preview-controls { display: flex; justify-content: center; }
+  .tools-preview-controls--top { margin-bottom: 0.85rem; }
+  .tools-preview-controls--bottom { margin-top: 0.85rem; }
   .tools-preview-next {
     width: 42px;
     height: 42px;
@@ -617,6 +619,14 @@
         <a href="umana-tools.html" class="btn-primary">Ver catálogo Umana Tools</a>
       </div>
       <div class="tools-preview-cards reveal" id="toolsPreviewCards" aria-label="Previsualizacion de productos terapeuticos">
+        <div class="tools-preview-controls tools-preview-controls--top">
+          <button id="toolsPreviewPrev" class="tools-preview-next tools-preview-prev" type="button" aria-label="Ver productos anteriores" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 19V5"/>
+              <path d="M6 11l6-6 6 6"/>
+            </svg>
+          </button>
+        </div>
         <div class="tools-preview-list" id="toolsPreviewList">
           <article class="tools-mini-card">
             <div>
@@ -626,13 +636,7 @@
             <span class="tools-mini-price">Espera</span>
           </article>
         </div>
-        <div class="tools-preview-controls">
-          <button id="toolsPreviewPrev" class="tools-preview-next tools-preview-prev" type="button" aria-label="Ver productos anteriores" hidden>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 19V5"/>
-              <path d="M6 11l6-6 6 6"/>
-            </svg>
-          </button>
+        <div class="tools-preview-controls tools-preview-controls--bottom">
           <button id="toolsPreviewNext" class="tools-preview-next" type="button" aria-label="Ver siguientes productos" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M12 5v14"/>
