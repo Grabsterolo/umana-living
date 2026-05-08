@@ -21,3 +21,24 @@ collections:
       - { label: "Fecha", name: "date", widget: "datetime" }
       - { label: "Imagen de cabecera", name: "image", widget: "image", required: false }
       - { label: "Contenido", name: "body", widget: "markdown" }
+
+  - name: "umana_tools"
+    label: "Umana Tools"
+    files:
+      - label: "Catalogo de productos"
+        name: "catalogo"
+        file: "data/productos.json"
+        fields:
+          - label: "Productos"
+            name: "productos"
+            widget: "list"
+            summary: "{{fields.name}} - {{fields.price}}"
+            fields:
+              - { label: "Nombre", name: "name", widget: "string" }
+              - { label: "Categoria", name: "category", widget: "string" }
+              - { label: "Descripcion", name: "description", widget: "text" }
+              - { label: "Precio (CRC)", name: "price", widget: "number", value_type: "int", min: 0 }
+              - { label: "SKU", name: "sku", widget: "string" }
+              - { label: "Imagen", name: "image", widget: "image", required: false }
+              - { label: "Orden", name: "order", widget: "number", value_type: "int", min: 0, default: 0 }
+              - { label: "Activo", name: "active", widget: "boolean", default: true }
