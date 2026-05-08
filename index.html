@@ -229,6 +229,28 @@
   .tools-preview-wrap { display: grid; grid-template-columns: 1.15fr 1fr; gap: 3rem; align-items: center; }
   .tools-preview-copy p { font-size: 1rem; line-height: 1.85; color: var(--text-mid); font-weight: 300; margin-bottom: 1.2rem; }
   .tools-preview-cards { display: grid; gap: 1rem; }
+  .tools-preview-list { display: grid; gap: 1rem; }
+  .tools-preview-controls { display: flex; justify-content: center; margin-top: 0.85rem; }
+  .tools-preview-next {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid rgba(92, 61, 46, 0.28);
+    background: rgba(254, 252, 249, 0.7);
+    color: var(--brown);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+  .tools-preview-next:hover {
+    transform: translateY(2px);
+    background: var(--brown);
+    color: var(--cream);
+    border-color: var(--brown);
+  }
+  .tools-preview-next[hidden] { display: none; }
   .tools-mini-card {
     background: var(--cream); border: 1px solid rgba(196,168,130,0.3); padding: 1.1rem 1.25rem;
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
@@ -588,13 +610,23 @@
         <a href="umana-tools.html" class="btn-primary">Ver catálogo Umana Tools</a>
       </div>
       <div class="tools-preview-cards reveal" id="toolsPreviewCards" aria-label="Previsualizacion de productos terapeuticos">
-        <article class="tools-mini-card">
-          <div>
-            <p class="tools-mini-tag">Catalogo Umana Tools</p>
-            <h3 class="tools-mini-name">Cargando productos...</h3>
-          </div>
-          <span class="tools-mini-price">Espera</span>
-        </article>
+        <div class="tools-preview-list" id="toolsPreviewList">
+          <article class="tools-mini-card">
+            <div>
+              <p class="tools-mini-tag">Catalogo Umana Tools</p>
+              <h3 class="tools-mini-name">Cargando productos...</h3>
+            </div>
+            <span class="tools-mini-price">Espera</span>
+          </article>
+        </div>
+        <div class="tools-preview-controls">
+          <button id="toolsPreviewNext" class="tools-preview-next" type="button" aria-label="Ver siguientes productos" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 5v14"/>
+              <path d="M6 13l6 6 6-6"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -887,21 +919,28 @@
     });
   }
 
-  function renderToolsPreview(products) {
-    const toolsPreviewCards = document.getElementById('toolsPreviewCards');
-    if (!toolsPreviewCards) return;
+  const TOOLS_PREVIEW_BATCH = 3;
+  let toolsPreviewProducts = [];
+  let toolsPreviewOffset = 0;
+
+  function renderToolsPreview(products, offset) {
+    const toolsPreviewList = document.getElementById('toolsPreviewList');
+    const toolsPreviewNext = document.getElementById('toolsPreviewNext');
+    if (!toolsPreviewList || !toolsPreviewNext) return;
 
     if (!products.length) {
-      toolsPreviewCards.innerHTML = `
+      toolsPreviewList.innerHTML = `
         <article class="tools-preview-empty">
           <p>Proximamente</p>
           <span>El catalogo esta vacio por ahora. Pronto publicaremos nuevos productos.</span>
         </article>
       `;
+      toolsPreviewNext.hidden = true;
       return;
     }
 
-    toolsPreviewCards.innerHTML = products.map((product) => `
+    const pagedProducts = products.slice(offset, offset + TOOLS_PREVIEW_BATCH);
+    toolsPreviewList.innerHTML = pagedProducts.map((product) => `
       <article class="tools-mini-card">
         <div>
           <p class="tools-mini-tag">${product.category || 'Umana Tools'}</p>
@@ -910,6 +949,8 @@
         <span class="tools-mini-price">${fmtCatalogPrice(product.price || 0)}</span>
       </article>
     `).join('');
+
+    toolsPreviewNext.hidden = products.length <= TOOLS_PREVIEW_BATCH;
   }
 
   async function loadToolsPreview() {
@@ -928,11 +969,22 @@
         .filter((product) => product.active)
         .sort((a, b) => a.order - b.order || String(a.name).localeCompare(String(b.name), 'es'));
 
-      renderToolsPreview(activeProducts);
+      toolsPreviewProducts = activeProducts;
+      toolsPreviewOffset = 0;
+      renderToolsPreview(toolsPreviewProducts, toolsPreviewOffset);
     } catch (error) {
-      renderToolsPreview([]);
+      toolsPreviewProducts = [];
+      toolsPreviewOffset = 0;
+      renderToolsPreview([], 0);
     }
   }
+
+  document.getElementById('toolsPreviewNext')?.addEventListener('click', () => {
+    if (!toolsPreviewProducts.length) return;
+    const nextOffset = toolsPreviewOffset + TOOLS_PREVIEW_BATCH;
+    toolsPreviewOffset = nextOffset >= toolsPreviewProducts.length ? 0 : nextOffset;
+    renderToolsPreview(toolsPreviewProducts, toolsPreviewOffset);
+  });
 
   loadToolsPreview();
   loadArticles();
