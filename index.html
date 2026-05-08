@@ -224,6 +224,18 @@
   .camino-detail ul { margin: 1rem 0 0 1.1rem; color: var(--text-light); font-size: 0.82rem; line-height: 1.7; font-weight: 300; }
   .camino-detail li { margin-bottom: 0.35rem; }
 
+  /* UMANA TOOLS PREVIEW */
+  #tools-preview { padding: 7rem 0; background: var(--white); }
+  .tools-preview-wrap { display: grid; grid-template-columns: 1.15fr 1fr; gap: 3rem; align-items: center; }
+  .tools-preview-copy p { font-size: 1rem; line-height: 1.85; color: var(--text-mid); font-weight: 300; margin-bottom: 1.2rem; }
+  .tools-preview-cards { display: grid; gap: 1rem; }
+  .tools-mini-card {
+    background: var(--cream); border: 1px solid rgba(196,168,130,0.3); padding: 1.1rem 1.25rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .tools-mini-name { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--brown); }
+  .tools-mini-tag { font-size: 0.67rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brown-light); }
+
   /* VALORES */
   #valores { padding: 7rem 0; background: var(--cream-dark); }
   .valores-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 2.5rem; margin-top: 4rem; }
@@ -345,6 +357,7 @@
     .hero-phrase { font-size: clamp(2rem, 9vw, 4.25rem); line-height: 1.14; }
     .hero-subtitle { font-size: 0.95rem; padding: 0 0.25rem; }
     .que-es-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .tools-preview-wrap { grid-template-columns: 1fr; }
     .caminos-grid, .blog-grid { grid-template-columns: 1fr; }
     .valores-grid { grid-template-columns: repeat(2,1fr); }
     .proceso-step { grid-template-columns: 60px 1fr; }
@@ -361,6 +374,7 @@
   <ul class="nav-links">
     <li><a href="#que-es">¿Qué es?</a></li>
     <li><a href="#caminos">Caminos</a></li>
+    <li><a href="umana-tools.html">Umana Tools</a></li>
     <li><a href="#proceso">Proceso</a></li>
     <li><a href="#blog">Blog</a></li>
     <li><a href="#vision">Visión</a></li>
@@ -548,6 +562,44 @@
   </div>
 </section>
 
+<!-- UMANA TOOLS PREVIEW -->
+<section id="tools-preview">
+  <div class="container">
+    <div class="tools-preview-wrap">
+      <div class="tools-preview-copy reveal">
+        <p class="section-label">Umana Tools</p>
+        <h2 class="section-title">Herramientas terapéuticas<br><em>para tu día a día</em></h2>
+        <p>Descubre una selección de recursos diseñados para acompañar tu proceso emocional: cuadernos guiados, tarjetas de regulación, kits de calma y más herramientas para habitarte con presencia.</p>
+        <p>Explora el catálogo completo con precios y encuentra lo que más se adapte a tu camino actual.</p>
+        <a href="umana-tools.html" class="btn-primary">Ver catálogo Umana Tools</a>
+      </div>
+      <div class="tools-preview-cards reveal" aria-label="Ejemplos de productos terapéuticos">
+        <article class="tools-mini-card">
+          <div>
+            <p class="tools-mini-tag">Escritura terapéutica</p>
+            <h3 class="tools-mini-name">Cuaderno de Autorreflexión</h3>
+          </div>
+          <span class="camino-tag">Nuevo</span>
+        </article>
+        <article class="tools-mini-card">
+          <div>
+            <p class="tools-mini-tag">Regulación emocional</p>
+            <h3 class="tools-mini-name">Tarjetas de Calma</h3>
+          </div>
+          <span class="camino-tag">Top</span>
+        </article>
+        <article class="tools-mini-card">
+          <div>
+            <p class="tools-mini-tag">Bienestar integral</p>
+            <h3 class="tools-mini-name">Kit de Presencia</h3>
+          </div>
+          <span class="camino-tag">Pack</span>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- BLOG -->
 <section id="blog">
   <div class="container">
@@ -609,6 +661,7 @@
   <ul class="footer-links">
     <li><a href="#que-es">¿Qué es Umana?</a></li>
     <li><a href="#caminos">Caminos</a></li>
+    <li><a href="umana-tools.html">Umana Tools</a></li>
     <li><a href="#proceso">Proceso</a></li>
     <li><a href="#blog">Blog</a></li>
     <li><a href="https://wa.me/50661130913" target="_blank" rel="noopener noreferrer">Contacto</a></li>

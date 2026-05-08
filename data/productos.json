@@ -1,23 +1,63 @@
 {
   "productos": [
     {
-      "name": "Prueba",
-      "category": "Reflexion",
-      "description": "Este producto surve para querer hacer las cosas bien",
-      "price": 12000,
-      "sku": "001",
-      "image": "https://picsum.photos/id/847/1920/1280.webp",
+      "name": "Cuaderno de Autorreflexion",
+      "category": "Escritura terapeutica",
+      "description": "Guia de journaling con ejercicios para ordenar pensamientos y nombrar emociones.",
+      "price": 12500,
+      "sku": "UT-001",
+      "image": "",
       "order": 1,
       "active": true
     },
     {
-      "name": "Prueba 2",
-      "category": "Conocimiento",
-      "description": "Este producto surve para querer hacer las cosas bien 2",
-      "price": 10000,
-      "sku": "002",
-      "image": "https://picsum.photos/id/786/1920/1280.webp",
+      "name": "Tarjetas de Calma",
+      "category": "Regulacion emocional",
+      "description": "Set de tarjetas con practicas breves de respiracion, grounding y autocompasion.",
+      "price": 9800,
+      "sku": "UT-002",
+      "image": "",
       "order": 2,
+      "active": true
+    },
+    {
+      "name": "Kit de Presencia",
+      "category": "Bienestar integral",
+      "description": "Pack con libreta, vela aromatica y mini guia para crear rituales de pausa consciente.",
+      "price": 18900,
+      "sku": "UT-003",
+      "image": "",
+      "order": 3,
+      "active": true
+    },
+    {
+      "name": "Agenda Terapeutica Semanal",
+      "category": "Organizacion emocional",
+      "description": "Planificador semanal para registrar estado de animo, habitos de autocuidado y metas reales.",
+      "price": 14300,
+      "sku": "UT-004",
+      "image": "",
+      "order": 4,
+      "active": true
+    },
+    {
+      "name": "Set de Afirmaciones Compasivas",
+      "category": "Regulacion emocional",
+      "description": "Tarjetas con afirmaciones y preguntas de reflexion para momentos de ansiedad o bloqueo.",
+      "price": 7600,
+      "sku": "UT-005",
+      "image": "",
+      "order": 5,
+      "active": true
+    },
+    {
+      "name": "Cuaderno de Gratitud Consciente",
+      "category": "Escritura terapeutica",
+      "description": "Formato guiado para entrenar la atencion en lo valioso sin negar lo dificil.",
+      "price": 9900,
+      "sku": "UT-006",
+      "image": "",
+      "order": 6,
       "active": true
     }
   ]
