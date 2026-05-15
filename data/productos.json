@@ -8,7 +8,7 @@
       "sku": "001",
       "image": "https://picsum.photos/id/2/1920/1280.webp",
       "order": 1,
-      "active": false
+      "active": true
     }
   ]
 }
