@@ -262,6 +262,10 @@
     transform: translateY(0);
   }
   .blog-grid.is-switching { opacity: 0; transform: translateY(8px); }
+  /* Vista paginada: nunca más de 3 tarjetas visibles (refuerzo si el DOM tuviera filas extra) */
+  .blog-grid > .article-card:nth-child(n + 4) {
+    display: none !important;
+  }
   .article-card { background: var(--white); border: 1px solid rgba(196,168,130,0.2); overflow: hidden; transition: all 0.3s; cursor: pointer; }
   .article-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(92,61,46,0.08); }
   .article-cover { width: 100%; height: 180px; object-fit: cover; display: block; }

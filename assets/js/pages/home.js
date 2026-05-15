@@ -146,18 +146,19 @@ function renderBlogArticles(articles, offset, observer) {
   const grid = document.getElementById('blogGrid');
   const blogPreviewNext = document.getElementById('blogPreviewNext');
   const blogPreviewPrev = document.getElementById('blogPreviewPrev');
-  if (!grid || !blogPreviewNext || !blogPreviewPrev) return;
+  if (!grid) return;
 
   const emptyHtml = `<div class="blog-empty"><p>Próximamente</p><span>Los artículos aparecerán aquí una vez publicados.</span></div>`;
 
   if (!articles.length) {
     grid.innerHTML = emptyHtml;
-    blogPreviewNext.hidden = true;
-    blogPreviewPrev.hidden = true;
+    if (blogPreviewNext) blogPreviewNext.hidden = true;
+    if (blogPreviewPrev) blogPreviewPrev.hidden = true;
     return;
   }
 
-  const slice = articles.slice(offset, offset + BLOG_PREVIEW_BATCH);
+  const end = Math.min(offset + BLOG_PREVIEW_BATCH, articles.length);
+  const slice = articles.slice(offset, end);
   grid.innerHTML = slice
     .map(
       (a, i) => {
@@ -180,9 +181,13 @@ function renderBlogArticles(articles, offset, observer) {
     )
     .join('');
 
+  grid.querySelectorAll('.article-card').forEach((el, i) => {
+    if (i >= BLOG_PREVIEW_BATCH) el.remove();
+  });
+
   const hasMultiplePages = articles.length > BLOG_PREVIEW_BATCH;
-  blogPreviewNext.hidden = !hasMultiplePages;
-  blogPreviewPrev.hidden = !hasMultiplePages;
+  if (blogPreviewNext) blogPreviewNext.hidden = !hasMultiplePages;
+  if (blogPreviewPrev) blogPreviewPrev.hidden = !hasMultiplePages;
 
   grid.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 }

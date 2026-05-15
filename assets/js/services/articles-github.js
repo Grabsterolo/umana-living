@@ -8,7 +8,12 @@ export async function fetchAllArticlesFromRepo() {
   if (!res.ok) throw new Error('No se pudo conectar');
   const files = await res.json();
   if (!Array.isArray(files)) throw new Error('Respuesta inesperada del API');
-  const mdFiles = files.filter((f) => f.name.endsWith('.md'));
+  const mdFiles = files.filter(
+    (f) =>
+      f.type === 'file' &&
+      typeof f.download_url === 'string' &&
+      f.name.toLowerCase().endsWith('.md')
+  );
   if (!mdFiles.length) return [];
 
   const articles = await Promise.all(
