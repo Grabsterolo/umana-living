@@ -262,10 +262,6 @@
     transform: translateY(0);
   }
   .blog-grid.is-switching { opacity: 0; transform: translateY(8px); }
-  /* Vista paginada: nunca más de 3 tarjetas visibles (refuerzo si el DOM tuviera filas extra) */
-  .blog-grid > .article-card:nth-child(n + 4) {
-    display: none !important;
-  }
   .article-card { background: var(--white); border: 1px solid rgba(196,168,130,0.2); overflow: hidden; transition: all 0.3s; cursor: pointer; }
   .article-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(92,61,46,0.08); }
   .article-cover { width: 100%; height: 180px; object-fit: cover; display: block; }
@@ -279,6 +275,119 @@
   .blog-empty { grid-column: 1/-1; text-align: center; padding: 4rem 2rem; }
   .blog-empty p { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--brown-mid); margin-bottom: 0.5rem; }
   .blog-empty span { font-size: 0.85rem; color: var(--text-light); }
+
+  .blog-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem 1rem;
+    margin-top: 2.5rem;
+    padding: 0 0.25rem;
+  }
+  .blog-pagination[hidden] { display: none !important; }
+  .blog-page-arrow {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid rgba(92, 61, 46, 0.28);
+    background: rgba(254, 252, 249, 0.85);
+    color: var(--brown);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+  }
+  .blog-page-arrow:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: var(--brown);
+    color: var(--cream);
+    border-color: var(--brown);
+  }
+  .blog-page-arrow:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  .blog-page-arrow:focus-visible,
+  .blog-page-num:focus-visible:not(:disabled) {
+    outline: 2px solid var(--brown-light);
+    outline-offset: 3px;
+  }
+  .blog-pagination-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+    min-width: 0;
+    flex: 1 1 12rem;
+    max-width: 28rem;
+  }
+  .blog-page-numbers {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+  .blog-page-numbers li { margin: 0; padding: 0; }
+  .blog-page-num {
+    min-width: 2.35rem;
+    height: 2.35rem;
+    padding: 0 0.4rem;
+    border-radius: 999px;
+    border: 1px solid rgba(92, 61, 46, 0.2);
+    background: rgba(255, 255, 255, 0.65);
+    color: var(--brown-mid);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .blog-page-num:hover:not(:disabled) {
+    border-color: var(--brown-light);
+    color: var(--brown);
+    background: var(--white);
+  }
+  .blog-page-num.is-current {
+    background: var(--brown);
+    color: var(--cream);
+    border-color: var(--brown);
+    font-weight: 500;
+    box-shadow: 0 4px 14px rgba(92, 61, 46, 0.12);
+  }
+  .blog-page-num.is-current:disabled {
+    opacity: 1;
+    cursor: default;
+    -webkit-text-fill-color: var(--cream);
+  }
+  .blog-page-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    height: 2.35rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--text-light);
+    user-select: none;
+    pointer-events: none;
+  }
+  .blog-page-indicator {
+    margin: 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--text-light);
+    font-weight: 300;
+    text-align: center;
+  }
 
   /* Modal */
   .modal-overlay { position: fixed; inset: 0; background: rgba(46,31,20,0.65); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; }

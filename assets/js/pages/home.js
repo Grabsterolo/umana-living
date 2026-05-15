@@ -85,9 +85,39 @@ function initCalAgendarButtons() {
 }
 
 let articlesState = [];
-const BLOG_PREVIEW_BATCH = 3;
+const BLOG_PAGE_BREAKPOINT = window.matchMedia('(max-width: 768px)');
 const BLOG_PREVIEW_TRANSITION_MS = 220;
-let blogPreviewOffset = 0;
+/** Índice del primer artículo visible en la página actual (alineado a tamaño de página). */
+let blogListOffset = 0;
+
+function getBlogPageSize() {
+  return BLOG_PAGE_BREAKPOINT.matches ? 4 : 6;
+}
+
+function alignBlogListOffset(rawOffset) {
+  const n = articlesState.length;
+  const pageSize = getBlogPageSize();
+  if (!n) return 0;
+  const lastStart = Math.floor((n - 1) / pageSize) * pageSize;
+  const aligned = Math.floor(Math.max(0, rawOffset) / pageSize) * pageSize;
+  return Math.min(aligned, lastStart);
+}
+
+function buildBlogPaginationItems(currentPage, totalPages) {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => ({ type: 'page', page: i + 1 }));
+  }
+  const pages = new Set([1, totalPages, currentPage, currentPage - 1, currentPage + 1]);
+  const sorted = [...pages].filter((p) => p >= 1 && p <= totalPages).sort((a, b) => a - b);
+  const out = [];
+  let prev = 0;
+  for (const p of sorted) {
+    if (prev && p - prev > 1) out.push({ type: 'ellipsis' });
+    out.push({ type: 'page', page: p });
+    prev = p;
+  }
+  return out;
+}
 
 function openArticleModal(index) {
   const a = articlesState[index];
@@ -144,25 +174,25 @@ function initReadModal(observer) {
 
 function renderBlogArticles(articles, offset, observer) {
   const grid = document.getElementById('blogGrid');
-  const blogPreviewNext = document.getElementById('blogPreviewNext');
-  const blogPreviewPrev = document.getElementById('blogPreviewPrev');
   if (!grid) return;
 
   const emptyHtml = `<div class="blog-empty"><p>Próximamente</p><span>Los artículos aparecerán aquí una vez publicados.</span></div>`;
 
   if (!articles.length) {
     grid.innerHTML = emptyHtml;
-    if (blogPreviewNext) blogPreviewNext.hidden = true;
-    if (blogPreviewPrev) blogPreviewPrev.hidden = true;
+    syncBlogPaginationUI();
     return;
   }
 
-  const end = Math.min(offset + BLOG_PREVIEW_BATCH, articles.length);
-  const slice = articles.slice(offset, end);
+  const pageSize = getBlogPageSize();
+  const safeOffset = alignBlogListOffset(offset);
+  blogListOffset = safeOffset;
+  const end = Math.min(safeOffset + pageSize, articles.length);
+  const slice = articles.slice(safeOffset, end);
   grid.innerHTML = slice
     .map(
       (a, i) => {
-        const globalIndex = offset + i;
+        const globalIndex = safeOffset + i;
         return `
         <article class="article-card reveal" data-article-index="${globalIndex}" role="button" tabindex="0" aria-label="${escapeHtml(a.title)}">
           ${
@@ -181,83 +211,140 @@ function renderBlogArticles(articles, offset, observer) {
     )
     .join('');
 
-  grid.querySelectorAll('.article-card').forEach((el, i) => {
-    if (i >= BLOG_PREVIEW_BATCH) el.remove();
-  });
-
-  const hasMultiplePages = articles.length > BLOG_PREVIEW_BATCH;
-  if (blogPreviewNext) blogPreviewNext.hidden = !hasMultiplePages;
-  if (blogPreviewPrev) blogPreviewPrev.hidden = !hasMultiplePages;
-
   grid.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  syncBlogPaginationUI();
+}
+
+function syncBlogPaginationUI() {
+  const nav = document.getElementById('blogPagination');
+  const prev = document.getElementById('blogPagePrev');
+  const next = document.getElementById('blogPageNext');
+  const numbersEl = document.getElementById('blogPageNumbers');
+  const indicator = document.getElementById('blogPageIndicator');
+  if (!nav || !prev || !next || !numbersEl || !indicator) return;
+
+  if (!articlesState.length) {
+    nav.hidden = true;
+    numbersEl.innerHTML = '';
+    indicator.textContent = '';
+    return;
+  }
+
+  const pageSize = getBlogPageSize();
+  const total = articlesState.length;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const currentPage = Math.floor(blogListOffset / pageSize) + 1;
+
+  if (totalPages <= 1) {
+    nav.hidden = true;
+    numbersEl.innerHTML = '';
+    indicator.textContent = '';
+    return;
+  }
+
+  nav.hidden = false;
+  prev.disabled = currentPage <= 1;
+  next.disabled = currentPage >= totalPages;
+
+  const items = buildBlogPaginationItems(currentPage, totalPages);
+  numbersEl.innerHTML = items
+    .map((item) => {
+      if (item.type === 'ellipsis') {
+        return '<li><span class="blog-page-ellipsis" aria-hidden="true">···</span></li>';
+      }
+      const isCurrent = item.page === currentPage;
+      return `<li><button type="button" class="blog-page-num${isCurrent ? ' is-current' : ''}" data-blog-page="${item.page}" ${isCurrent ? 'aria-current="page" disabled tabindex="-1"' : ''} aria-label="Ir a la página ${item.page}">${item.page}</button></li>`;
+    })
+    .join('');
+
+  indicator.textContent = `Página ${currentPage} de ${totalPages}`;
+}
+
+function scrollBlogSectionIntoView() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.getElementById('blogGrid')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function animateBlogArticles(offset, observer) {
   const grid = document.getElementById('blogGrid');
+  blogListOffset = alignBlogListOffset(offset);
   if (!grid) {
-    renderBlogArticles(articlesState, offset, observer);
+    renderBlogArticles(articlesState, blogListOffset, observer);
     return;
   }
 
   grid.classList.add('is-switching');
   window.setTimeout(() => {
-    renderBlogArticles(articlesState, offset, observer);
+    renderBlogArticles(articlesState, blogListOffset, observer);
     requestAnimationFrame(() => {
       grid.classList.remove('is-switching');
     });
   }, BLOG_PREVIEW_TRANSITION_MS);
 }
 
-function initBlogPager(observer) {
-  document.getElementById('blogPreviewNext')?.addEventListener('click', () => {
-    if (!articlesState.length) return;
-    const nextOffset = blogPreviewOffset + BLOG_PREVIEW_BATCH;
-    blogPreviewOffset = nextOffset >= articlesState.length ? 0 : nextOffset;
-    animateBlogArticles(blogPreviewOffset, observer);
+function goToBlogPage(pageIndex0, observer) {
+  if (!articlesState.length) return;
+  const pageSize = getBlogPageSize();
+  const totalPages = Math.ceil(articlesState.length / pageSize);
+  const clamped = Math.max(0, Math.min(pageIndex0, totalPages - 1));
+  blogListOffset = clamped * pageSize;
+  animateBlogArticles(blogListOffset, observer);
+  scrollBlogSectionIntoView();
+}
+
+function initBlogPagination(observer) {
+  const prev = document.getElementById('blogPagePrev');
+  const next = document.getElementById('blogPageNext');
+  const numbersEl = document.getElementById('blogPageNumbers');
+
+  prev?.addEventListener('click', () => {
+    if (!articlesState.length || prev.disabled) return;
+    const pageSize = getBlogPageSize();
+    goToBlogPage(Math.floor(blogListOffset / pageSize) - 1, observer);
   });
 
-  document.getElementById('blogPreviewPrev')?.addEventListener('click', () => {
+  next?.addEventListener('click', () => {
+    if (!articlesState.length || next.disabled) return;
+    const pageSize = getBlogPageSize();
+    goToBlogPage(Math.floor(blogListOffset / pageSize) + 1, observer);
+  });
+
+  numbersEl?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-blog-page]');
+    if (!btn || btn.disabled || !numbersEl.contains(btn)) return;
+    const page = parseInt(btn.getAttribute('data-blog-page'), 10);
+    if (!Number.isFinite(page)) return;
+    goToBlogPage(page - 1, observer);
+  });
+
+  BLOG_PAGE_BREAKPOINT.addEventListener('change', () => {
     if (!articlesState.length) return;
-    const prevOffset = blogPreviewOffset - BLOG_PREVIEW_BATCH;
-    if (prevOffset >= 0) {
-      blogPreviewOffset = prevOffset;
-    } else {
-      const lastPageStart =
-        Math.floor((articlesState.length - 1) / BLOG_PREVIEW_BATCH) * BLOG_PREVIEW_BATCH;
-      blogPreviewOffset = lastPageStart;
-    }
-    animateBlogArticles(blogPreviewOffset, observer);
+    blogListOffset = alignBlogListOffset(blogListOffset);
+    renderBlogArticles(articlesState, blogListOffset, observer);
   });
 }
 
 async function loadArticles(observer) {
   const grid = document.getElementById('blogGrid');
-  const nextBtn = document.getElementById('blogPreviewNext');
-  const prevBtn = document.getElementById('blogPreviewPrev');
   if (!grid) return;
 
   const emptyHtml = `<div class="blog-empty"><p>Próximamente</p><span>Los artículos aparecerán aquí una vez publicados.</span></div>`;
-
-  function hideBlogNav() {
-    if (nextBtn) nextBtn.hidden = true;
-    if (prevBtn) prevBtn.hidden = true;
-  }
 
   try {
     const articles = await fetchAllArticlesFromRepo();
     if (!articles.length) {
       articlesState = [];
       grid.innerHTML = emptyHtml;
-      hideBlogNav();
+      syncBlogPaginationUI();
       return;
     }
     articlesState = articles;
-    blogPreviewOffset = 0;
-    renderBlogArticles(articlesState, blogPreviewOffset, observer);
+    blogListOffset = 0;
+    renderBlogArticles(articlesState, blogListOffset, observer);
   } catch {
     articlesState = [];
     grid.innerHTML = emptyHtml;
-    hideBlogNav();
+    syncBlogPaginationUI();
   }
 }
 
@@ -361,7 +448,7 @@ function boot() {
   initCaminosToggles();
   initCalAgendarButtons();
   initReadModal(observer);
-  initBlogPager(observer);
+  initBlogPagination(observer);
   initToolsPreviewPager();
   loadToolsPreview();
   loadArticles(observer);
