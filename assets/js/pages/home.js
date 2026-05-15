@@ -85,9 +85,6 @@ function initCalAgendarButtons() {
 }
 
 let articlesState = [];
-const BLOG_PREVIEW_BATCH = 3;
-const BLOG_PREVIEW_TRANSITION_MS = 220;
-let blogPreviewOffset = 0;
 
 function openArticleModal(index) {
   const a = articlesState[index];
@@ -142,28 +139,74 @@ function initReadModal(observer) {
   });
 }
 
-function renderBlogArticles(articles, offset, observer) {
-  const grid = document.getElementById('blogGrid');
+function blogCarouselMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
+
+function updateBlogCarouselNav() {
+  const track = document.getElementById('blogGrid');
+  const nextBtn = document.getElementById('blogPreviewNext');
+  const prevBtn = document.getElementById('blogPreviewPrev');
+  if (!track || !nextBtn || !prevBtn) return;
+  const overflow = track.scrollWidth > track.clientWidth + 8;
+  nextBtn.hidden = !overflow;
+  prevBtn.hidden = !overflow;
+}
+
+let blogCarouselNavBound = false;
+
+function bindBlogCarouselNav() {
+  if (blogCarouselNavBound) return;
+  const track = document.getElementById('blogGrid');
+  const nextBtn = document.getElementById('blogPreviewNext');
+  const prevBtn = document.getElementById('blogPreviewPrev');
+  if (!track || !nextBtn || !prevBtn) return;
+  blogCarouselNavBound = true;
+
+  function scrollByViewport(dir) {
+    track.scrollBy({
+      left: dir * track.clientWidth,
+      behavior: blogCarouselMotion(),
+    });
+  }
+
+  nextBtn.addEventListener('click', () => scrollByViewport(1));
+  prevBtn.addEventListener('click', () => scrollByViewport(-1));
+
+  track.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    if (track.scrollWidth <= track.clientWidth + 8) return;
+    if (!track.contains(e.target)) return;
+    e.preventDefault();
+    scrollByViewport(e.key === 'ArrowRight' ? 1 : -1);
+  });
+
+  window.addEventListener('resize', () => window.requestAnimationFrame(updateBlogCarouselNav));
+  if (typeof ResizeObserver !== 'undefined') {
+    const ro = new ResizeObserver(() => updateBlogCarouselNav());
+    ro.observe(track);
+  }
+  track.addEventListener('scroll', updateBlogCarouselNav, { passive: true });
+}
+
+function renderBlogArticles(articles, observer) {
+  const track = document.getElementById('blogGrid');
   const blogPreviewNext = document.getElementById('blogPreviewNext');
   const blogPreviewPrev = document.getElementById('blogPreviewPrev');
-  if (!grid) return;
+  if (!track) return;
 
   const emptyHtml = `<div class="blog-empty"><p>Próximamente</p><span>Los artículos aparecerán aquí una vez publicados.</span></div>`;
 
   if (!articles.length) {
-    grid.innerHTML = emptyHtml;
+    track.innerHTML = emptyHtml;
     if (blogPreviewNext) blogPreviewNext.hidden = true;
     if (blogPreviewPrev) blogPreviewPrev.hidden = true;
     return;
   }
 
-  const end = Math.min(offset + BLOG_PREVIEW_BATCH, articles.length);
-  const slice = articles.slice(offset, end);
-  grid.innerHTML = slice
+  track.innerHTML = articles
     .map(
-      (a, i) => {
-        const globalIndex = offset + i;
-        return `
+      (a, globalIndex) => `
         <article class="article-card reveal" data-article-index="${globalIndex}" role="button" tabindex="0" aria-label="${escapeHtml(a.title)}">
           ${
             a.image
@@ -176,65 +219,33 @@ function renderBlogArticles(articles, offset, observer) {
             <p class="article-excerpt">${escapeHtml(a.excerpt || `${a.bodyRaw.slice(0, 100).replace(/#/g, '')}...`)}</p>
             <p class="article-meta">${escapeHtml(a.author ? `${a.author} · ` : '')}${escapeHtml(formatDateEsCR(a.date))}</p>
           </div>
-        </article>`;
-      }
+        </article>`
     )
     .join('');
 
-  grid.querySelectorAll('.article-card').forEach((el, i) => {
-    if (i >= BLOG_PREVIEW_BATCH) el.remove();
-  });
+  if (blogPreviewNext) blogPreviewNext.hidden = true;
+  if (blogPreviewPrev) blogPreviewPrev.hidden = true;
 
-  const hasMultiplePages = articles.length > BLOG_PREVIEW_BATCH;
-  if (blogPreviewNext) blogPreviewNext.hidden = !hasMultiplePages;
-  if (blogPreviewPrev) blogPreviewPrev.hidden = !hasMultiplePages;
+  track.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
-  grid.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-}
-
-function animateBlogArticles(offset, observer) {
-  const grid = document.getElementById('blogGrid');
-  if (!grid) {
-    renderBlogArticles(articlesState, offset, observer);
-    return;
-  }
-
-  grid.classList.add('is-switching');
-  window.setTimeout(() => {
-    renderBlogArticles(articlesState, offset, observer);
-    requestAnimationFrame(() => {
-      grid.classList.remove('is-switching');
-    });
-  }, BLOG_PREVIEW_TRANSITION_MS);
-}
-
-function initBlogPager(observer) {
-  document.getElementById('blogPreviewNext')?.addEventListener('click', () => {
-    if (!articlesState.length) return;
-    const nextOffset = blogPreviewOffset + BLOG_PREVIEW_BATCH;
-    blogPreviewOffset = nextOffset >= articlesState.length ? 0 : nextOffset;
-    animateBlogArticles(blogPreviewOffset, observer);
-  });
-
-  document.getElementById('blogPreviewPrev')?.addEventListener('click', () => {
-    if (!articlesState.length) return;
-    const prevOffset = blogPreviewOffset - BLOG_PREVIEW_BATCH;
-    if (prevOffset >= 0) {
-      blogPreviewOffset = prevOffset;
-    } else {
-      const lastPageStart =
-        Math.floor((articlesState.length - 1) / BLOG_PREVIEW_BATCH) * BLOG_PREVIEW_BATCH;
-      blogPreviewOffset = lastPageStart;
+  track.querySelectorAll('img.article-cover').forEach((img) => {
+    if (!img.complete) {
+      img.addEventListener('load', () => requestAnimationFrame(updateBlogCarouselNav), { once: true });
     }
-    animateBlogArticles(blogPreviewOffset, observer);
+  });
+
+  track.scrollLeft = 0;
+  requestAnimationFrame(() => {
+    updateBlogCarouselNav();
+    requestAnimationFrame(updateBlogCarouselNav);
   });
 }
 
 async function loadArticles(observer) {
-  const grid = document.getElementById('blogGrid');
+  const track = document.getElementById('blogGrid');
   const nextBtn = document.getElementById('blogPreviewNext');
   const prevBtn = document.getElementById('blogPreviewPrev');
-  if (!grid) return;
+  if (!track) return;
 
   const emptyHtml = `<div class="blog-empty"><p>Próximamente</p><span>Los artículos aparecerán aquí una vez publicados.</span></div>`;
 
@@ -247,16 +258,15 @@ async function loadArticles(observer) {
     const articles = await fetchAllArticlesFromRepo();
     if (!articles.length) {
       articlesState = [];
-      grid.innerHTML = emptyHtml;
+      track.innerHTML = emptyHtml;
       hideBlogNav();
       return;
     }
     articlesState = articles;
-    blogPreviewOffset = 0;
-    renderBlogArticles(articlesState, blogPreviewOffset, observer);
+    renderBlogArticles(articlesState, observer);
   } catch {
     articlesState = [];
-    grid.innerHTML = emptyHtml;
+    track.innerHTML = emptyHtml;
     hideBlogNav();
   }
 }
@@ -361,7 +371,7 @@ function boot() {
   initCaminosToggles();
   initCalAgendarButtons();
   initReadModal(observer);
-  initBlogPager(observer);
+  bindBlogCarouselNav();
   initToolsPreviewPager();
   loadToolsPreview();
   loadArticles(observer);
