@@ -89,6 +89,8 @@ const BLOG_MOBILE = window.matchMedia('(max-width: 768px)');
 const BLOG_PREVIEW_TRANSITION_MS = 220;
 /** Índice del primer artículo visible en la página actual (alineado a tamaño de página). */
 let blogListOffset = 0;
+/** Tras un swipe en móvil, bloquea el click sintético que abriría el artículo por error. */
+let blogSwipeSuppressClickUntil = 0;
 
 /** Escritorio: 3 tarjetas (1 fila × 3 columnas). Móvil: 1 tarjeta por página. */
 function getBlogPageSize() {
@@ -141,6 +143,11 @@ function initReadModal(observer) {
   });
 
   grid.addEventListener('click', (e) => {
+    if (Date.now() < blogSwipeSuppressClickUntil) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
     const card = e.target.closest('[data-article-index]');
     if (!card) return;
     const i = parseInt(card.getAttribute('data-article-index'), 10);
@@ -231,7 +238,9 @@ function syncBlogPager() {
   slider.classList.remove('blog-slider--single');
   prev.disabled = currentPage <= 1;
   next.disabled = currentPage >= totalPages;
-  indicator.textContent = `Página ${currentPage} de ${totalPages}`;
+  const label = `Página ${currentPage} de ${totalPages}`;
+  indicator.textContent =
+    BLOG_MOBILE.matches && totalPages > 1 ? `${label} · Desliza` : label;
 }
 
 function scrollBlogSectionIntoView() {
@@ -256,14 +265,80 @@ function animateBlogArticles(offset, observer) {
   }, BLOG_PREVIEW_TRANSITION_MS);
 }
 
-function goToBlogPage(pageIndex0, observer) {
+function goToBlogPage(pageIndex0, observer, doScroll = true) {
   if (!articlesState.length) return;
   const pageSize = getBlogPageSize();
   const totalPages = Math.ceil(articlesState.length / pageSize);
   const clamped = Math.max(0, Math.min(pageIndex0, totalPages - 1));
   blogListOffset = clamped * pageSize;
   animateBlogArticles(blogListOffset, observer);
-  scrollBlogSectionIntoView();
+  if (doScroll) scrollBlogSectionIntoView();
+}
+
+const BLOG_SWIPE_MIN_PX = 52;
+/** Si el gesto es más vertical que horizontal, no lo tratamos como swipe de página. */
+const BLOG_SWIPE_VERTICAL_TOLERANCE = 0.72;
+
+function initBlogMobileSwipe(observer) {
+  const view = document.getElementById('blogSliderView');
+  if (!view) return;
+
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
+
+  view.addEventListener(
+    'touchstart',
+    (e) => {
+      if (!BLOG_MOBILE.matches || e.touches.length !== 1) return;
+      tracking = true;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    },
+    { passive: true }
+  );
+
+  view.addEventListener(
+    'touchcancel',
+    () => {
+      tracking = false;
+    },
+    { passive: true }
+  );
+
+  view.addEventListener(
+    'touchend',
+    (e) => {
+      if (!tracking || !BLOG_MOBILE.matches) {
+        tracking = false;
+        return;
+      }
+      tracking = false;
+      if (!articlesState.length || e.changedTouches.length !== 1) return;
+
+      const pageSize = getBlogPageSize();
+      const totalPages = Math.ceil(articlesState.length / pageSize);
+      if (totalPages <= 1) return;
+
+      const endX = e.changedTouches[0].clientX;
+      const endY = e.changedTouches[0].clientY;
+      const dx = endX - startX;
+      const dy = endY - startY;
+
+      if (Math.abs(dx) < BLOG_SWIPE_MIN_PX) return;
+      if (Math.abs(dy) > Math.abs(dx) * BLOG_SWIPE_VERTICAL_TOLERANCE) return;
+
+      const cur = Math.floor(blogListOffset / pageSize);
+      if (dx > 0 && cur > 0) {
+        blogSwipeSuppressClickUntil = Date.now() + 450;
+        goToBlogPage(cur - 1, observer, false);
+      } else if (dx < 0 && cur < totalPages - 1) {
+        blogSwipeSuppressClickUntil = Date.now() + 450;
+        goToBlogPage(cur + 1, observer, false);
+      }
+    },
+    { passive: true }
+  );
 }
 
 function initBlogPagination(observer) {
@@ -287,6 +362,8 @@ function initBlogPagination(observer) {
     blogListOffset = alignBlogListOffset(blogListOffset);
     renderBlogArticles(articlesState, blogListOffset, observer);
   });
+
+  initBlogMobileSwipe(observer);
 }
 
 async function loadArticles(observer) {

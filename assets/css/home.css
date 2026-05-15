@@ -397,12 +397,15 @@
       grid-template-columns: 1fr;
     }
     #blog .blog-slider {
-      gap: 0.4rem;
-      align-items: center;
+      gap: 0;
+      align-items: stretch;
     }
     #blog .blog-page-arrow {
-      width: 42px;
-      height: 42px;
+      display: none !important;
+    }
+    #blog .blog-slider-view {
+      touch-action: pan-y;
+      flex: 1 1 100%;
     }
     .valores-grid { grid-template-columns: repeat(2,1fr); }
     .proceso-step { grid-template-columns: 60px 1fr; }
