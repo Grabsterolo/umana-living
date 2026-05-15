@@ -92,6 +92,11 @@ let blogListOffset = 0;
 /** Tras un swipe en móvil, bloquea el click sintético que abriría el artículo por error. */
 let blogSwipeSuppressClickUntil = 0;
 
+const BLOG_SLIDE_OUT_MS = 300;
+const BLOG_SWIPE_MIN_PX = 52;
+/** Si el gesto es más vertical que horizontal, no lo tratamos como swipe de página. */
+const BLOG_SWIPE_VERTICAL_TOLERANCE = 0.72;
+
 /** Escritorio: 3 tarjetas (1 fila × 3 columnas). Móvil: 1 tarjeta por página. */
 function getBlogPageSize() {
   return BLOG_MOBILE.matches ? 1 : 3;
@@ -248,7 +253,44 @@ function scrollBlogSectionIntoView() {
   document.getElementById('blogGrid')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function animateBlogArticles(offset, observer) {
+function runBlogMobileSlide(grid, slideDir, observer) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    renderBlogArticles(articlesState, blogListOffset, observer);
+    return;
+  }
+
+  grid.classList.remove(
+    'is-switching',
+    'blog-grid--out-next',
+    'blog-grid--out-prev',
+    'blog-grid--in-next',
+    'blog-grid--in-prev',
+    'blog-grid--in-settle'
+  );
+
+  const outClass = slideDir === 'next' ? 'blog-grid--out-next' : 'blog-grid--out-prev';
+  grid.classList.add(outClass);
+
+  window.setTimeout(() => {
+    grid.classList.remove(outClass);
+    renderBlogArticles(articlesState, blogListOffset, observer);
+
+    const inClass = slideDir === 'next' ? 'blog-grid--in-next' : 'blog-grid--in-prev';
+    grid.classList.add(inClass);
+    void grid.offsetWidth;
+
+    requestAnimationFrame(() => {
+      grid.classList.add('blog-grid--in-settle');
+    });
+
+    window.setTimeout(() => {
+      grid.classList.remove(inClass, 'blog-grid--in-settle');
+    }, BLOG_SLIDE_OUT_MS + 400);
+  }, BLOG_SLIDE_OUT_MS);
+}
+
+function animateBlogArticles(offset, observer, options = {}) {
+  const { slideDir } = options;
   const grid = document.getElementById('blogGrid');
   blogListOffset = alignBlogListOffset(offset);
   if (!grid) {
@@ -256,6 +298,18 @@ function animateBlogArticles(offset, observer) {
     return;
   }
 
+  if (slideDir && BLOG_MOBILE.matches && articlesState.length) {
+    runBlogMobileSlide(grid, slideDir, observer);
+    return;
+  }
+
+  grid.classList.remove(
+    'blog-grid--out-next',
+    'blog-grid--out-prev',
+    'blog-grid--in-next',
+    'blog-grid--in-prev',
+    'blog-grid--in-settle'
+  );
   grid.classList.add('is-switching');
   window.setTimeout(() => {
     renderBlogArticles(articlesState, blogListOffset, observer);
@@ -270,14 +324,18 @@ function goToBlogPage(pageIndex0, observer, doScroll = true) {
   const pageSize = getBlogPageSize();
   const totalPages = Math.ceil(articlesState.length / pageSize);
   const clamped = Math.max(0, Math.min(pageIndex0, totalPages - 1));
-  blogListOffset = clamped * pageSize;
-  animateBlogArticles(blogListOffset, observer);
+  const oldOffset = blogListOffset;
+  const newOffset = clamped * pageSize;
+
+  let slideDir = null;
+  if (BLOG_MOBILE.matches && newOffset !== oldOffset) {
+    slideDir = newOffset > oldOffset ? 'next' : 'prev';
+  }
+
+  blogListOffset = newOffset;
+  animateBlogArticles(blogListOffset, observer, { slideDir });
   if (doScroll) scrollBlogSectionIntoView();
 }
-
-const BLOG_SWIPE_MIN_PX = 52;
-/** Si el gesto es más vertical que horizontal, no lo tratamos como swipe de página. */
-const BLOG_SWIPE_VERTICAL_TOLERANCE = 0.72;
 
 function initBlogMobileSwipe(observer) {
   const view = document.getElementById('blogSliderView');

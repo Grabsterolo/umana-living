@@ -395,6 +395,36 @@
     .caminos-grid { grid-template-columns: 1fr; }
     #blog .blog-grid {
       grid-template-columns: 1fr;
+      transition: transform 0.3s cubic-bezier(0.25, 0.82, 0.25, 1), opacity 0.28s ease;
+      transform: translate3d(0, 0, 0);
+    }
+    #blog .blog-grid.is-switching {
+      opacity: 0;
+      transform: translate3d(0, 8px, 0);
+    }
+    #blog .blog-grid.blog-grid--out-next {
+      transform: translate3d(-100%, 0, 0);
+      opacity: 0.55;
+    }
+    #blog .blog-grid.blog-grid--out-prev {
+      transform: translate3d(100%, 0, 0);
+      opacity: 0.55;
+    }
+    #blog .blog-grid.blog-grid--in-next {
+      transform: translate3d(100%, 0, 0);
+      opacity: 0.92;
+      transition: none;
+    }
+    #blog .blog-grid.blog-grid--in-prev {
+      transform: translate3d(-100%, 0, 0);
+      opacity: 0.92;
+      transition: none;
+    }
+    #blog .blog-grid.blog-grid--in-next.blog-grid--in-settle,
+    #blog .blog-grid.blog-grid--in-prev.blog-grid--in-settle {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+      transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
     }
     #blog .blog-slider {
       gap: 0;
@@ -406,6 +436,7 @@
     #blog .blog-slider-view {
       touch-action: pan-y;
       flex: 1 1 100%;
+      overflow: hidden;
     }
     .valores-grid { grid-template-columns: repeat(2,1fr); }
     .proceso-step { grid-template-columns: 60px 1fr; }
