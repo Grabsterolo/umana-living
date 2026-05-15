@@ -85,13 +85,14 @@ function initCalAgendarButtons() {
 }
 
 let articlesState = [];
-const BLOG_PAGE_BREAKPOINT = window.matchMedia('(max-width: 768px)');
+const BLOG_MOBILE = window.matchMedia('(max-width: 768px)');
 const BLOG_PREVIEW_TRANSITION_MS = 220;
 /** Índice del primer artículo visible en la página actual (alineado a tamaño de página). */
 let blogListOffset = 0;
 
+/** Escritorio: 3 tarjetas (1 fila × 3 columnas). Móvil: 1 tarjeta por página. */
 function getBlogPageSize() {
-  return BLOG_PAGE_BREAKPOINT.matches ? 4 : 6;
+  return BLOG_MOBILE.matches ? 1 : 3;
 }
 
 function alignBlogListOffset(rawOffset) {
@@ -101,22 +102,6 @@ function alignBlogListOffset(rawOffset) {
   const lastStart = Math.floor((n - 1) / pageSize) * pageSize;
   const aligned = Math.floor(Math.max(0, rawOffset) / pageSize) * pageSize;
   return Math.min(aligned, lastStart);
-}
-
-function buildBlogPaginationItems(currentPage, totalPages) {
-  if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, i) => ({ type: 'page', page: i + 1 }));
-  }
-  const pages = new Set([1, totalPages, currentPage, currentPage - 1, currentPage + 1]);
-  const sorted = [...pages].filter((p) => p >= 1 && p <= totalPages).sort((a, b) => a - b);
-  const out = [];
-  let prev = 0;
-  for (const p of sorted) {
-    if (prev && p - prev > 1) out.push({ type: 'ellipsis' });
-    out.push({ type: 'page', page: p });
-    prev = p;
-  }
-  return out;
 }
 
 function openArticleModal(index) {
@@ -180,7 +165,7 @@ function renderBlogArticles(articles, offset, observer) {
 
   if (!articles.length) {
     grid.innerHTML = emptyHtml;
-    syncBlogPaginationUI();
+    syncBlogPager();
     return;
   }
 
@@ -212,20 +197,20 @@ function renderBlogArticles(articles, offset, observer) {
     .join('');
 
   grid.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-  syncBlogPaginationUI();
+  syncBlogPager();
 }
 
-function syncBlogPaginationUI() {
-  const nav = document.getElementById('blogPagination');
+function syncBlogPager() {
+  const slider = document.getElementById('blogSlider');
   const prev = document.getElementById('blogPagePrev');
   const next = document.getElementById('blogPageNext');
-  const numbersEl = document.getElementById('blogPageNumbers');
   const indicator = document.getElementById('blogPageIndicator');
-  if (!nav || !prev || !next || !numbersEl || !indicator) return;
+  if (!slider || !prev || !next || !indicator) return;
 
   if (!articlesState.length) {
-    nav.hidden = true;
-    numbersEl.innerHTML = '';
+    slider.classList.add('blog-slider--single');
+    prev.disabled = true;
+    next.disabled = true;
     indicator.textContent = '';
     return;
   }
@@ -236,27 +221,16 @@ function syncBlogPaginationUI() {
   const currentPage = Math.floor(blogListOffset / pageSize) + 1;
 
   if (totalPages <= 1) {
-    nav.hidden = true;
-    numbersEl.innerHTML = '';
+    slider.classList.add('blog-slider--single');
+    prev.disabled = true;
+    next.disabled = true;
     indicator.textContent = '';
     return;
   }
 
-  nav.hidden = false;
+  slider.classList.remove('blog-slider--single');
   prev.disabled = currentPage <= 1;
   next.disabled = currentPage >= totalPages;
-
-  const items = buildBlogPaginationItems(currentPage, totalPages);
-  numbersEl.innerHTML = items
-    .map((item) => {
-      if (item.type === 'ellipsis') {
-        return '<li><span class="blog-page-ellipsis" aria-hidden="true">···</span></li>';
-      }
-      const isCurrent = item.page === currentPage;
-      return `<li><button type="button" class="blog-page-num${isCurrent ? ' is-current' : ''}" data-blog-page="${item.page}" ${isCurrent ? 'aria-current="page" disabled tabindex="-1"' : ''} aria-label="Ir a la página ${item.page}">${item.page}</button></li>`;
-    })
-    .join('');
-
   indicator.textContent = `Página ${currentPage} de ${totalPages}`;
 }
 
@@ -295,7 +269,6 @@ function goToBlogPage(pageIndex0, observer) {
 function initBlogPagination(observer) {
   const prev = document.getElementById('blogPagePrev');
   const next = document.getElementById('blogPageNext');
-  const numbersEl = document.getElementById('blogPageNumbers');
 
   prev?.addEventListener('click', () => {
     if (!articlesState.length || prev.disabled) return;
@@ -309,15 +282,7 @@ function initBlogPagination(observer) {
     goToBlogPage(Math.floor(blogListOffset / pageSize) + 1, observer);
   });
 
-  numbersEl?.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-blog-page]');
-    if (!btn || btn.disabled || !numbersEl.contains(btn)) return;
-    const page = parseInt(btn.getAttribute('data-blog-page'), 10);
-    if (!Number.isFinite(page)) return;
-    goToBlogPage(page - 1, observer);
-  });
-
-  BLOG_PAGE_BREAKPOINT.addEventListener('change', () => {
+  BLOG_MOBILE.addEventListener('change', () => {
     if (!articlesState.length) return;
     blogListOffset = alignBlogListOffset(blogListOffset);
     renderBlogArticles(articlesState, blogListOffset, observer);
@@ -335,7 +300,7 @@ async function loadArticles(observer) {
     if (!articles.length) {
       articlesState = [];
       grid.innerHTML = emptyHtml;
-      syncBlogPaginationUI();
+      syncBlogPager();
       return;
     }
     articlesState = articles;
@@ -344,7 +309,7 @@ async function loadArticles(observer) {
   } catch {
     articlesState = [];
     grid.innerHTML = emptyHtml;
-    syncBlogPaginationUI();
+    syncBlogPager();
   }
 }
 
