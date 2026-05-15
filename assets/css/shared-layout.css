@@ -1,0 +1,124 @@
+/* Footer + botones flotantes — compartido (index + Umana Tools) */
+footer {
+  padding: 2.5rem;
+  padding-inline-end: calc(2.5rem + 56px + 1.25rem + max(0px, env(safe-area-inset-right, 0px)));
+  background: var(--text-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sand);
+  font-weight: 400;
+}
+.footer-tagline {
+  font-size: 0.75rem;
+  color: rgba(212, 184, 150, 0.5);
+  letter-spacing: 0.08em;
+}
+.footer-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.footer-links a {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(212, 184, 150, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover {
+  color: var(--sand);
+}
+
+#wa-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #25d366;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+  z-index: 9999;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+#wa-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(37, 211, 102, 0.55);
+}
+#wa-btn::before {
+  content: '¿Tienes dudas?';
+  position: absolute;
+  right: 68px;
+  background: var(--brown);
+  color: var(--cream);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.25s, transform 0.25s;
+  pointer-events: none;
+  box-shadow: 0 6px 20px rgba(92, 61, 46, 0.2);
+}
+#wa-btn:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+#ig-btn {
+  position: fixed;
+  bottom: calc(2rem + 56px + 14px);
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  box-shadow: 0 4px 20px rgba(225, 48, 108, 0.35);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+#ig-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(225, 48, 108, 0.5);
+}
+#ig-btn::before {
+  content: 'Síguenos en Instagram';
+  position: absolute;
+  right: 68px;
+  background: var(--brown);
+  color: var(--cream);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.25s, transform 0.25s;
+  pointer-events: none;
+  box-shadow: 0 6px 20px rgba(92, 61, 46, 0.2);
+}
+#ig-btn:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}

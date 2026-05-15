@@ -1,0 +1,18 @@
+/* Design tokens + reset — compartido entre páginas */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --cream: #f9f5ef;
+  --cream-dark: #ede7dc;
+  --brown: #5c3d2e;
+  --brown-mid: #8b6347;
+  --brown-light: #c4a882;
+  --sand: #d4b896;
+  --text-dark: #2e1f14;
+  --text-mid: #6b4c35;
+  --text-light: #9e7d62;
+  --white: #fefcf9;
+}
