@@ -252,7 +252,16 @@
   /* BLOG */
   #blog { padding: 7rem 0; background: var(--cream); }
   .blog-header { margin-bottom: 3.5rem; }
-  .blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
+  .blog-cards-wrap { display: grid; gap: 0; }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .blog-grid.is-switching { opacity: 0; transform: translateY(8px); }
   .article-card { background: var(--white); border: 1px solid rgba(196,168,130,0.2); overflow: hidden; transition: all 0.3s; cursor: pointer; }
   .article-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(92,61,46,0.08); }
   .article-cover { width: 100%; height: 180px; object-fit: cover; display: block; }

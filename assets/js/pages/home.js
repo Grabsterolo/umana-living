@@ -85,6 +85,9 @@ function initCalAgendarButtons() {
 }
 
 let articlesState = [];
+const BLOG_PREVIEW_BATCH = 3;
+const BLOG_PREVIEW_TRANSITION_MS = 220;
+let blogPreviewOffset = 0;
 
 function openArticleModal(index) {
   const a = articlesState[index];
@@ -139,23 +142,28 @@ function initReadModal(observer) {
   });
 }
 
-async function loadArticles(observer) {
+function renderBlogArticles(articles, offset, observer) {
   const grid = document.getElementById('blogGrid');
-  if (!grid) return;
+  const blogPreviewNext = document.getElementById('blogPreviewNext');
+  const blogPreviewPrev = document.getElementById('blogPreviewPrev');
+  if (!grid || !blogPreviewNext || !blogPreviewPrev) return;
 
   const emptyHtml = `<div class="blog-empty"><p>Próximamente</p><span>Los artículos aparecerán aquí una vez publicados.</span></div>`;
 
-  try {
-    const articles = await fetchAllArticlesFromRepo();
-    if (!articles.length) {
-      grid.innerHTML = emptyHtml;
-      return;
-    }
-    articlesState = articles;
-    grid.innerHTML = articles
-      .map(
-        (a, i) => `
-        <article class="article-card reveal" data-article-index="${i}" role="button" tabindex="0" aria-label="${escapeHtml(a.title)}">
+  if (!articles.length) {
+    grid.innerHTML = emptyHtml;
+    blogPreviewNext.hidden = true;
+    blogPreviewPrev.hidden = true;
+    return;
+  }
+
+  const slice = articles.slice(offset, offset + BLOG_PREVIEW_BATCH);
+  grid.innerHTML = slice
+    .map(
+      (a, i) => {
+        const globalIndex = offset + i;
+        return `
+        <article class="article-card reveal" data-article-index="${globalIndex}" role="button" tabindex="0" aria-label="${escapeHtml(a.title)}">
           ${
             a.image
               ? `<img class="article-cover" src="${safeImageUrl(a.image)}" alt="${escapeHtml(a.title)}">`
@@ -167,12 +175,84 @@ async function loadArticles(observer) {
             <p class="article-excerpt">${escapeHtml(a.excerpt || `${a.bodyRaw.slice(0, 100).replace(/#/g, '')}...`)}</p>
             <p class="article-meta">${escapeHtml(a.author ? `${a.author} · ` : '')}${escapeHtml(formatDateEsCR(a.date))}</p>
           </div>
-        </article>`
-      )
-      .join('');
-    grid.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+        </article>`;
+      }
+    )
+    .join('');
+
+  const hasMultiplePages = articles.length > BLOG_PREVIEW_BATCH;
+  blogPreviewNext.hidden = !hasMultiplePages;
+  blogPreviewPrev.hidden = !hasMultiplePages;
+
+  grid.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+}
+
+function animateBlogArticles(offset, observer) {
+  const grid = document.getElementById('blogGrid');
+  if (!grid) {
+    renderBlogArticles(articlesState, offset, observer);
+    return;
+  }
+
+  grid.classList.add('is-switching');
+  window.setTimeout(() => {
+    renderBlogArticles(articlesState, offset, observer);
+    requestAnimationFrame(() => {
+      grid.classList.remove('is-switching');
+    });
+  }, BLOG_PREVIEW_TRANSITION_MS);
+}
+
+function initBlogPager(observer) {
+  document.getElementById('blogPreviewNext')?.addEventListener('click', () => {
+    if (!articlesState.length) return;
+    const nextOffset = blogPreviewOffset + BLOG_PREVIEW_BATCH;
+    blogPreviewOffset = nextOffset >= articlesState.length ? 0 : nextOffset;
+    animateBlogArticles(blogPreviewOffset, observer);
+  });
+
+  document.getElementById('blogPreviewPrev')?.addEventListener('click', () => {
+    if (!articlesState.length) return;
+    const prevOffset = blogPreviewOffset - BLOG_PREVIEW_BATCH;
+    if (prevOffset >= 0) {
+      blogPreviewOffset = prevOffset;
+    } else {
+      const lastPageStart =
+        Math.floor((articlesState.length - 1) / BLOG_PREVIEW_BATCH) * BLOG_PREVIEW_BATCH;
+      blogPreviewOffset = lastPageStart;
+    }
+    animateBlogArticles(blogPreviewOffset, observer);
+  });
+}
+
+async function loadArticles(observer) {
+  const grid = document.getElementById('blogGrid');
+  const nextBtn = document.getElementById('blogPreviewNext');
+  const prevBtn = document.getElementById('blogPreviewPrev');
+  if (!grid) return;
+
+  const emptyHtml = `<div class="blog-empty"><p>Próximamente</p><span>Los artículos aparecerán aquí una vez publicados.</span></div>`;
+
+  function hideBlogNav() {
+    if (nextBtn) nextBtn.hidden = true;
+    if (prevBtn) prevBtn.hidden = true;
+  }
+
+  try {
+    const articles = await fetchAllArticlesFromRepo();
+    if (!articles.length) {
+      articlesState = [];
+      grid.innerHTML = emptyHtml;
+      hideBlogNav();
+      return;
+    }
+    articlesState = articles;
+    blogPreviewOffset = 0;
+    renderBlogArticles(articlesState, blogPreviewOffset, observer);
   } catch {
+    articlesState = [];
     grid.innerHTML = emptyHtml;
+    hideBlogNav();
   }
 }
 
@@ -276,6 +356,7 @@ function boot() {
   initCaminosToggles();
   initCalAgendarButtons();
   initReadModal(observer);
+  initBlogPager(observer);
   initToolsPreviewPager();
   loadToolsPreview();
   loadArticles(observer);
