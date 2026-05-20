@@ -15,30 +15,40 @@
 <link rel="stylesheet" href="/assets/css/tools.css">
 </head>
 <body>
-  <nav>
+
+  <div class="page-ambience" aria-hidden="true">
+    <div class="page-orb page-orb--1"></div>
+    <div class="page-orb page-orb--2"></div>
+  </div>
+
+  <nav class="site-nav">
     <a href="index.html" class="nav-logo">Umana</a>
     <div class="nav-actions">
       <a href="index.html" class="btn btn-ghost">Inicio</a>
     </div>
   </nav>
 
-  <main>
-    <section class="hero container">
-      <p class="eyebrow">Catálogo · Umana Tools</p>
-      <h1>Herramientas para sostener tu proceso terapéutico</h1>
-      <p>
-        Este catálogo está pensado para ofrecer recursos prácticos y sensibles que acompañen tu bienestar emocional:
-        cuadernos, kits y elementos para regulación, presencia y autoconocimiento.
-      </p>
+  <main class="site-main">
+    <section class="page-section">
+      <div class="float-panel tools-hero">
+        <p class="eyebrow">Catálogo · Umana Tools</p>
+        <h1>Herramientas para sostener tu proceso terapéutico</h1>
+        <p>
+          Este catálogo está pensado para ofrecer recursos prácticos y sensibles que acompañen tu bienestar emocional:
+          cuadernos, kits y elementos para regulación, presencia y autoconocimiento.
+        </p>
+      </div>
     </section>
 
-    <section class="container">
-      <div class="toolbar" id="catalogToolbar">
-        <div class="chip-group" id="categoryFilters"></div>
-        <p class="catalog-count" id="catalogCount">0 productos</p>
-      </div>
+    <section class="page-section">
+      <div class="float-panel tools-catalog">
+        <div class="toolbar" id="catalogToolbar">
+          <div class="chip-group" id="categoryFilters"></div>
+          <p class="catalog-count" id="catalogCount">0 productos</p>
+        </div>
 
-      <div class="catalog-grid" id="catalogGrid"></div>
+        <div class="catalog-grid" id="catalogGrid"></div>
+      </div>
     </section>
   </main>
 

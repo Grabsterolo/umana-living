@@ -1,67 +1,10 @@
 ﻿@import './tokens.css';
 @import './shared-layout.css';
+@import './page-shell.css';
   html { scroll-behavior: smooth; }
   body {
     font-family: 'Jost', sans-serif;
-    background-color: var(--cream);
-    background-attachment: fixed;
     color: var(--text-dark);
-    overflow-x: hidden;
-  }
-  /* Halos difuminados en esquinas — mismo ambiente que el hero, en toda la página */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image:
-      radial-gradient(ellipse 90% 70% at 0% 0%, rgba(196, 168, 130, 0.2) 0%, rgba(196, 168, 130, 0.05) 45%, transparent 58%),
-      radial-gradient(ellipse 90% 70% at 100% 0%, rgba(196, 168, 130, 0.2) 0%, rgba(196, 168, 130, 0.05) 45%, transparent 58%),
-      radial-gradient(ellipse 70% 65% at 100% 100%, rgba(92, 61, 46, 0.1) 0%, transparent 52%),
-      radial-gradient(ellipse 55% 45% at 8% 88%, rgba(139, 99, 71, 0.08) 0%, transparent 50%);
-  }
-  .page-ambience {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .page-orb {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.35;
-    animation: floatOrb 8s ease-in-out infinite;
-  }
-  .page-orb--1 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, var(--sand) 0%, transparent 70%);
-    top: -100px;
-    left: -100px;
-  }
-  .page-orb--2 {
-    width: 350px;
-    height: 350px;
-    background: radial-gradient(circle, var(--brown-light) 0%, transparent 70%);
-    bottom: -80px;
-    right: -80px;
-    animation-delay: -4s;
-  }
-
-  /* NAV — barra flotante */
-  nav {
-    position: fixed; top: 1rem; left: 50%; transform: translateX(-50%);
-    width: min(1120px, calc(100% - 2rem)); z-index: 101;
-    padding: 0.85rem 1.75rem; display: flex; align-items: center; justify-content: space-between;
-    background: var(--glass-light);
-    backdrop-filter: blur(18px) saturate(1.15);
-    -webkit-backdrop-filter: blur(18px) saturate(1.15);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-pill);
-    box-shadow: var(--shadow-float), var(--shadow-inset-top);
-    transition: top 0.35s ease, box-shadow 0.35s ease;
   }
   .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 500; letter-spacing: 0.18em; color: var(--brown); text-decoration: none; text-transform: uppercase; }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
@@ -218,12 +161,13 @@
     color: var(--text-dark);
   }
   #vision > .container {
-    background: linear-gradient(155deg, #6b4a38 0%, var(--brown) 42%, #4a3126 100%);
-    border-color: rgba(255, 252, 249, 0.1);
-    box-shadow: var(--shadow-lift), inset 0 1px 0 rgba(255, 252, 249, 0.1);
+    background: rgba(254, 252, 249, 0.92);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     overflow: hidden;
     position: relative;
-    color: var(--cream);
+    isolation: isolate;
+    color: var(--text-dark);
   }
   #vision > .container::before {
     content: 'UMANA';
@@ -231,12 +175,17 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(6rem, 18vw, 14rem);
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.04);
+    color: rgba(92, 61, 46, 0.07);
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     white-space: nowrap;
     pointer-events: none;
     letter-spacing: 0.15em;
+    z-index: 0;
+  }
+  #vision > .container > * {
+    position: relative;
+    z-index: 1;
   }
   #valores > .container {
     background: rgba(237, 231, 220, 0.9);
@@ -546,10 +495,23 @@
 
   /* VISIÓN */
   #vision { text-align: center; }
-  #vision .container { position: relative; }
-  #vision .section-label { color: var(--sand); }
-  .vision-quote { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem,4vw,3rem); font-weight: 300; line-height: 1.45; color: var(--cream); max-width: 750px; margin: 1.5rem auto 2rem; }
-  .vision-tagline { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-style: italic; color: var(--sand); }
+  #vision .section-label { color: var(--brown-mid); }
+  .vision-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--brown);
+    max-width: 750px;
+    margin: 1.5rem auto 2rem;
+  }
+  .vision-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--brown-mid);
+  }
 
   /* CTA FINAL */
   #cta-final { text-align: center; }
@@ -566,7 +528,6 @@
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
   @media (prefers-reduced-motion: reduce) {
-    .page-orb { animation: none; }
     section:not(#hero):hover > .container,
     .camino-card:hover,
     .article-card:hover,
@@ -579,12 +540,6 @@
   }
 
   @media (max-width: 768px) {
-    nav {
-      top: 0.65rem;
-      width: calc(100% - 1.25rem);
-      padding: 0.75rem 1.15rem;
-      border-radius: 20px;
-    }
     .nav-links { display: none; }
     section:not(#hero) > .container {
       padding: 2.75rem 1.5rem;
