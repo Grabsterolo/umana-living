@@ -576,7 +576,12 @@
       flex: 1 1 100%;
       overflow: hidden;
     }
-    .valores-grid { grid-template-columns: repeat(2,1fr); }
+    .valores-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+    }
+    .valor-item { padding: 1.75rem 1.5rem; }
     .proceso-step { grid-template-columns: 60px 1fr; }
     footer { flex-direction: column; text-align: center; }
     .footer-links { flex-wrap: wrap; justify-content: center; }

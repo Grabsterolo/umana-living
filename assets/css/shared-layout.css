@@ -1,5 +1,7 @@
 /* Footer + botones flotantes — compartido (index + Umana Tools) */
 footer {
+  position: relative;
+  z-index: 2;
   padding: 2.5rem;
   padding-inline-end: calc(2.5rem + 56px + 1.25rem + max(0px, env(safe-area-inset-right, 0px)));
   background: var(--text-dark);
