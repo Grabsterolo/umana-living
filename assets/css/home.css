@@ -18,37 +18,19 @@
       radial-gradient(ellipse 70% 65% at 100% 100%, rgba(92, 61, 46, 0.08) 0%, transparent 52%),
       radial-gradient(ellipse 55% 45% at 8% 88%, rgba(139, 99, 71, 0.06) 0%, transparent 50%);
   }
-  body::after {
-    content: '';
-    position: fixed;
-    inset: -25%;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.85;
-    background:
-      radial-gradient(circle at 18% 42%, rgba(212, 184, 150, 0.35) 0%, transparent 42%),
-      radial-gradient(circle at 82% 22%, rgba(196, 168, 130, 0.28) 0%, transparent 38%),
-      radial-gradient(circle at 62% 88%, rgba(139, 99, 71, 0.18) 0%, transparent 40%);
-    animation: ambientDrift 22s ease-in-out infinite alternate;
-  }
-  @keyframes ambientDrift {
-    0% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(2.5%, -1.5%) scale(1.04); }
-    100% { transform: translate(-2%, 2%) scale(0.98); }
-  }
 
-  /* NAV — sin fondo sólido */
+  /* NAV — barra flotante */
   nav {
     position: fixed; top: 1rem; left: 50%; transform: translateX(-50%);
     width: min(1120px, calc(100% - 2rem)); z-index: 100;
     padding: 0.85rem 1.75rem; display: flex; align-items: center; justify-content: space-between;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    transition: top 0.35s ease;
+    background: var(--glass-light);
+    backdrop-filter: blur(18px) saturate(1.15);
+    -webkit-backdrop-filter: blur(18px) saturate(1.15);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-float), var(--shadow-inset-top);
+    transition: top 0.35s ease, box-shadow 0.35s ease;
   }
   .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 500; letter-spacing: 0.18em; color: var(--brown); text-decoration: none; text-transform: uppercase; }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
@@ -187,10 +169,7 @@
     transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
   }
   section:not(#hero):hover > .container {
-    box-shadow:
-      var(--shadow-float),
-      var(--shadow-inset-top),
-      var(--shadow-hover-brown);
+    box-shadow: var(--shadow-lift), var(--shadow-inset-top);
   }
   .container { max-width: 1100px; margin: 0 auto; }
   section#hero .container { padding: 0 2.5rem; }
@@ -205,51 +184,13 @@
   #valores > .container {
     background: rgba(249, 245, 239, 0.82);
   }
-  #insight > .container.insight-panel {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-    background: rgba(254, 252, 249, 0.92);
-    border-color: rgba(196, 168, 130, 0.35);
-    color: var(--text-dark);
+  #insight > .container {
+    background: linear-gradient(145deg, #6b4a38 0%, var(--brown) 48%, #4f3428 100%);
+    border-color: rgba(255, 252, 249, 0.1);
+    box-shadow: var(--shadow-lift), inset 0 1px 0 rgba(255, 252, 249, 0.12);
+    color: var(--cream);
   }
-  #insight > .container.insight-panel::before,
-  #insight > .container.insight-panel::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-    filter: blur(48px);
-  }
-  #insight > .container.insight-panel::before {
-    width: min(420px, 70vw);
-    height: min(420px, 70vw);
-    top: -18%;
-    left: -8%;
-    background: radial-gradient(circle, rgba(212, 184, 150, 0.55) 0%, transparent 68%);
-    animation: insightOrbA 14s ease-in-out infinite alternate;
-  }
-  #insight > .container.insight-panel::after {
-    width: min(360px, 60vw);
-    height: min(360px, 60vw);
-    bottom: -22%;
-    right: -6%;
-    background: radial-gradient(circle, rgba(139, 99, 71, 0.35) 0%, transparent 70%);
-    animation: insightOrbB 18s ease-in-out infinite alternate;
-  }
-  #insight > .container.insight-panel > * {
-    position: relative;
-    z-index: 1;
-  }
-  @keyframes insightOrbA {
-    0% { transform: translate(0, 0) scale(1); opacity: 0.75; }
-    100% { transform: translate(12%, 8%) scale(1.12); opacity: 1; }
-  }
-  @keyframes insightOrbB {
-    0% { transform: translate(0, 0) scale(1); opacity: 0.65; }
-    100% { transform: translate(-10%, -6%) scale(1.08); opacity: 0.95; }
-  }
+  #insight > .container:hover { box-shadow: 0 40px 100px rgba(46, 31, 20, 0.28), inset 0 1px 0 rgba(255, 252, 249, 0.12); }
   #vision > .container {
     background: linear-gradient(155deg, #6b4a38 0%, var(--brown) 42%, #4a3126 100%);
     border-color: rgba(255, 252, 249, 0.1);
@@ -295,26 +236,9 @@
 
   /* INSIGHT */
   #insight .container { max-width: 800px; text-align: center; }
-  #insight .section-label { color: var(--brown-mid); }
-  .insight-quote {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.6rem, 3vw, 2.6rem);
-    font-weight: 400;
-    line-height: 1.55;
-    color: var(--brown);
-    margin-bottom: 2rem;
-  }
-  .insight-quote em {
-    font-style: italic;
-    font-weight: 500;
-    color: var(--brown-mid);
-  }
-  .insight-sub {
-    font-size: 0.88rem;
-    letter-spacing: 0.08em;
-    color: var(--text-mid);
-    font-weight: 400;
-  }
+  .insight-quote { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.6rem,3vw,2.6rem); font-weight: 300; line-height: 1.5; color: var(--cream); margin-bottom: 2rem; }
+  .insight-quote em { font-style: italic; color: var(--sand); }
+  .insight-sub { font-size: 0.85rem; letter-spacing: 0.1em; color: var(--brown-light); font-weight: 300; }
 
   /* CAMINOS */
   .caminos-intro { max-width: 600px; margin-bottom: 4rem; }
@@ -608,11 +532,6 @@
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
   @media (prefers-reduced-motion: reduce) {
-    body::after,
-    #insight > .container.insight-panel::before,
-    #insight > .container.insight-panel::after {
-      animation: none;
-    }
     section:not(#hero):hover > .container,
     .camino-card:hover,
     .article-card:hover,
@@ -629,15 +548,14 @@
       top: 0.65rem;
       width: calc(100% - 1.25rem);
       padding: 0.75rem 1.15rem;
+      border-radius: 20px;
     }
     .nav-links { display: none; }
     section:not(#hero) > .container {
       padding: 2.75rem 1.5rem;
       border-radius: 22px;
     }
-    section:not(#hero):hover > .container {
-      box-shadow: var(--shadow-float), var(--shadow-inset-top), var(--shadow-hover-brown);
-    }
+    section:not(#hero):hover > .container { box-shadow: var(--shadow-float), var(--shadow-inset-top); }
     #hero { padding: 6.5rem 1.25rem 4rem; }
     .hero-phrase-wrap { min-height: clamp(13rem, 56vw, 20rem); }
     .hero-phrase { font-size: clamp(2rem, 9vw, 4.25rem); line-height: 1.14; }
