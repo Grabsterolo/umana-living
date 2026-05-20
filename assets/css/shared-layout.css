@@ -22,6 +22,12 @@ footer {
   color: rgba(212, 184, 150, 0.5);
   letter-spacing: 0.08em;
 }
+.footer-copy {
+  margin: 0.55rem 0 0;
+  font-size: 0.68rem;
+  color: rgba(212, 184, 150, 0.42);
+  letter-spacing: 0.1em;
+}
 .footer-links {
   display: flex;
   gap: 2rem;
