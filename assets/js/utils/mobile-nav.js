@@ -10,6 +10,7 @@ export function initMobileNav() {
     toggle.setAttribute('aria-label', 'Abrir menú de navegación');
     menu.classList.remove('is-open');
     backdrop?.classList.remove('is-open');
+    backdrop?.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('nav-open');
   };
 
@@ -18,6 +19,7 @@ export function initMobileNav() {
     toggle.setAttribute('aria-label', 'Cerrar menú de navegación');
     menu.classList.add('is-open');
     backdrop?.classList.add('is-open');
+    backdrop?.setAttribute('aria-hidden', 'false');
     document.body.classList.add('nav-open');
   };
 

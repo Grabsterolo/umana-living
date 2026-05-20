@@ -88,15 +88,21 @@ body > nav {
   width: min(1120px, calc(100% - 2rem));
   z-index: 101;
   padding: 0.85rem 1.75rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
+  column-gap: 1rem;
   background: var(--glass-light);
   backdrop-filter: blur(18px) saturate(1.15);
   -webkit-backdrop-filter: blur(18px) saturate(1.15);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-float), var(--shadow-inset-top);
+}
+
+.nav-logo {
+  grid-column: 1;
+  justify-self: start;
 }
 
 .site-main {
@@ -106,10 +112,18 @@ body > nav {
 }
 
 .nav-menu {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
   display: flex;
   align-items: center;
-  gap: 2rem;
-  margin-left: auto;
+  justify-content: center;
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  min-width: 0;
+}
+
+.nav-menu .nav-cta {
+  flex-shrink: 0;
 }
 
 .nav-links {
@@ -135,6 +149,9 @@ body > nav {
 }
 
 .nav-toggle {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
   display: none;
   flex-direction: column;
   align-items: center;
@@ -142,7 +159,6 @@ body > nav {
   gap: 5px;
   width: 44px;
   height: 44px;
-  margin-left: auto;
   padding: 0;
   border: 1px solid rgba(92, 61, 46, 0.22);
   border-radius: 50%;
@@ -175,6 +191,18 @@ body > nav {
 
 .nav-backdrop {
   display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(46, 31, 20, 0.38);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.nav-backdrop.is-open {
+  opacity: 1;
+  pointer-events: all;
 }
 
 body.nav-open {
@@ -193,27 +221,27 @@ body.nav-open {
     width: calc(100% - 1.25rem);
     padding: 0.75rem 1.15rem;
     border-radius: 20px;
-    flex-wrap: nowrap;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 0;
+  }
+
+  .nav-logo {
+    grid-column: unset;
+    justify-self: unset;
+    flex: 0 0 auto;
   }
 
   .nav-toggle {
     display: inline-flex;
+    grid-column: unset;
+    justify-self: unset;
+    flex: 0 0 auto;
+    margin-left: auto;
   }
 
   .nav-backdrop {
     display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    background: rgba(46, 31, 20, 0.38);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.28s ease;
-  }
-
-  .nav-backdrop.is-open {
-    opacity: 1;
-    pointer-events: all;
   }
 
   .nav-menu {
@@ -223,9 +251,11 @@ body.nav-open {
     z-index: 102;
     width: calc(100% - 1.25rem);
     max-width: 1120px;
-    margin-left: 0;
+    grid-column: unset;
+    justify-self: unset;
     flex-direction: column;
     align-items: stretch;
+    justify-content: flex-start;
     gap: 0;
     padding: 0.5rem 0.25rem 1rem;
     background: rgba(254, 252, 249, 0.98);
