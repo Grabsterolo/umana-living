@@ -15,16 +15,4 @@
   --text-mid: #6b4c35;
   --text-light: #9e7d62;
   --white: #fefcf9;
-
-  /* Profundidad y capas flotantes */
-  --radius-panel: 28px;
-  --radius-card: 20px;
-  --radius-pill: 999px;
-  --shadow-xs: 0 1px 2px rgba(46, 31, 20, 0.04);
-  --shadow-soft: 0 8px 32px rgba(92, 61, 46, 0.07), 0 2px 8px rgba(92, 61, 46, 0.04);
-  --shadow-float: 0 24px 64px rgba(92, 61, 46, 0.1), 0 8px 24px rgba(92, 61, 46, 0.06);
-  --shadow-lift: 0 36px 90px rgba(92, 61, 46, 0.14), 0 12px 32px rgba(92, 61, 46, 0.08);
-  --shadow-inset-top: inset 0 1px 0 rgba(255, 252, 249, 0.85);
-  --glass-light: rgba(254, 252, 249, 0.72);
-  --glass-border: rgba(255, 252, 249, 0.55);
 }
