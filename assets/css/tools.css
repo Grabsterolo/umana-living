@@ -25,12 +25,6 @@ main,
   text-decoration: none;
 }
 
-.nav-actions {
-  display: flex;
-  gap: 0.8rem;
-  align-items: center;
-}
-
 .btn {
   display: inline-block;
   text-decoration: none;
@@ -63,6 +57,10 @@ main,
   background: var(--brown);
   color: var(--cream);
   border-color: var(--brown);
+}
+
+.nav-menu-cta {
+  flex-shrink: 0;
 }
 
 .tools-hero {

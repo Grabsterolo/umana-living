@@ -23,8 +23,22 @@
 
   <nav class="site-nav">
     <a href="index.html" class="nav-logo">Umana</a>
-    <div class="nav-actions">
-      <a href="index.html" class="btn btn-ghost">Inicio</a>
+    <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Abrir menú de navegación">
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
+    <div id="navBackdrop" class="nav-backdrop" aria-hidden="true"></div>
+    <div class="nav-menu" id="navMenu">
+      <ul class="nav-links">
+        <li><a href="index.html#que-es">¿Qué es?</a></li>
+        <li><a href="index.html#caminos">Caminos</a></li>
+        <li><a href="umana-tools.html">Umana Tools</a></li>
+        <li><a href="index.html#proceso">Proceso</a></li>
+        <li><a href="index.html#blog">Blog</a></li>
+        <li><a href="index.html#vision">Visión</a></li>
+      </ul>
+      <a href="index.html" class="btn btn-ghost nav-menu-cta">Inicio</a>
     </div>
   </nav>
 

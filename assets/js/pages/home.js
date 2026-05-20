@@ -1,4 +1,5 @@
 import { CAL_LINK } from '../config/site.js';
+import { initMobileNav } from '../utils/mobile-nav.js';
 import { escapeHtml, safeImageUrl } from '../utils/dom.js';
 import { formatPriceCRC, formatDateEsCR } from '../utils/format.js';
 import { loadProductosRaw, normalizeCatalogProducts } from '../services/catalog.js';
@@ -543,6 +544,7 @@ function initToolsPreviewPager() {
 }
 
 function boot() {
+  initMobileNav();
   initHeroPhrases();
   const observer = createScrollRevealObserver();
   initCaminosToggles();
