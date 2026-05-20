@@ -1,4 +1,4 @@
-import { CAL_LINK } from '../config/site.js';
+import { initCalAgendarButtons } from '../utils/cal-buttons.js';
 import { initMobileNav } from '../utils/mobile-nav.js';
 import { escapeHtml, safeImageUrl } from '../utils/dom.js';
 import { formatPriceCRC, formatDateEsCR } from '../utils/format.js';
@@ -61,26 +61,6 @@ function initCaminosToggles() {
       const card = button.closest('.camino-card');
       const isOpen = card.classList.toggle('open');
       button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    });
-  });
-}
-
-function initCalAgendarButtons() {
-  const OPEN_DELAY_MS = 220;
-  document.querySelectorAll('.btn-agendar-cal').forEach((btn) => {
-    btn.addEventListener('click', function (e) {
-      if (btn.tagName === 'A') e.preventDefault();
-      btn.classList.add('is-cal-priming');
-      btn.setAttribute('aria-busy', 'true');
-      window.setTimeout(() => {
-        btn.classList.remove('is-cal-priming');
-        btn.removeAttribute('aria-busy');
-        if (typeof Cal === 'function') {
-          Cal('modal', { calLink: CAL_LINK });
-        } else if (btn.tagName === 'A' && btn.getAttribute('href')) {
-          window.location.href = btn.getAttribute('href');
-        }
-      }, OPEN_DELAY_MS);
     });
   });
 }

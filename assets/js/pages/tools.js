@@ -1,5 +1,6 @@
 import { WHATSAPP_E164 } from '../config/site.js';
 import { initMobileNav } from '../utils/mobile-nav.js';
+import { initCalAgendarButtons } from '../utils/cal-buttons.js';
 import { escapeHtml, safeImageUrl } from '../utils/dom.js';
 import { formatPriceCRC } from '../utils/format.js';
 import { loadProductosRaw, normalizeCatalogProducts } from '../services/catalog.js';
@@ -306,6 +307,7 @@ async function loadProducts() {
 
 function boot() {
   initMobileNav();
+  initCalAgendarButtons();
   cartFab.addEventListener('click', openCart);
   cartClose.addEventListener('click', closeCart);
   cartOverlay.addEventListener('click', closeCart);
